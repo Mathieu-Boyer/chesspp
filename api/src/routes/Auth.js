@@ -2,9 +2,12 @@ import { Router } from "express";
 import bcrypt from "bcrypt"
 import db  from "../models/index.js";
 import { comparePasswords, validatePassword } from "../utils/validators.js";
-import { where } from "sequelize";
+// import { where } from "sequelize";
+import jwt from "jsonwebtoken"
+
 const router = Router();
 const Users = db.Users;
+
 
 router.post("/register", async (req, res)=>{
 
@@ -51,8 +54,15 @@ router.post("/login", async (req, res)=>{
     } catch (err) {
         return res.status(400).json({message : err})
     }
-    // implement the creation of jwt.
-    res.status(200).json({message: "Login sucessful", token : "no Token for now cause not implemented rn"})
+
+
+    const token = jwt.sign(
+        {id: foundUser.id, email: foundUser.email, username: foundUser.username, role: "basic"},
+        process.env.JWT_SECRET,
+        {expiresIn: process.env.JWT_EXPIRES}
+    );
+
+    res.status(200).json({message: "Login sucessful", token})
 })
 
 
