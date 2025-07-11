@@ -5,6 +5,10 @@ export default (sequelize, DataTypes)=>{
             allowNull: false,
             unique: true,
         },
+        role: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
         email: {
             type: DataTypes.STRING,
             allowNull : false,
