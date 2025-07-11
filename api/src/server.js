@@ -1,20 +1,24 @@
 import express from 'express'
-import { Sequelize } from 'sequelize';
-
-
+import db from './models/index.js';
+import auth from './routes/Auth.js';
 const app = express();
+
+app.use(express.json())
 
 app.listen(8000, ()=>{
     console.log("listening on port 8000");
 })
 
-const sequelize = new Sequelize("chesspp", process.env.SEQUELIZE_USER, process.env.SEQUELIZE_PWD, {
-    dialect: 'mariadb'
-})
 
+app.use("/api/v1/auth", auth)
 try {
-    await sequelize.authenticate();
-    console.log("DB succesfuly connected.");
+    // await db.Users.drop();
+
+    // await db.sequelize.sync()
+    await db.sequelize.authenticate()
+
+    console.log("Connected to DB.")
+
 } catch (err) {
-    console.error("Credential error for DB");
+    console.error("Credential error for DB", err.message);
 }
