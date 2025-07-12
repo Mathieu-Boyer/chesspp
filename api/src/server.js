@@ -2,6 +2,7 @@ import express from 'express'
 import db from './models/index.js';
 import auth from './routes/Auth.js';
 import { authenticate } from './middlewares/jwt.js';
+import { checkRole } from './middlewares/roles.js';
 const app = express();
 
 app.use(express.json())
@@ -11,10 +12,16 @@ app.listen(8000, ()=>{
 })
 
 
-app.use("/api/v1/auth", auth)
+app.use("/api/v1/auth", auth);
+
 app.post("/testing_jwt", authenticate, (req, res)=>{
     console.log(req.id , req.email, req.username, req.role)
     res.json("token passed validation !!")
+});
+
+app.post("/testing_role_protection", authenticate , checkRole("admin"), (req, res)=>{
+    console.log(req.id , req.email, req.username, req.role)
+    res.json("role validated !!")
 });
 
 try {
