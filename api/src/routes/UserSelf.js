@@ -59,7 +59,7 @@ router.delete("/", authenticate , async (req, res)=>{
     })
 
     res.status(200).json({
-        message : "User was deleted"
+        message : "User was deleted."
     });
 })
 

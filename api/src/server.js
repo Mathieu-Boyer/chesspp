@@ -2,6 +2,7 @@ import express from 'express'
 import db from './models/index.js';
 import auth from './routes/Auth.js';
 import userSelf from './routes/UserSelf.js';
+import user from './routes/User.js';
 import { authenticate } from './middlewares/jwt.js';
 import { checkRole } from './middlewares/roles.js';
 const app = express();
@@ -15,6 +16,8 @@ app.listen(8000, ()=>{
 
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/users/self", userSelf);
+app.use("/api/v1/users", user);
+
 
 app.post("/testing_jwt", authenticate, (req, res)=>{
     console.log(req.id , req.email, req.username, req.role)
