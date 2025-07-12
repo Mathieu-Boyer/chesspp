@@ -30,7 +30,7 @@ router.post("/register", async (req, res)=>{
     
     try {
         const passwordHash = await bcrypt.hash(password, 10);
-        const user = await Users.create({ email, username, password: passwordHash })
+        const user = await Users.create({ email, username, password: passwordHash , role: "basic"})
         res.status(201).json({message : "User created.", user: user})
     } catch (error) {
         res.status(409).json({message : "A user with these credentials already exists.", error})
@@ -57,7 +57,7 @@ router.post("/login", async (req, res)=>{
 
 
     const token = jwt.sign(
-        {id: foundUser.id, email: foundUser.email, username: foundUser.username, role: "basic"},
+        {id: foundUser.id, email: foundUser.email, username: foundUser.username, role: foundUser.role},
         process.env.JWT_SECRET,
         {expiresIn: process.env.JWT_EXPIRES}
     );
