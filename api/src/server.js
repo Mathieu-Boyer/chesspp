@@ -3,8 +3,11 @@ import db from './models/index.js';
 import auth from './routes/Auth.js';
 import userSelf from './routes/UserSelf.js';
 import user from './routes/User.js';
+import queue from './routes/Queue.js';
 import { authenticate } from './middlewares/jwt.js';
 import { checkRole } from './middlewares/roles.js';
+
+
 const app = express();
 
 app.use(express.json())
@@ -17,6 +20,7 @@ app.listen(8000, ()=>{
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/users/self", userSelf);
 app.use("/api/v1/users", user);
+app.use("/api/v1/queue", queue);
 
 
 app.post("/testing_jwt", authenticate, (req, res)=>{

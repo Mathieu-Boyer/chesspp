@@ -29,10 +29,11 @@ export default (sequelize, DataTypes)=>{
             type: DataTypes.STRING
         },
         fenList : {
-            type : DataTypes.ARRAY(DataTypes.STRING),
+            type : DataTypes.JSON,
         },
         moveList : {
-            type : DataTypes.ARRAY(DataTypes.STRING),
+            type : DataTypes.JSON,
+            allowNull : true,
         },
     })
 
