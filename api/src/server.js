@@ -53,8 +53,9 @@ app.post("/testing_role_protection", authenticate , checkRole("admin"), (req, re
 
 try {
     // await db.Users.drop();
+    // await db.Games.drop();
 
-    // await db.sequelize.sync()
+    // await db.sequelize.sync({ alter: true })
     await db.sequelize.authenticate()
 
     console.log("Connected to DB.")

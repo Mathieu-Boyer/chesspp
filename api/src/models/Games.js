@@ -1,30 +1,37 @@
-
+        // whitePlayerId : {
+        //     type: DataTypes.INTEGER,
+        //     references : {
+        //         model : "Users",
+        //         key: "id",
+        //     },
+        //     allowNull : false,
+        // },
+        // blackPlayerId : {
+        //     type: DataTypes.INTEGER,
+        //     references : {
+        //         model : "Users",
+        //         key: "id",
+        //     },
+        //     allowNull : false,
+        // },
+        // winnerId : {
+        //     type: DataTypes.INTEGER,
+        //     references : {
+        //         model : "Users",
+        //         key: "id",
+        //     },
+        //     allowNull : true,
+        // },
+        // drawProposerId : {
+        //     type: DataTypes.INTEGER,
+        //     references : {
+        //         model : "Users",
+        //         key: "id",
+        //     },
+        //     allowNull : true,
+        // },
 export default (sequelize, DataTypes)=>{
     const Games = sequelize.define("Games",{
-        whitePlayerId : {
-            type: DataTypes.INTEGER,
-            references : {
-                model : "Users",
-                key: "id",
-            },
-            allowNull : false,
-        },
-        blackPlayerId : {
-            type: DataTypes.INTEGER,
-            references : {
-                model : "Users",
-                key: "id",
-            },
-            allowNull : false,
-        },
-        winnerId : {
-            type: DataTypes.INTEGER,
-            references : {
-                model : "Users",
-                key: "id",
-            },
-            allowNull : true,
-        },
         status : {
             type: DataTypes.STRING
         },
@@ -36,6 +43,13 @@ export default (sequelize, DataTypes)=>{
             allowNull : true,
         },
     })
-
+    Games.prototype.toJSON = function (){
+        const values = { ...this.get() };
+        delete values.whitePlayerId;
+        delete values.blackPlayerId;
+        delete values.winnerId;
+        delete values.drawProposerId;
+        return values;
+    }
     return Games;
 }

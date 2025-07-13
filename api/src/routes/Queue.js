@@ -28,6 +28,10 @@ const matchMaking = async ()=>{
             game,
             message : "Your game was found."
         });
+        sendToUser(blackPlayer, "game:found", {
+            game,
+            message : "Your game was found."
+        });
         // sendToUser(blackPlayer);
         return game;
     } catch (error) {
