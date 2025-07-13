@@ -4,18 +4,34 @@ import auth from './routes/Auth.js';
 import userSelf from './routes/UserSelf.js';
 import user from './routes/User.js';
 import queue from './routes/Queue.js';
-import { authenticate } from './middlewares/jwt.js';
+import { authenticate, authenticateSocket } from './middlewares/jwt.js';
 import { checkRole } from './middlewares/roles.js';
+import { createServer } from "http"
+import { Server } from "socket.io"
+
 
 
 const app = express();
+const httpServer = createServer(app);
+export const io = new Server(httpServer);
+export let userSockets = new Map()
 
 app.use(express.json())
 
-app.listen(8000, ()=>{
-    console.log("listening on port 8000");
+io.use(authenticateSocket)
+
+io.on("connection", (socket)=>{
+    userSockets.set(socket.userId, socket.id);
+
+    socket.on("disconnect", ()=>{
+        userSockets.delete(socket.userId);
+        console.log("new userSockets size : ", userSockets.size);
+    })
 })
 
+httpServer.listen(8000, ()=>{
+    console.log("listening on port 8000");
+})
 
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/users/self", userSelf);

@@ -22,3 +22,23 @@ export const authenticate = (req, res, next)=>{
         return res.status(400).json("Token didn't pass verification", err);
     }
 }
+
+export const authenticateSocket = (socket, next)=>{
+    const authHeader = socket.handshake.headers.token;
+    if (!authHeader)
+        next(new Error("A token must be provided"));
+    const token = authHeader.split(" ")[1];
+    if (!token)
+        next(new Error("Token format is not respected"));
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        socket.userId = decoded.id;
+        // socket.email = decoded.email;
+        // socket.username = decoded.username;
+        // socket.role = decoded.role;
+        next();
+    }
+    catch (err){
+        next(new Error("Token didn't pass verification"));
+    }
+}
