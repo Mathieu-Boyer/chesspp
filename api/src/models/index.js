@@ -9,10 +9,16 @@ const sequelize = new Sequelize("chesspp", process.env.SEQUELIZE_USER, process.e
 })
 
 export let queue = new Set();
-
-export default {
+let db = {
     sequelize,
     Sequelize,
     Users : Users(sequelize, Sequelize.DataTypes),
     Games : Games(sequelize, Sequelize.DataTypes)
 }
+
+db.Games.belongsTo(db.Users, { as: 'whitePlayer', foreignKey: 'whitePlayerId' });
+db.Games.belongsTo(db.Users, { as: 'blackPlayer', foreignKey: 'blackPlayerId' });
+db.Games.belongsTo(db.Users, { as: 'winner', foreignKey: 'winnerId' });
+db.Games.belongsTo(db.Users, { as: 'drawProposer', foreignKey: 'drawProposerId' });
+
+export default db
