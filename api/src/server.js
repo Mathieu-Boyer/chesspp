@@ -4,6 +4,7 @@ import auth from './routes/Auth.js';
 import userSelf from './routes/UserSelf.js';
 import user from './routes/User.js';
 import queue from './routes/Queue.js';
+import game from './routes/Game.js';
 import { authenticate, authenticateSocket } from './middlewares/jwt.js';
 import { checkRole } from './middlewares/roles.js';
 import { createServer } from "http"
@@ -37,6 +38,7 @@ app.use("/api/v1/auth", auth);
 app.use("/api/v1/users/self", userSelf);
 app.use("/api/v1/users", user);
 app.use("/api/v1/queue", queue);
+app.use("/api/v1/games", game);
 
 
 app.post("/testing_jwt", authenticate, (req, res)=>{
@@ -45,8 +47,8 @@ app.post("/testing_jwt", authenticate, (req, res)=>{
 });
 
 app.post("/testing_role_protection", authenticate , checkRole("admin"), (req, res)=>{
-    console.log(req.id , req.email, req.username, req.role)
-    res.json("role validated !!")
+    console.log(req.id , req.email, req.username, req.role);
+    res.json("role validated !!");
 });
 
 try {
