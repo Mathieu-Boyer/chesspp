@@ -8,6 +8,7 @@ const sequelize = new Sequelize("chesspp", process.env.SEQUELIZE_USER, process.e
     dialect: 'mariadb'
 })
 
+export let queue = new Set();
 
 export default {
     sequelize,
