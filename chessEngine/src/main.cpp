@@ -2,6 +2,7 @@
 #include "Rook.hpp"
 #include "APiece.hpp"
 #include "Knight.hpp"
+#include "King.hpp"
 
 void createPiecesFromString(std::string string, std::vector<std::unique_ptr<APiece>> &pieces){
     for (auto &character : string){
@@ -20,6 +21,11 @@ void createPiecesFromString(std::string string, std::vector<std::unique_ptr<APie
                 break;
             }
 
+            case 'K':{
+                King king;
+                pieces.push_back(king.clone());
+                break;
+            }
         }
     }
 }
@@ -31,7 +37,7 @@ int main (){
 
     std::vector<std::unique_ptr<APiece>> pieces;
 
-    createPiecesFromString("RNNR", pieces);
+    createPiecesFromString("R N K", pieces);
 
      for (auto &piece : pieces){
         piece->describe();
