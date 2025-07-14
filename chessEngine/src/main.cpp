@@ -4,6 +4,7 @@
 #include "Knight.hpp"
 #include "King.hpp"
 #include "Queen.hpp"
+#include "Bishop.hpp"
 
 void createPiecesFromString(std::string string, std::vector<std::unique_ptr<APiece>> &pieces){
     for (auto &character : string){
@@ -33,6 +34,12 @@ void createPiecesFromString(std::string string, std::vector<std::unique_ptr<APie
                 pieces.push_back(queen.clone());
                 break;
             }
+
+            case 'B':{
+                Bishop bishop;
+                pieces.push_back(bishop.clone());
+                break;
+            }
         }
     }
 }
@@ -44,7 +51,7 @@ int main (){
 
     std::vector<std::unique_ptr<APiece>> pieces;
 
-    createPiecesFromString("R N K Q", pieces);
+    createPiecesFromString("R N K Q B", pieces);
 
      for (auto &piece : pieces){
         piece->describe();
