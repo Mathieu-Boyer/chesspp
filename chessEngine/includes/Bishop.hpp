@@ -3,14 +3,14 @@
 #include "APiece.hpp"
 #include <memory>
 
-class Rook : public APiece
+class Bishop : public APiece
 {
 private:
     /* data */
 public:
-    Rook() = delete;
-    Rook(const std::string &color);
+    Bishop() = delete;
+    Bishop(const std::string &color);
     std::unique_ptr<APiece> clone();
-    ~Rook() = default;
+    ~Bishop() = default;
 };
 

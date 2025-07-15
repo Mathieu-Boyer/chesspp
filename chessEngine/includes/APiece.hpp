@@ -8,16 +8,19 @@
 
 class APiece
 {
+    private:
+        std::string _name;
+        std::string _color;
+        int _value;
+        int _range;
+        bool _canJump;
+        bool _capturable;
+
     protected:
-        std::string name;
-        std::string color;
-        int value;
-        int range;
         std::vector<int> moveSet;
         std::vector<int> captureMoveSet;
         std::vector<int> specialMoveSet;
-        bool capturable;
-        bool canJump;
+
 
         virtual std::unique_ptr<APiece> clone() = 0 ;
 
@@ -29,7 +32,8 @@ class APiece
         void describe();
         void setColor(const std::string&);
 
-        APiece()           = default;
+        APiece()           = delete;
+        APiece(const std::string &name, const std::string &color, int value, int range, bool canJump, bool capturable);
         virtual ~APiece()  = default;
 
 };

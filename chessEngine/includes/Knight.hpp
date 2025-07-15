@@ -8,7 +8,8 @@ class Knight : public APiece
 private:
     /* data */
 public:
-    Knight();
+    Knight() = delete;
+    Knight(const std::string &color);
     std::unique_ptr<APiece> clone();
     ~Knight() = default;
 };
