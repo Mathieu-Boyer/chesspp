@@ -1,16 +1,10 @@
 #include "Rook.hpp"
 #include "APiece.hpp"
 
-Rook::Rook() : APiece(){
-    this->name           = "Rook";
-    this->color          = "ColorLess";
-    this->capturable     = true;
+Rook::Rook(const std::string &color) : APiece("Rook", color, 5 , 8, false , true){
     this->moveSet        = {-1, -8, +1, +8};
     this->captureMoveSet = moveSet;
     this->specialMoveSet = {};
-    this->range          = 8;
-    this->value          = 5;
-    this->canJump        = false;
 }
 
 std::unique_ptr<APiece> Rook::clone(){

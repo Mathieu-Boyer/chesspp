@@ -1,4 +1,5 @@
-#include "iostream"
+#include <iostream>
+#include <cctype>
 #include "Rook.hpp"
 #include "APiece.hpp"
 #include "Knight.hpp"
@@ -11,32 +12,36 @@ void createPiecesFromString(std::string string, std::vector<std::unique_ptr<APie
 
         switch (character)
         {
+            case 'r':
             case 'R':{
-                Rook rook;
+                Rook rook(std::islower(character) ? "Black" : "White");
                 pieces.push_back(rook.clone());
                 break;
             }
-
+            case 'n':
             case 'N':{
-                Knight knight;
+                Knight knight(std::islower(character) ? "Black" : "White");
                 pieces.push_back(knight.clone());
                 break;
             }
 
+            case 'k':
             case 'K':{
-                King king;
+                King king(std::islower(character) ? "Black" : "White");
                 pieces.push_back(king.clone());
                 break;
             }
 
+            case 'q':
             case 'Q':{
-                Queen queen;
+                Queen queen(std::islower(character) ? "Black" : "White");
                 pieces.push_back(queen.clone());
                 break;
             }
 
+            case 'b':
             case 'B':{
-                Bishop bishop;
+                Bishop bishop(std::islower(character) ? "Black" : "White");
                 pieces.push_back(bishop.clone());
                 break;
             }
@@ -51,12 +56,12 @@ int main (){
 
     std::vector<std::unique_ptr<APiece>> pieces;
 
-    createPiecesFromString("R N K Q B", pieces);
+    createPiecesFromString("RrNnKkQqBb", pieces);
 
      for (auto &piece : pieces){
         piece->describe();
-        piece->setColor("Black");
-        piece->describe();
+        // piece->setColor("Black");
+        // piece->describe();
     }
 
     return 0;

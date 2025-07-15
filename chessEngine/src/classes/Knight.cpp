@@ -1,16 +1,10 @@
 #include "Knight.hpp"
 #include "APiece.hpp"
 
-Knight::Knight() : APiece(){
-    this->name           = "Knight";
-    this->color          = "ColorLess";
-    this->capturable     = true;
+Knight::Knight(const std::string &color) :  APiece("Knight", color, 3 , 1, true , true){
     this->moveSet        = { -17, -15, -6, 10, 17, 15, 6, -10 };
     this->captureMoveSet = moveSet;
     this->specialMoveSet = {};
-    this->range          = 1;
-    this->value          = 3;
-    this->canJump        = true;
 }
 
 std::unique_ptr<APiece> Knight::clone(){

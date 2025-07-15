@@ -8,7 +8,8 @@ class King : public APiece
 private:
     /* data */
 public:
-    King();
+    King() = delete;
+    King(const std::string &color);
     std::unique_ptr<APiece> clone();
     ~King() = default;
 };
