@@ -6,6 +6,7 @@
 #include "King.hpp"
 #include "Queen.hpp"
 #include "Bishop.hpp"
+#include "Pawn.hpp"
 
 void createPiecesFromString(std::string string, std::vector<std::unique_ptr<APiece>> &pieces){
     for (auto &character : string){
@@ -45,6 +46,13 @@ void createPiecesFromString(std::string string, std::vector<std::unique_ptr<APie
                 pieces.push_back(bishop.clone());
                 break;
             }
+
+            case 'p':
+            case 'P':{
+                Pawn pawn(std::islower(character) ? "Black" : "White");
+                pieces.push_back(pawn.clone());
+                break;
+            }
         }
     }
 }
@@ -56,7 +64,7 @@ int main (){
 
     std::vector<std::unique_ptr<APiece>> pieces;
 
-    createPiecesFromString("RrNnKkQqBb", pieces);
+    createPiecesFromString("RrNnKkQqBbPp", pieces);
 
      for (auto &piece : pieces){
         piece->describe();
