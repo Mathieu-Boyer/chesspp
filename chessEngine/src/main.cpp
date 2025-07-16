@@ -70,11 +70,10 @@ int main (){
     std::cout << "Yipeee" << std::endl;
 
     GameState gameState("rnbq1bnr/pppppppp/8/8/k312N/8/PPPPPPPQ/RNBQKBNR w KQkq - 0 1");
-    GameState gameState2("rnbq1bnr/pppppppp/8/8/1k212N/8/PPNPPPPQ/RNBQKBNR w KQkq - 0 1");
+    GameState gameState2("rnbq1bnr/pppppppp/8/8/11212N/2kK4/PPPPPPPQ/RNBQ1BNR w KQkq - 0 1");
 
 
     Board board = gameState.getBoard();
-
 
     int pos = 39;
     board.getData()[pos]->describe();

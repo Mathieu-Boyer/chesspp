@@ -57,11 +57,18 @@ bool King::isInCheck(Board &board){
     std::vector<std::string> knight = representation == "K" ? (std::vector<std::string>){"n"} : (std::vector<std::string>){"N"};
     std::vector<int> knightMoves = {-17, -15, 7, 9, -6, 10, 17, 15, -10, 6};
 
+    std::vector<std::string> king = representation == "K" ? (std::vector<std::string>){"k"} : (std::vector<std::string>){"K"};
+
+
     if (pawnCheck(representation, board))
         return true;
     if (piecesCanCheck(position, 8, horizontalPieces, horizontalPiecesMoves, board) || piecesCanCheck(position, 8, diagonalPieces, diagonalPiecesMoves, board))
         return true;
     if (piecesCanCheck(position, 1, knight, knightMoves, board))
+        return true;
+    if (piecesCanCheck(position, 1, king, horizontalPiecesMoves, board))
+        return true;
+    if (piecesCanCheck(position, 1, king, diagonalPiecesMoves, board))
         return true;
     
     return false;
