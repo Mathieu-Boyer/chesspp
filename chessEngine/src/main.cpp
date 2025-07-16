@@ -9,6 +9,7 @@
 #include "Pawn.hpp"
 #include "Rook.hpp"
 #include "GameState.hpp"
+#include "move.hpp"
 
 
 void createPiecesFromString(std::string string, std::vector<std::unique_ptr<APiece>> &pieces){
@@ -67,20 +68,35 @@ void printIntVector(const std::vector<int> &toPrint){
 
 int main (){
 
-    std::cout << "Yipeee" << std::endl;
+    std::cout << "[ Chess++ | engine ]" << std::endl;
 
-    GameState gameState("rnbq1bnr/pppppppp/8/8/k312N/8/PPPPPPPQ/RNBQKBNR w KQkq - 0 1");
-    GameState gameState2("rnbq1bnr/pppppppp/8/8/11212N/2kK4/PPPPPPPQ/RNBQ1BNR w KQkq - 0 1");
+    // GameState gameState2("rnbq1bnr/pppppppp/8/8/11212N/2kK4/PPPPPPPQ/RNBQ1BNR w KQkq - 0 1");
+    // std::cout << gameState.encode();
+    // int pos = 39;
 
-
-    Board board = gameState.getBoard();
-
-    int pos = 39;
-    board.getData()[pos]->describe();
-    board.printASCII(board.getData()[pos]->getLegalMoves(board, pos));
+    // if ()
+    // board.getData()[pos]->describe();
+    // board.printASCII(board.getData()[pos]->getLegalMoves(board, pos));
     
-    gameState2.getBoard().printASCII();
 
+    std::string currentFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    while (true){
+        Board board;
+        GameState gameState(currentFen, board);
+
+        gameState.getBoard().printASCII();
+
+        std::string rawMove;
+        std::cin >> rawMove;
+        move moveToTry(rawMove);
+        try {
+            gameState.getBoard().applyMove(moveToTry);
+        }catch(const std::exception& e){
+            std::cerr << e.what() << std::endl;
+        }
+
+        currentFen = gameState.encode();
+    }
     // std::vector<std::unique_ptr<APiece>> pieces;
 
     // createPiecesFromString("RrNnKkQqBbPp", pieces);

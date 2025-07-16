@@ -29,31 +29,36 @@ void Board::placePieces(const std::string &fen) {
             continue;
         if (std::isdigit(character)){
             counter += character - '0';
-            std::cout << counter << std::endl;
+            // std::cout << counter << std::endl;
             continue;
         }
 
         data[counter] = pieceFactory(character);
         if (data[counter]->getRepresentation() == "K"){
             whiteKingPosition = counter;
-            std::cout << "white king placed in : " << counter << std::endl;
-            
-        }
-        else if (data[counter]->getRepresentation() == "k"){
-
+        } else if (data[counter]->getRepresentation() == "k"){
             blackKingPosition = counter;
-            std::cout << "black king placed"<< counter << std::endl;
-
         }
 
         counter++;
     }
 }
 
+void Board::applyMove(const move &move){
+
+    if (data[move.from] == nullptr)
+        throw std::runtime_error("The 'From' square is empty");
+    auto legalMoves = data[move.from]->getLegalMoves(*this, move.from);
+    if (std::ranges::find(legalMoves, move.to) == legalMoves.end())
+        throw std::runtime_error("This move is illegal ! you are going to jail.");
+
+    data[move.to] = std::move(data[move.from]);
+    // data[move.from] = nullptr;
+}
+
 void Board::printASCII(){
     int counter = 0;
     for (auto &square : data){
-
 
         if ((counter == whiteKingPosition || counter == blackKingPosition) && dynamic_cast<King*>(data[counter].get())){
             if (dynamic_cast<King*>(data[counter].get())->isInCheck(*this))
@@ -74,7 +79,6 @@ void Board::printASCII(){
     }
 
     std::cout << std::endl;
-
 }
 
 

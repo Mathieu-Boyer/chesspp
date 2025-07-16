@@ -4,6 +4,8 @@
 #include <memory>
 #include "APiece.hpp"
 #include "utils.hpp"
+#include "move.hpp"
+
 
 class Board
 {
@@ -12,7 +14,7 @@ class Board
         int whiteKingPosition;
         int blackKingPosition;
     public:
-        void applyMove();
+        void applyMove(const move& move);
         const std::array<std::unique_ptr<APiece>, 64> &getData();
         // i'll add maps here to translate 2D moves such as A8 -> 0
         Board()  = default;
