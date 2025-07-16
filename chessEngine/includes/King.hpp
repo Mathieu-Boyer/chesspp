@@ -1,6 +1,7 @@
 #pragma once
 
 #include "APiece.hpp"
+#include "Board.hpp"
 #include <memory>
 
 class King : public APiece
@@ -12,5 +13,7 @@ public:
     King(const std::string &color);
     std::unique_ptr<APiece> clone();
     ~King() = default;
+
+    bool isInCheck(Board &board);
 };
 

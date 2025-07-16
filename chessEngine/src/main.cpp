@@ -1,12 +1,15 @@
 #include <iostream>
 #include <cctype>
-#include "Rook.hpp"
 #include "APiece.hpp"
+#include "utils.hpp"
 #include "Knight.hpp"
 #include "King.hpp"
 #include "Queen.hpp"
 #include "Bishop.hpp"
 #include "Pawn.hpp"
+#include "Rook.hpp"
+#include "GameState.hpp"
+
 
 void createPiecesFromString(std::string string, std::vector<std::unique_ptr<APiece>> &pieces){
     for (auto &character : string){
@@ -57,20 +60,37 @@ void createPiecesFromString(std::string string, std::vector<std::unique_ptr<APie
     }
 }
 
+void printIntVector(const std::vector<int> &toPrint){
+    for (auto& el : toPrint)
+        std::cout << "move : " << el << " " << std::endl;
+}
+
 int main (){
 
     std::cout << "Yipeee" << std::endl;
 
+    GameState gameState("rnbq1bnr/pppppppp/8/8/k312N/8/PPPPPPPQ/RNBQKBNR w KQkq - 0 1");
+    GameState gameState2("rnbq1bnr/pppppppp/8/8/1k212N/8/PPNPPPPQ/RNBQKBNR w KQkq - 0 1");
 
-    std::vector<std::unique_ptr<APiece>> pieces;
 
-    createPiecesFromString("RrNnKkQqBbPp", pieces);
+    Board board = gameState.getBoard();
 
-     for (auto &piece : pieces){
-        piece->describe();
-        // piece->setColor("Black");
-        // piece->describe();
-    }
+
+    int pos = 39;
+    board.getData()[pos]->describe();
+    board.printASCII(board.getData()[pos]->getLegalMoves(board, pos));
+    
+    gameState2.getBoard().printASCII();
+
+    // std::vector<std::unique_ptr<APiece>> pieces;
+
+    // createPiecesFromString("RrNnKkQqBbPp", pieces);
+
+    //  for (auto &piece : pieces){
+    //     piece->describe();
+    //     // piece->setColor("Black");
+    //     // piece->describe();
+    // }
 
     return 0;
 }

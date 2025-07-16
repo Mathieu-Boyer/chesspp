@@ -1,7 +1,7 @@
 #include "Rook.hpp"
 #include "APiece.hpp"
 
-Rook::Rook(const std::string &color) : APiece("Rook", color, 5 , 8, false , true){
+Rook::Rook(const std::string &color) : APiece("Rook", "R", color, 5 , 8, false , true){
     this->moveSet        = {-1, -8, +1, +8};
     this->captureMoveSet = moveSet;
     this->specialMoveSet = {};

@@ -5,7 +5,11 @@
 #include <vector>
 #include <memory>
 
+#include "Board.hpp"
+#include "utils.hpp"
 
+
+class Board;
 class APiece
 {
     private:
@@ -20,20 +24,20 @@ class APiece
         std::vector<int> moveSet;
         std::vector<int> captureMoveSet;
         std::vector<int> specialMoveSet;
-
-
-        virtual std::unique_ptr<APiece> clone() = 0 ;
-
+        std::string _representation;
         // when board exists add the unique pointer board to pieces. + the following :
         // int currentPosition;
     public:
 
-        // when board exists , add the (applyMove + getLegalMoves + isMoveLegal) functions, 
+        std::vector<int> getLegalMoves(Board &board, int position);
+        // when board exists , add the (applyMove + getLegalMoves + isMoveLegal) functions,
         void describe();
         void setColor(const std::string&);
-
+        const std::string getRepresentation();
+        virtual std::unique_ptr<APiece> clone() = 0 ;
+        const std::string getName();
         APiece()           = delete;
-        APiece(const std::string &name, const std::string &color, int value, int range, bool canJump, bool capturable);
+        APiece(const std::string &name, const std::string &representation, const std::string &color, int value, int range, bool canJump, bool capturable);
         virtual ~APiece()  = default;
 
 };
