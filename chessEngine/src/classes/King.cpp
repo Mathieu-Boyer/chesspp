@@ -3,7 +3,7 @@
 #include "math.h"
 
 King::King(const std::string &color) :  APiece("King","K", color, 0 , 1, false , false){
-    this->moveSet        = { -9, -8, -7, 1, 7, 8 , 9 -1 };
+    this->moveSet        = { -9, -8, -7, 1, 7, 8 , 9, -1 };
     this->captureMoveSet = moveSet;
     this->specialMoveSet = {}; // this is where i will put the castle later.
 }
@@ -28,7 +28,6 @@ bool piecesCanCheck(int position, int maxRange, const std::vector<std::string> &
     auto &pieces = board.getData();
 
     for (auto& squareToCheck : toCheck)
-
         for (int n = 1 ; n <= maxRange ; n++){
             int square = position + squareToCheck * n;
             if ((square) < 0 || (square) > 63 || ((squareToCheck == -1 || squareToCheck == 1) && (position / 8 != square / 8)))

@@ -78,24 +78,40 @@ int main (){
     // board.getData()[pos]->describe();
     // board.printASCII(board.getData()[pos]->getLegalMoves(board, pos));
     
+    
+    std::string currentFen = "r3kbnr/ppp1pppp/3p4/4P3/8/8/PPPP1PPP/RNBQK2R w KQkq - 0 1";
+    // std::string currentFen = "rnbqkbnr/ppp1pppp/8/8/3p4/4P3/PPPP1PPP/RNBQKBNR w KQkq - 0 1";
 
-    std::string currentFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    Board boardStart;
+
+    GameState gameStateStart(currentFen, boardStart);
+                std::cout << currentFen << std::endl;
+
+    gameStateStart.getBoard().printASCII();
     while (true){
-        Board board;
-        GameState gameState(currentFen, board);
-
-        gameState.getBoard().printASCII();
-
-        std::string rawMove;
-        std::cin >> rawMove;
-        move moveToTry(rawMove);
         try {
-            gameState.getBoard().applyMove(moveToTry);
+            Board board{};
+            GameState gameState(currentFen, board);
+
+            std::cout << currentFen << std::endl;
+
+            std::string rawMove;
+            std::cin >> rawMove;
+            move moveToTry(rawMove);
+            if (moveToTry.from != -1 && moveToTry.to == -1)
+                board.printASCII(board.getPieceLegalMove(moveToTry.from));
+            else if (moveToTry.from >= 0 && moveToTry.to >= 0){
+                board.applyMove(moveToTry);
+                currentFen = gameState.encode();
+                gameState.getBoard().printASCII();
+
+            }
+            else
+                throw std::runtime_error("Move not correctly formated");
         }catch(const std::exception& e){
             std::cerr << e.what() << std::endl;
         }
 
-        currentFen = gameState.encode();
     }
     // std::vector<std::unique_ptr<APiece>> pieces;
 

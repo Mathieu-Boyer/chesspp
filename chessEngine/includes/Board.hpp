@@ -13,6 +13,11 @@ class Board
         std::array<std::unique_ptr<APiece>, 64> data;
         int whiteKingPosition;
         int blackKingPosition;
+        std::string colorToMove;
+        int possibleEnPassantNow;
+        int possibleEnPassantNextHalfMove;
+        std::string dissAllowedCastles;
+        std::string allowedCastles;
     public:
         void applyMove(const move& move);
         const std::array<std::unique_ptr<APiece>, 64> &getData();
@@ -20,16 +25,28 @@ class Board
         Board()  = default;
         Board(const Board&) ;
         Board(Board&&)  = default;
+
         // Board()  = default;
         ~Board() = default;
         void placePieces(const std::string &fenBoard);
+        void setColorToMove(const std::string &color);
         void printASCII();
         void printASCII(const std::vector<int> &moves);
 
-
+        std::vector<int> getPieceLegalMove(int position);
         void setWhiteKingPosition(int position);
         void setBlackKingPosition(int position);
+        void setPossibleEnPassantNow(int enPassantSquare);
+        void setdissAllowedCastles(const std::string &);
+        void setAllowedCastles(const std::string &);
 
+
+        void applyCastle(const move &move);
+        std::string getAllowedCastles();
+        std::string getdissAllowedCastles();
         int getWhiteKingPosition();
         int getBlackKingPosition();
+        int getPossibleEnPassantNextHalfMove();
+        int getPossibleEnPassantNow();
+        
 };

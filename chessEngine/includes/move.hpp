@@ -8,6 +8,7 @@ struct move {
     int to;
 
     static const std::map<std::string, int> boardMap ;
+    static const std::map<int, std::string> inverseBoardMap ;
 
     move() = delete;
     move(const std::string &);

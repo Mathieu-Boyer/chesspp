@@ -11,6 +11,7 @@ private:
     std::vector<std::string> data; // i use a vector instead of fixed sized array here because i'll add rules later so i might need to store more infos.
     // when i will be sure of all the infos i need i'll make it fixed size.
     Board &board;
+    std::string colorToMove;
     void decode();
 
 public:
@@ -18,6 +19,8 @@ public:
     GameState(const std::string &fen, Board &board);
     ~GameState() = default;
     
+    std::string getColorToMove();
+
     std::string encode();
     Board &getBoard();
     

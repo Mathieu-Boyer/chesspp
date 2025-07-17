@@ -29,6 +29,7 @@ class APiece
         // int currentPosition;
     public:
 
+        std::vector<int> canCapture(Board &board, int position);
         std::vector<int> getLegalMoves(Board &board, int position);
         // when board exists , add the (applyMove + getLegalMoves + isMoveLegal) functions,
         void describe();
@@ -36,6 +37,8 @@ class APiece
         const std::string getRepresentation();
         virtual std::unique_ptr<APiece> clone() = 0 ;
         const std::string getName();
+        const std::string getColor();
+        bool getCapturable();
         APiece()           = delete;
         APiece(const std::string &name, const std::string &representation, const std::string &color, int value, int range, bool canJump, bool capturable);
         virtual ~APiece()  = default;
