@@ -41,6 +41,7 @@ class Board
         void setAllowedCastles(const std::string &);
 
 
+        bool squareIsCompromised(const std::string &enemy, int position);
         void applyCastle(const move &move);
         std::string getAllowedCastles();
         std::string getdissAllowedCastles();

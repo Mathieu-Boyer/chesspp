@@ -94,6 +94,37 @@ int Board::getPossibleEnPassantNow(){
     return possibleEnPassantNow;
 }
 
+
+bool Board::squareIsCompromised(const std::string &enemy, int position){
+
+    std::vector<std::string> horizontalPieces = enemy == "White" ? (std::vector<std::string>){"q", "r"} : (std::vector<std::string>){"Q", "R"};
+    std::vector<int> horizontalPiecesMoves = {-1 , -8, +1, +8};
+
+    std::vector<std::string> diagonalPieces = enemy == "White" ? (std::vector<std::string>){"q", "b"} : (std::vector<std::string>){"Q", "B"};
+    std::vector<int> diagonalPiecesMoves = {-9, -7, 7, 9};
+
+    std::vector<std::string> knight = enemy == "White" ? (std::vector<std::string>){"n"} : (std::vector<std::string>){"N"};
+    std::vector<int> knightMoves = {-17, -15, 7, 9, -6, 10, 17, 15, -10, 6};
+
+    std::vector<std::string> king = enemy == "White" ? (std::vector<std::string>){"k"} : (std::vector<std::string>){"K"};
+
+
+    if (pawnCheck(enemy == "white" ? "K": "k", *this))
+        return true;
+    if (piecesCanCheck(position, 8, horizontalPieces, horizontalPiecesMoves, *this) || piecesCanCheck(position, 8, diagonalPieces, diagonalPiecesMoves, *this))
+        return true;
+    if (piecesCanCheck(position, 1, knight, knightMoves, *this))
+        return true;
+    if (piecesCanCheck(position, 1, king, horizontalPiecesMoves, *this))
+        return true;
+    if (piecesCanCheck(position, 1, king, diagonalPiecesMoves, *this))
+        return true;
+    
+    return false;
+}
+
+
+
 void Board::applyCastle(const move &move){
     if (allowedCastles.find('K') != std::string::npos && move.to == move::boardMap.at("g1"))
         data[move::boardMap.at("f1")] = std::move(data[move::boardMap.at("h1")]);
@@ -180,9 +211,10 @@ void Board::printASCII(){
     int counter = 0;
     for (auto &square : data){
 
-        if ((counter == whiteKingPosition || counter == blackKingPosition) && dynamic_cast<King*>(data[counter].get())){
-            if (dynamic_cast<King*>(data[counter].get())->isInCheck(*this))
+        if ((counter == whiteKingPosition || counter == blackKingPosition)){
+            if (squareIsCompromised(counter == whiteKingPosition ? "White" : "Black", counter))
                 std::cout << ORANGE;
+            // if (dynamic_cast<King*>(data[counter].get())->isInCheck(*this))
         }
 
         if (square == nullptr){

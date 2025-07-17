@@ -99,6 +99,8 @@ std::vector<int> APiece::getLegalMoves(Board &board, int position){
                     break;
                 if (this->_name == "Knight" && knightMoveOverFlow(position, square))
                     break;
+                if ((((move != -1 && move != 1 && move != -8 && move != 8)) && diagonalMoveOverFlow(position , square)) && (this->getName() == "Bishop" || this->getName() == "Queen" || this->getName() == "King"))
+                    break;
                 if (board.getData()[square] != nullptr){
                     if ((board.getData()[square]->getCapturable()) && (this->_color != board.getData()[square]->getColor()) && (std::ranges::find(captureMoveSet, moveSet[moveIndex]) != captureMoveSet.end()))
                         freeSquareMoves.push_back(square);
