@@ -20,7 +20,7 @@ class Board
         std::string dissAllowedCastles;
         std::string allowedCastles;
     public:
-        void applyMove(const move& move);
+        void applyMove(const move& move, GameState &gameState);
         const std::array<std::unique_ptr<APiece>, 64> &getData();
 
         Board()  = default;

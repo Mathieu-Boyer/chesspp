@@ -71,7 +71,7 @@ int main (){
     std::cout << "[ Chess++ | engine ]" << std::endl;
 
 
-std::string currentFen = "3bK3/2k5/5q2/5P11/611/8/8/8 w - - 6 54";
+std::string currentFen = "3bK3/2k5/4112/4qP11/611/8/8/8 w - - 6 54";
 
     // boardStart.printASCII();
 
@@ -91,7 +91,7 @@ std::string currentFen = "3bK3/2k5/5q2/5P11/611/8/8/8 w - - 6 54";
             if (moveToTry.from != -1 && moveToTry.to == -1)
                 board.printASCII(board.getPieceLegalMove(moveToTry.from, gameState));
             else if (moveToTry.from >= 0 && moveToTry.to >= 0){
-                board.applyMove(moveToTry);
+                board.applyMove(moveToTry, gameState);
                 // std::cout << board.checkMateSituation(gameStateStart.getColorToMove()) << " ?????? " << std::endl;
             
                 currentFen = gameState.encode();
@@ -117,3 +117,10 @@ std::string currentFen = "3bK3/2k5/5q2/5P11/611/8/8/8 w - - 6 54";
 
     return 0;
 }
+
+
+
+// TODO
+// make 2 distinct apply moves one checked because user have the hand on it
+// the other one will be just for me so no need to check legal moves , wich will avoid me Some mutual dependencies error
+

@@ -94,7 +94,7 @@ std::vector<int> Board::getPieceLegalMove(int position, GameState &gameState){
 
         
         std::cout << "////////////////////////" << std::endl;
-        gameStateCpy.getRefToBoard().applyMove(move);
+        gameStateCpy.getRefToBoard().applyMove(move, gameStateCpy);
         std::cout << "\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" << std::endl;
 
 
@@ -102,7 +102,7 @@ std::vector<int> Board::getPieceLegalMove(int position, GameState &gameState){
 
             legalMoves.push_back(moveToTry);
         // for (auto legalMove : legalMoves)
-            std::cout << move::inverseBoardMap.at(moveToTry) << " Is supposed to Be Legal" << std::endl;
+            std::cout << move::inverseBoardMap.at(position) <<"-"<< move::inverseBoardMap.at(moveToTry) << " Is supposed to Be Legal" << std::endl;
         }
     }
     return legalMoves;
@@ -243,18 +243,24 @@ bool promotionAssertions(Board &board, move move){
     return true;
 }
 
-void Board::applyMove(const move &move){
+void Board::applyMove(const move &move, GameState &gameState){
     if (data[move.from] == nullptr)
         throw std::runtime_error("The " + move::inverseBoardMap.at(move.from) + " 'From' square is empty");
     if (data[move.from]->getColor() != colorToMove)
         throw std::runtime_error("This is not the turn of the piece you are trying to move.");
 
-        
-    auto legalMoves = data[move.from]->getPseudoLegalMoves(*this, move.from);
+    
 
-    for (auto &meow : legalMoves){
-        std::cout << move::inverseBoardMap.at(move.from) << "-"<< move::inverseBoardMap.at(meow) << "<<<<<<<<<<<<<< " << std::endl;
-    }
+
+////////// the thing to make sure of not doing each time
+    // auto legalMoves = data[move.from]->getPseudoLegalMoves(*this, move.from);
+    // auto legalMoves = getPieceLegalMove(move.from, gameState);
+
+    // // gameState
+
+    // for (auto &meow : legalMoves){
+    //     std::cout << move::inverseBoardMap.at(move.from) << "-"<< move::inverseBoardMap.at(meow) << "<<<<<<<<<<<<<< " << std::endl;
+    // }
     // auto legalMoves = getPieceLegalMove(move.from,);
 
     if (data[move.from]->getName() == "Pawn"){
