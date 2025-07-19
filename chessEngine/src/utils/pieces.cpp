@@ -52,8 +52,9 @@ std::unique_ptr<APiece> pieceFactory(char character){
 
 bool diagonalMoveOverFlow(int position, int to){
     int file = position % 8;
-
     if (to < 0 || to >= 64) return false;
+
+
     int fileDiff = std::abs((to % 8) - file);
     int rankDiff = std::abs((to / 8) - (position / 8));
 
@@ -88,25 +89,60 @@ bool pawnCheck(const std::string &representation, Board &board){
     return false;
 }
 
-bool piecesCanCheck(int position, int maxRange, const std::vector<std::string> &slidePieces, std::vector<int> toCheck , Board &board){
 
-    auto &pieces = board.getData();
+std::vector<int> enemyKingNearby(Board &board, int positionOfmyKing, const std::string& enemyColor, std::vector<int> toCheck){
+    std::vector<int> allCheckers;
 
-    for (auto& squareToCheck : toCheck)
+    // if (board.getData()[positionOfmyKing] == nullptr)
+    //     throw std::runtime_error("Missuse of the function : enemyKingNearby. position given is not the one of a king");
+    for (auto& squareToCheck : toCheck){
+            // bool isDiagonalDir = squareToCheck == 7 || squareToCheck == 9 || squareToCheck == -7 || squareToCheck == -9;
+            int square = positionOfmyKing + squareToCheck;
+            if ((square) < 0 || (square) > 63 || ((squareToCheck == -1 || squareToCheck == 1) && (positionOfmyKing / 8 != square / 8)))
+                continue;
+            if (board.getData()[square] == nullptr)
+                continue;
+            if ((board.getData()[square]->getName() == "King") && board.getData()[square]->getColor() == enemyColor)
+                allCheckers.push_back(square);
+    }
+    return allCheckers;
+}
+
+std::vector<int> piecesCanCheck(int position, int maxRange, const std::vector<std::string> &slidePieces, std::vector<int> toCheck, Board &board, const std::string& enemyColor){
+    std::vector<int> allCheckers;
+
+    for (auto& squareToCheck : toCheck)        
         for (int n = 1 ; n <= maxRange ; n++){
+            bool isDiagonalDir = squareToCheck == 7 || squareToCheck == 9 || squareToCheck == -7 || squareToCheck == -9;
             int square = position + squareToCheck * n;
+
             if ((square) < 0 || (square) > 63 || ((squareToCheck == -1 || squareToCheck == 1) && (position / 8 != square / 8)))
                 break;
-            if (pieces[square] == nullptr)
+            // std::cout << "checking ----> "<< move::inverseBoardMap.at(square) << std::endl;
+            
+            if (board.getData()[square] == nullptr || ((board.getData()[square]->getName() == "King")))
                 continue;
-            if (pieces[square]->getName() == "Knight" && knightMoveOverFlow(position , square))
+            // if ((board.getData()[position] != nullptr) && (board.getData()[position]->getName() == "King") && (board.getData()[square]->getName() == "King"))
+            //     break;
+            // if (board.getData()[position] != nullptr && board.getData()[position]->getColor() == enemyColor)
+            //     break;
+            if (board.getData()[square]->getColor() != enemyColor)
                 break;
-            if ((pieces[square]->getName() == "Bishop" || pieces[square]->getName() == "Queen" || pieces[square]->getName() == "King") && (((squareToCheck != -1 && squareToCheck != 1) && (squareToCheck != -8 && squareToCheck != 8) ) && diagonalMoveOverFlow(position , square)))
+            if (board.getData()[square]->getName() == "Pawn" && (board.getData()[position] == nullptr || (board.getData()[square]->canCapture(board,square).size() == 0)))
                 break;
-            auto slidingPiecesIterator = std::ranges::find((slidePieces), pieces[square]->getRepresentation());
+            if (board.getData()[square]->getName() == "Knight" && knightMoveOverFlow(position , square))
+                break;
+            if (isDiagonalDir && (board.getData()[square]->getName() == "Pawn" || board.getData()[square]->getName() == "Bishop" || board.getData()[square]->getName() == "Queen" ) && diagonalMoveOverFlow(position , square))
+                break;
+            auto slidingPiecesIterator = std::ranges::find((slidePieces), board.getData()[square]->getRepresentation());
             if (slidingPiecesIterator == slidePieces.end())
                 break;
-            return true;
+
+            // if ()
+            // for (auto meow : squareIsCompromised("Black", whiteKingPosition))
+            // std::cout << "---->> "<< move::inverseBoardMap.at(square) << std::endl;
+            allCheckers.push_back(square);
+            break;
         }
-    return false;
+    return allCheckers;
 }

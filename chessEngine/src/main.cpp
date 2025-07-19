@@ -70,41 +70,33 @@ int main (){
 
     std::cout << "[ Chess++ | engine ]" << std::endl;
 
-    // GameState gameState2("rnbq1bnr/pppppppp/8/8/11212N/2kK4/PPPPPPPQ/RNBQ1BNR w KQkq - 0 1");
-    // std::cout << gameState.encode();
-    // int pos = 39;
 
-    // if ()
-    // board.getData()[pos]->describe();
-    // board.printASCII(board.getData()[pos]->getLegalMoves(board, pos));
-    
-    
-    std::string currentFen = "r3kbnr/ppp1pppp/3p4/4P3/8/8/PPPP1PPP/RNBQK2R w KQkq - 0 1";
-    // std::string currentFen = "rnbqkbnr/ppp1pppp/8/8/3p4/4P3/PPPP1PPP/RNBQKBNR w KQkq - 0 1";
+std::string currentFen = "3bK3/2k5/5q2/5P11/611/8/8/8 w - - 6 54";
 
-    Board boardStart;
+    // boardStart.printASCII();
 
-    GameState gameStateStart(currentFen, boardStart);
-                std::cout << currentFen << std::endl;
-
-    gameStateStart.getBoard().printASCII();
     while (true){
         try {
-            Board board{};
-            GameState gameState(currentFen, board);
+            // Board board{};
+            GameState gameState(currentFen);
+            Board &board = gameState.getRefToBoard();
+            // gameState.getRefToBoard().printASCII(gameState);
 
             std::cout << currentFen << std::endl;
 
             std::string rawMove;
+
             std::cin >> rawMove;
             move moveToTry(rawMove);
             if (moveToTry.from != -1 && moveToTry.to == -1)
-                board.printASCII(board.getPieceLegalMove(moveToTry.from));
+                board.printASCII(board.getPieceLegalMove(moveToTry.from, gameState));
             else if (moveToTry.from >= 0 && moveToTry.to >= 0){
                 board.applyMove(moveToTry);
+                // std::cout << board.checkMateSituation(gameStateStart.getColorToMove()) << " ?????? " << std::endl;
+            
                 currentFen = gameState.encode();
-                gameState.getBoard().printASCII();
 
+                // gameState.getRefToBoard().printASCII();
             }
             else
                 throw std::runtime_error("Move not correctly formated");

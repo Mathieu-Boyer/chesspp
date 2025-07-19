@@ -25,8 +25,17 @@ const std::map<int, std::string> move::inverseBoardMap = {
     {56, "a1"}, {57, "b1"}, {58, "c1"}, {59, "d1"}, {60, "e1"}, {61, "f1"}, {62, "g1"}, {63, "h1"}
 };
 
-move::move(const std::string &moveRaw) : from(-1) , to(-1){
-    std::vector<std::string> moves = split(moveRaw, '-');
+move::move(const std::string &moveRaw) : from(-1) , to(-1), promotion('-'){
+
+    std::vector<std::string> move_promotions = split(moveRaw, '=');
+
+    if(move_promotions.size() > 1){
+        promotion = move_promotions[1].front();
+    }
+    std::vector<std::string> moves = split(move_promotions[0], '-');
+
+
+
 
     //  add safety checks later
     if (moves.size() == 0)

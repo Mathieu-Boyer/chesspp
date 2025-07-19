@@ -14,4 +14,5 @@ bool knightMoveOverFlow(int position, int move);
 bool diagonalMoveOverFlow(int position, int move);
 
 bool pawnCheck(const std::string &representation, Board &board);
-bool piecesCanCheck(int position, int maxRange, const std::vector<std::string> &slidePieces, std::vector<int> toCheck , Board &board);
+std::vector<int> piecesCanCheck(int position, int maxRange, const std::vector<std::string> &slidePieces, std::vector<int> toCheck , Board &board,  const std::string& enemyColor);
+std::vector<int> enemyKingNearby(Board &board, int positionOfmyKing, const std::string& enemyColor, std::vector<int> toCheck);

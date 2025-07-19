@@ -7,6 +7,7 @@
 #include "move.hpp"
 
 
+class GameState;
 class Board
 {
     private:
@@ -21,19 +22,19 @@ class Board
     public:
         void applyMove(const move& move);
         const std::array<std::unique_ptr<APiece>, 64> &getData();
-        // i'll add maps here to translate 2D moves such as A8 -> 0
+
         Board()  = default;
-        Board(const Board&) ;
+        Board(const Board&);
         Board(Board&&)  = default;
 
         // Board()  = default;
         ~Board() = default;
         void placePieces(const std::string &fenBoard);
         void setColorToMove(const std::string &color);
-        void printASCII();
+        void printASCII(GameState &gameState);
         void printASCII(const std::vector<int> &moves);
 
-        std::vector<int> getPieceLegalMove(int position);
+        std::vector<int> getPieceLegalMove(int position,GameState &gameState);
         void setWhiteKingPosition(int position);
         void setBlackKingPosition(int position);
         void setPossibleEnPassantNow(int enPassantSquare);
@@ -41,7 +42,7 @@ class Board
         void setAllowedCastles(const std::string &);
 
 
-        bool squareIsCompromised(const std::string &enemy, int position);
+        std::vector<int> squareIsCompromised(const std::string &enemy, int position);
         void applyCastle(const move &move);
         std::string getAllowedCastles();
         std::string getdissAllowedCastles();
@@ -49,5 +50,15 @@ class Board
         int getBlackKingPosition();
         int getPossibleEnPassantNextHalfMove();
         int getPossibleEnPassantNow();
-        
+
+        bool pieceCanInterpose(int pieceA, int pieceB, const std::string &pieceName, const std::string& interposeColor);
+
+        std::vector<int> kingIsInCheck(const std::string &color);
+        bool moreThan1PieceCanCheck(const std::string &color);
+        bool checkIngPieceCanBeCaptured(const std::string &color, int checkerPos);
+        bool checkMateSituation(const std::string &color);
+        bool staleMate(const std::string &color, GameState &gameState);
+
+        std::unique_ptr<Board> clone() const;
+        // std::vector<int> positionsOfAllCheckers{};
 };
