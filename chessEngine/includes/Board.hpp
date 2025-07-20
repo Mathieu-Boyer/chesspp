@@ -19,6 +19,8 @@ class Board
         int possibleEnPassantNextHalfMove;
         std::string dissAllowedCastles;
         std::string allowedCastles;
+        void applyMoveSimulation(const move& move);
+
     public:
         void applyMove(const move& move, GameState &gameState);
         const std::array<std::unique_ptr<APiece>, 64> &getData();

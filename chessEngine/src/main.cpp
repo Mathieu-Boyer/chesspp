@@ -71,9 +71,9 @@ int main (){
     std::cout << "[ Chess++ | engine ]" << std::endl;
 
 
-std::string currentFen = "3bK3/2k5/4112/4qP11/611/8/8/8 w - - 6 54";
+std::string currentFen = "3bK3/2k5/41q11/411P1/611/8/8/8 w - - 6 54";
+// std::string currentFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
-    // boardStart.printASCII();
 
     while (true){
         try {

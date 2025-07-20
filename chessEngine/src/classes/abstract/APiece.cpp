@@ -97,10 +97,10 @@ std::vector<int> APiece::getPseudoLegalMoves(Board &board, int position){
     std::vector<int> freeSquareMoves;
 
     if (this->_name == "Pawn"){
-        if ((!isOnRow(2, position) && !isOnRow(7, position)))
+        if (!(isOnRow(2, position) || isOnRow(7, position)) && this->moveSet.size() > 1)
             this->moveSet.pop_back();
         auto foundCaptures = canCapture(board, position);
-        
+
         for (auto& lala : foundCaptures)
             std::cout << move::inverseBoardMap.at(lala) << " <----- is pseudo legal"<< std::endl;
         freeSquareMoves.insert(freeSquareMoves.begin(), foundCaptures.begin(), foundCaptures.end());

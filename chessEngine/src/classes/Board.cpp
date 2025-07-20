@@ -74,7 +74,7 @@ std::vector<int> Board::getPieceLegalMove(int position, GameState &gameState){
 
     for (auto &moveToTry : pseudoLegal){
         // Board gameStateCpy.getBoard()(*this);
-
+        std::cout << "pseudo legal :::: " << move::inverseBoardMap.at(moveToTry) << std::endl;
         GameState gameStateCpy(gameState);
         // Board &cpyBoard = gameStateCpy.getBoard();
 
@@ -94,13 +94,14 @@ std::vector<int> Board::getPieceLegalMove(int position, GameState &gameState){
 
         
         std::cout << "////////////////////////" << std::endl;
-        gameStateCpy.getRefToBoard().applyMove(move, gameStateCpy);
+        gameStateCpy.getRefToBoard().applyMoveSimulation(move);
         std::cout << "\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" << std::endl;
 
 
         if (gameStateCpy.getRefToBoard().kingIsInCheck(colorToMove).size() == 0){
 
             legalMoves.push_back(moveToTry);
+
         // for (auto legalMove : legalMoves)
             std::cout << move::inverseBoardMap.at(position) <<"-"<< move::inverseBoardMap.at(moveToTry) << " Is supposed to Be Legal" << std::endl;
         }
@@ -243,14 +244,13 @@ bool promotionAssertions(Board &board, move move){
     return true;
 }
 
-void Board::applyMove(const move &move, GameState &gameState){
+
+
+void Board::applyMoveSimulation(const move &move){
     if (data[move.from] == nullptr)
         throw std::runtime_error("The " + move::inverseBoardMap.at(move.from) + " 'From' square is empty");
     if (data[move.from]->getColor() != colorToMove)
         throw std::runtime_error("This is not the turn of the piece you are trying to move.");
-
-    
-
 
 ////////// the thing to make sure of not doing each time
     // auto legalMoves = data[move.from]->getPseudoLegalMoves(*this, move.from);
@@ -281,6 +281,92 @@ void Board::applyMove(const move &move, GameState &gameState){
     //     throw std::runtime_error("The move : " + move::inverseBoardMap.at(move.to) + " illegal ! you are going to jail.");
     //     exit(42);
     // }
+
+    if (move.to == possibleEnPassantNow && data[move.from]->getName() == "Pawn"){
+        data[move.from]->getColor() == "White" ? data[move.to + 8].reset() : data[move.to - 8].reset();
+        possibleEnPassantNextHalfMove = 0;
+        possibleEnPassantNow = 0;
+    }
+
+    if (data[move.from]->getName() == "King")
+        applyCastle(move);
+    if (data[move.from]->getName() == "Rook"){
+        if (allowedCastles != "-"){
+            if (data[move.from]->getColor() == "White"){
+                if (move.from > whiteKingPosition)
+                    dissAllowedCastles+="K";
+                else
+                    dissAllowedCastles+="Q";
+
+            }else{
+                if (move.from  > blackKingPosition)
+                   dissAllowedCastles+="k";
+                else
+                    dissAllowedCastles+="q";
+            }
+        }
+    }
+
+    if (data[move.from]->getName() == "Pawn"){
+
+        if (promotionAssertions(*this, move)){
+            auto promotedPiece = pieceFactory(move.promotion);
+            data[move.from] = std::move(promotedPiece);
+        }
+
+    }
+
+    data[move.to] = std::move(data[move.from]);
+
+    if (data[move.to] && data[move.to]->getName() == "King"){
+        if (colorToMove == "White")
+            whiteKingPosition = move.to;
+        else
+            blackKingPosition = move.to;
+    }
+
+}
+
+void Board::applyMove(const move &move, GameState &gameState){
+    if (data[move.from] == nullptr)
+        throw std::runtime_error("The " + move::inverseBoardMap.at(move.from) + " 'From' square is empty");
+    if (data[move.from]->getColor() != colorToMove)
+        throw std::runtime_error("This is not the turn of the piece you are trying to move.");
+
+    
+
+
+//////// the thing to make sure of not doing each time
+    auto legalMoves = data[move.from]->getPseudoLegalMoves(*this, move.from);
+    // auto legalMoves = getPieceLegalMove(move.from, gameState);
+
+    // gameState
+
+    std::cout << move::inverseBoardMap.at(move.from) << " hum " << legalMoves.size() << std::endl;
+
+    for (auto &meow : legalMoves){
+        std::cout << move::inverseBoardMap.at(move.from) << "-"<< move::inverseBoardMap.at(meow) << "<<<<<<<<<<<<<< " << std::endl;
+    }
+    // auto legalMoves = getPieceLegalMove(move.from,);
+
+    if (data[move.from]->getName() == "Pawn"){
+        if (abs(move.from - move.to) == 16){
+            if ((data[move.to - 1] != nullptr && squaresAreOnSameRow(move.to,move.to - 1) && data[move.to - 1]->getName() == "Pawn")){
+                if (data[move.to - 1]->getColor() != data[move.from]->getColor())
+                    possibleEnPassantNextHalfMove = data[move.from]->getColor() == "White" ?  move.to + 8 : move.to - 8;
+            }
+            if ((data[move.to + 1] != nullptr && squaresAreOnSameRow(move.to,move.to + 1) && data[move.to + 1]->getName() == "Pawn")){
+                if (data[move.to + 1]->getColor() != data[move.from]->getColor())
+                    possibleEnPassantNextHalfMove = data[move.from]->getColor() == "White" ?  move.to + 8 : move.to - 8;
+            }
+        }
+    }
+
+    if (std::ranges::find(legalMoves, move.to) == legalMoves.end()){
+
+        throw std::runtime_error("The move : " + move::inverseBoardMap.at(move.to) + " illegal ! you are going to jail.");
+        exit(42);
+    }
 
     if (move.to == possibleEnPassantNow && data[move.from]->getName() == "Pawn"){
         data[move.from]->getColor() == "White" ? data[move.to + 8].reset() : data[move.to - 8].reset();
@@ -542,14 +628,14 @@ void Board::printASCII(GameState &gameState){
     for (auto &square : data){
 
         if ((counter == whiteKingPosition || counter == blackKingPosition) && (data[counter]->getColor() == colorToMove)){
-            if (staleMate(colorToMove, gameState))
-                std::cout << PINK ;
-            else if (checkMateSituation(colorToMove))
-                std::cout << RED;
-            else if (kingIsInCheck(colorToMove).size() > 0)
-                std::cout << ORANGE;
+            // if (staleMate(colorToMove, gameState))
+            //     std::cout << PINK ;
+            // else if (checkMateSituation(colorToMove))
+            //     std::cout << RED;
+            // else if (kingIsInCheck(colorToMove).size() > 0)
+            //     std::cout << ORANGE;
 
-            std::cout << "\n" << std::endl;
+            // std::cout << "\n" << std::endl;
             // if (dynamic_cast<King*>(data[counter].get())->isInCheck(*this))
         }
 
