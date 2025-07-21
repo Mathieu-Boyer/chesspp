@@ -1,6 +1,7 @@
 #pragma once
 #include "Board.hpp"
 #include "move.hpp"
+#include "colors.hpp"
 #include "utils.hpp"
 #include <vector>
 #include <string>
@@ -29,6 +30,8 @@ public:
     GameState(const std::string &fen);
     GameState(const GameState& gameState);
     ~GameState() = default;
+
+    void applyMove(const move &move);
 
 
     std::vector<int> squareIsCompromised(const std::string &enemy, int target);

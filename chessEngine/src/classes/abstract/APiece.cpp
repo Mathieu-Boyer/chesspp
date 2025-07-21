@@ -24,7 +24,6 @@ bool APiece::getCapturable(){
     return _capturable;
 }
 
-
 std::vector<int> APiece::canCapture(GameState &gameState, int position){
     std::vector<int> allowedCaptures;
 
@@ -43,87 +42,29 @@ std::vector<int> APiece::canCapture(GameState &gameState, int position){
             allowedCaptures.push_back(position + captureMove);
     }
 
-
     return allowedCaptures;
 }
 
+void APiece::specialEffects(move , GameState &){
+    return;
+}
 
-// bool APiece::canAttackSquare(int from, int target, GameState &gameState){
-
-//     // std::cout << "color" << std::endl;
-//     Board &board = gameState.getRefToBoard();
-
-//     // const auto &moves = gameState.getPieceLegalMove(from);
-//     APiece *piece = board.getPieceAt(from);
-//     auto moves = piece->getPseudoLegalMoves(gameState, from);
-//     if (std::find(moves.begin(), moves.end(), target) != moves.end()){
-//         piece->describe();
-//         std::cout << move::inverseBoardMap.at(from) << " is attacking " << move::inverseBoardMap.at(target) << std::endl;
-//     }
+void APiece::startOfTurnEffects(GameState &){
+    return;
+}
 
 
-//     // std::cout << std::boolalpha << move::inverseBoardMap.at(from) << "-" << move::inverseBoardMap.at(target) <<( std::find(moves.begin(), moves.end(), target) != moves.end()) << std::endl;
-//     return std::find(moves.begin(), moves.end(), target) != moves.end();
-// }
+void APiece::endOfTurnEffects(move, GameState &){
+    return;
+}
 
-// std::vector<int> APiece::getPseudoLegalMoves(GameState &gameState, int position){
-//     std::vector<int> freeSquareMoves;
+void APiece::specialMove(move , GameState &){
+    return;
+}
 
-//     if (this->_name == "Pawn"){
-//         if (!(isOnRow(2, position) || isOnRow(7, position)) && this->moveSet.size() > 1)
-//             this->moveSet.pop_back();
-//         auto foundCaptures = canCapture(board, position);
-
-//         // for (auto& lala : foundCaptures)
-//             // std::cout << move::inverseBoardMap.at(lala) << " <----- is pseudo legal"<< std::endl;
-//         freeSquareMoves.insert(freeSquareMoves.begin(), foundCaptures.begin(), foundCaptures.end());
-//     }
-
-
-
-//     if (this->_name == "King"){
-
-//         auto foundCastles = isAllowedToCastle(this->_color, position, board);
-//         freeSquareMoves.insert(freeSquareMoves.begin(), foundCastles.begin(), foundCastles.end());
-//             // break;
-//     }
-//     int moveIndex = 0;
-//     for (auto& move : moveSet){
-//         if (move != 0){
-//             for(int n = 1; n <= _range ; ++n){
-//                 int square = (position + (n * move));
-//                 APiece *pieceOnSquare = board.getPieceAt(square);
-
-//                 if (square < 0 || square > 63)
-//                     break;
-//                 if ((move == -1 || move == 1) && (position / 8 != square / 8))
-//                     break;
-//                 if (this->_name == "Knight" && knightMoveOverFlow(position, square))
-//                     break;
-//                 if ((((move != -1 && move != 1 && move != -8 && move != 8)) && diagonalMoveOverFlow(position , square)) && (this->getName() == "Bishop" || this->getName() == "Queen" || this->getName() == "King"))
-//                     break;
-//                 if (this->getName() == "Pawn" && std::abs(move) == 16 && board.getPieceAt(square + (this->_color == "White" ? 8 : -8)) != nullptr){
-//                         // std::cout << move::inverseBoardMap.at(square) << "<----- " << std::endl;
-//                         break;
-//                 }
-
-//                 if (this->_name == "King" && ((board.squareIsCompromised((this->_color == "White" ? "Black" : "White"), square).size() > 0) || (enemyKingNearby(board , square, this->_color == "White" ? "Black" : "White", {-9, -7, 7, 9, -1 , -8, +1, +8}).size() > 0))){
-//                         break;
-//                 }
-//                 if (pieceOnSquare != nullptr && (pieceOnSquare->getCapturable()) && (this->_color != pieceOnSquare->getColor()) && (std::ranges::find(captureMoveSet, moveSet[moveIndex]) != captureMoveSet.end()))
-//                         freeSquareMoves.push_back(square);
-
-//                 if (pieceOnSquare != nullptr)
-//                     break;
-//                 freeSquareMoves.push_back(square);
-//             }
-//         }
-//         moveIndex++;
-//     }
-
-//     return freeSquareMoves;
-// }
-
+const std::vector<int> &APiece::getSpecialMoveSet(){
+    return specialMoveSet;
+}
 
 const std::string APiece::getName(){
     return _name;

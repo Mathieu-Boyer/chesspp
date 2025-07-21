@@ -1,3 +1,4 @@
+#include <iostream>
 #include "move.hpp"
 #include "utils.hpp"
 
@@ -26,15 +27,12 @@ const std::map<int, std::string> move::inverseBoardMap = {
 };
 
 move::move(const std::string &moveRaw) : from(-1) , to(-1), promotion('-'){
-
     std::vector<std::string> move_promotions = split(moveRaw, '=');
-
     if(move_promotions.size() > 1){
         promotion = move_promotions[1].front();
     }
+
     std::vector<std::string> moves = split(move_promotions[0], '-');
-
-
 
 
     //  add safety checks later
@@ -42,6 +40,7 @@ move::move(const std::string &moveRaw) : from(-1) , to(-1), promotion('-'){
         throw std::runtime_error("No move provided");
 
     this->from = boardMap.at(moves[0]);
+
     if (moves.size() > 1)
         this->to   = boardMap.at(moves[1]);
 }

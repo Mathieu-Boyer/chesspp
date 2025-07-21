@@ -4,9 +4,11 @@
 #include <vector>
 #include <ranges>
 #include "move.hpp"
+// #include "GameState.hpp"
 
 class Board;
 class APiece;
+class GameState;
 
 std::string tolower(std::string string);
 bool knightMoveOverFlow(int position, int move);
@@ -24,9 +26,11 @@ bool horizontalMove(int move);
 bool horizontalOverflow(int position, int square);
 
 bool isEmptyZone(int from, int to, Board &board);
-bool isCompromizedZone(int from, int to, Board &board, const std::string& enemy);
+bool isCompromizedZone(int from, int to, GameState& gameState, const std::string& enemy);
 std::string enemyOf(const std::string &color);
 
 bool squaresAreOnSameRow(int square1, int square2);
 
 bool promotionAssertions(Board &board, move move);
+
+void removeCharFrom(char toRemove, std::string &string);

@@ -13,3 +13,7 @@ std::string tolower(std::string string){
         toReturn += tolower(character);
     return toReturn;
 }
+
+void removeCharFrom(char toRemove, std::string &string){
+    string.erase(std::remove(string.begin(), string.end(), toRemove), string.end());
+}

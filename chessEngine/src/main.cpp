@@ -71,32 +71,26 @@ int main (){
     std::cout << "[ Chess++ | engine ]" << std::endl;
 
 
-std::string currentFen = "3bK3/2k5/41q11/41P11/611/8/8/8 w - - 6 54";
+std::string currentFen = "3bK3/2k5/41q11/41P11/611/8/p7/8 b - - 6 54";
 // std::string currentFen = "rnbq1bnr/pppppppp/8/2k11K2/8/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1";
+// std::string currentFen = "rnbqkbnr/pppppppp/8/21P112/8/8/PPPPPPPP/RNBQK11R w KQkq - 0 1";
 
 
     while (true){
         try {
-            // Board board{};
+
             GameState gameState(currentFen);
-            Board &board = gameState.getRefToBoard();
-            // gameState.getRefToBoard().printASCII(gameState);
 
             std::cout << currentFen << std::endl;
-
             std::string rawMove;
-
             std::cin >> rawMove;
+
             move moveToTry(rawMove);
             if (moveToTry.from != -1 && moveToTry.to == -1)
                 gameState.printASCII(gameState.getPieceLegalMove(moveToTry.from));
             else if (moveToTry.from >= 0 && moveToTry.to >= 0){
-                board.applyMove(moveToTry, gameState);
-                // std::cout << board.checkMateSituation(gameStateStart.getColorToMove()) << " ?????? " << std::endl;
-            
+                gameState.applyMove(moveToTry);
                 currentFen = gameState.encode();
-
-                // gameState.getRefToBoard().printASCII();
             }
             else
                 throw std::runtime_error("Move not correctly formated");

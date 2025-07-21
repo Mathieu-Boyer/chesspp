@@ -168,20 +168,21 @@ bool isEmptyZone(int from, int to, Board &board){
     return true;
 }
 
-// bool isCompromizedZone(int from, int to, Board &board, const std::string& enemy){
-//     if (from == to)
-//         std::runtime_error("1 square is not considered a zone.");
+bool isCompromizedZone(int from, int to, GameState& gameState, const std::string& enemy){
 
-//     int step   = from < to ? +1 : -1;
-//     for (int i = from + step; i != to; i += step){
+    if (from == to)
+        std::runtime_error("1 square is not considered a zone.");
 
-//         auto result = board.squareIsCompromised(enemy, i);
-//         if (result.size() > 0)
-//             return true;
-//     }
+    int step   = from < to ? +1 : -1;
+    for (int i = from + step; i != to; i += step){
 
-//     return false;
-// }
+        auto result = gameState.squareIsCompromised(enemy, i);
+        if (result.size() > 0)
+            return true;
+    }
+
+    return false;
+}
 
 
 

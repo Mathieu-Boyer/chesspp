@@ -56,6 +56,28 @@ bool Rook::canAttackSquare(int from, int target, GameState &gameState){
     return false;
 }
 
+void Rook::specialEffects(move move, GameState &gameState){
+
+    Board &board = gameState.getRefToBoard();
+
+    if (gameState.getAllowedCastles() != "-"){
+        if (this->getColor() == "White"){
+            if (move.from > board.getWhiteKingPosition())
+                gameState.setdissAllowedCastles(gameState.getdissAllowedCastles() += "K");
+            else
+                gameState.setdissAllowedCastles(gameState.getdissAllowedCastles() += "Q");
+
+        }else{
+            if (move.from > board.getBlackKingPosition())
+                gameState.setdissAllowedCastles(gameState.getdissAllowedCastles() += "k");
+            else
+                gameState.setdissAllowedCastles(gameState.getdissAllowedCastles() += "q");
+        }
+    }
+}
+
+
+
 std::unique_ptr<APiece> Rook::clone(){
     return std::make_unique<Rook>(*this);
 }
