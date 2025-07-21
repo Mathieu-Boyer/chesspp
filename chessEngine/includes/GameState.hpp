@@ -1,5 +1,6 @@
 #pragma once
 #include "Board.hpp"
+#include "move.hpp"
 #include "utils.hpp"
 #include <vector>
 #include <string>
@@ -13,18 +14,57 @@ private:
     std::vector<std::string> data; // i use a vector instead of fixed sized array here because i'll add rules later so i might need to store more infos.
     // when i will be sure of all the infos i need i'll make it fixed size.
     std::unique_ptr<Board> board;
-    std::string colorToMove;
+    // std::string colorToMove;
     void decode();
-
+    void applyMoveSimulation(const move& move);
+        // int whiteKingPosition;
+        // int blackKingPosition;
+        std::string colorToMove;
+        int possibleEnPassantNow;
+        int possibleEnPassantNextHalfMove;
+        std::string dissAllowedCastles;
+        std::string allowedCastles;
 public:
     GameState() = delete;
     GameState(const std::string &fen);
     GameState(const GameState& gameState);
     ~GameState() = default;
-    
+
+
+    std::vector<int> squareIsCompromised(const std::string &enemy, int target);
+    std::vector<int> getPieceLegalMove(int position);
     std::string getColorToMove();
+
+    bool pieceCanInterpose(int pieceA, int pieceB, const std::string &pieceName, const std::string& interposeColor);
+    std::vector<int> kingIsInCheck(const std::string &color);
+    bool moreThan1PieceCanCheck(const std::string &color);
+    bool checkIngPieceCanBeCaptured(const std::string &color, int checkerPos);
+    bool checkMateSituation(const std::string &color);
+    bool staleMate(const std::string &color);
+
+    void printASCII();
+    void printASCII(const std::vector<int> &moves);
 
     std::string encode();
     Board& getRefToBoard() const;
+
+
+    void setColorToMove(const std::string &color);
+
+    void setdissAllowedCastles(const std::string &dissAllowedCastles);
+    std::string getdissAllowedCastles();
+
+    void setAllowedCastles(const std::string &allowedCastles);
+
+    std::string getAllowedCastles();
+
+    int getPossibleEnPassantNextHalfMove();
+
+    void setPossibleEnPassantNextHalfMove(int value);
+    void setPossibleEnPassantNow(int value);
+
+    int getPossibleEnPassantNow();
+
+
     
 };

@@ -7,9 +7,11 @@
 
 #include "Board.hpp"
 #include "utils.hpp"
+#include "GameState.hpp"
 
 
 class Board;
+class GameState;;
 class APiece
 {
     private:
@@ -25,15 +27,13 @@ class APiece
         std::vector<int> captureMoveSet;
         std::vector<int> specialMoveSet;
         std::string _representation;
-        // when board exists add the unique pointer board to pieces. + the following :
-        // int currentPosition;
     public:
 
-        std::vector<int> canCapture(Board &board, int position);
-        std::vector<int> getPseudoLegalMoves(Board &board, int position);
-        // when board exists , add the (applyMove + getPseudoLegalMoves + isMoveLegal) functions,
+        std::vector<int> canCapture(GameState &gameState, int position);
+        virtual std::vector<int> getPseudoLegalMoves(GameState &gameState, int position) = 0;
+        virtual bool canAttackSquare(int from, int target, GameState &GameState) = 0;
+        
         void describe();
-        void setColor(const std::string&);
         const std::string getRepresentation();
         virtual std::unique_ptr<APiece> clone() = 0 ;
         const std::string getName();
@@ -45,4 +45,5 @@ class APiece
         bool isOnRow(int row, int position);
         virtual ~APiece()  = default;
 
+        int getRange();
 };

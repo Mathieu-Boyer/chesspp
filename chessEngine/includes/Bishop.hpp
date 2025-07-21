@@ -10,7 +10,8 @@ private:
 public:
     Bishop() = delete;
     Bishop(const std::string &color);
-    std::unique_ptr<APiece> clone();
+    bool canAttackSquare(int from, int target, GameState &gameState) override;
+    std::unique_ptr<APiece> clone() override;
+    std::vector<int> getPseudoLegalMoves(GameState &gameState, int position) override;
     ~Bishop() = default;
 };
-

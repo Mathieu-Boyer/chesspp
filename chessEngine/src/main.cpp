@@ -71,8 +71,8 @@ int main (){
     std::cout << "[ Chess++ | engine ]" << std::endl;
 
 
-std::string currentFen = "3bK3/2k5/41q11/411P1/611/8/8/8 w - - 6 54";
-// std::string currentFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+std::string currentFen = "3bK3/2k5/41q11/41P11/611/8/8/8 w - - 6 54";
+// std::string currentFen = "rnbq1bnr/pppppppp/8/2k11K2/8/8/PPPPPPPP/RNBQ1BNR w KQkq - 0 1";
 
 
     while (true){
@@ -89,7 +89,7 @@ std::string currentFen = "3bK3/2k5/41q11/411P1/611/8/8/8 w - - 6 54";
             std::cin >> rawMove;
             move moveToTry(rawMove);
             if (moveToTry.from != -1 && moveToTry.to == -1)
-                board.printASCII(board.getPieceLegalMove(moveToTry.from, gameState));
+                gameState.printASCII(gameState.getPieceLegalMove(moveToTry.from));
             else if (moveToTry.from >= 0 && moveToTry.to >= 0){
                 board.applyMove(moveToTry, gameState);
                 // std::cout << board.checkMateSituation(gameStateStart.getColorToMove()) << " ?????? " << std::endl;
@@ -102,6 +102,7 @@ std::string currentFen = "3bK3/2k5/41q11/411P1/611/8/8/8 w - - 6 54";
                 throw std::runtime_error("Move not correctly formated");
         }catch(const std::exception& e){
             std::cerr << e.what() << std::endl;
+            exit(42);
         }
 
     }
@@ -120,7 +121,7 @@ std::string currentFen = "3bK3/2k5/41q11/411P1/611/8/8/8 w - - 6 54";
 
 
 
-// TODO
-// make 2 distinct apply moves one checked because user have the hand on it
-// the other one will be just for me so no need to check legal moves , wich will avoid me Some mutual dependencies error
+// TODO 
 
+// please me of tomorrow can you fix the mess happening where king is never detected as checked and can move ignoring cheks
+// you would be doing me a solid.

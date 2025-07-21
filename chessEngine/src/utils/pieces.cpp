@@ -90,11 +90,15 @@ bool pawnCheck(const std::string &representation, Board &board){
 }
 
 
-std::vector<int> enemyKingNearby(Board &board, int positionOfmyKing, const std::string& enemyColor, std::vector<int> toCheck){
-    std::vector<int> allCheckers;
+bool enemyKingNearby(Board &board, int positionOfmyKing, const std::string& enemyColor, std::vector<int> toCheck){
+    // std::vector<int> allCheckers;
 
     // if (board.getData()[positionOfmyKing] == nullptr)
     //     throw std::runtime_error("Missuse of the function : enemyKingNearby. position given is not the one of a king");
+            // std::cout << "is there enemy king on suqare : " << move::inverseBoardMap.at( square) << std::endl;
+
+            // std::cout << "BUYIPYT87TVD78ZTD78TD78TD7" << std::endl;
+
     for (auto& squareToCheck : toCheck){
             // bool isDiagonalDir = squareToCheck == 7 || squareToCheck == 9 || squareToCheck == -7 || squareToCheck == -9;
             int square = positionOfmyKing + squareToCheck;
@@ -102,47 +106,85 @@ std::vector<int> enemyKingNearby(Board &board, int positionOfmyKing, const std::
                 continue;
             if (board.getData()[square] == nullptr)
                 continue;
-            if ((board.getData()[square]->getName() == "King") && board.getData()[square]->getColor() == enemyColor)
-                allCheckers.push_back(square);
+            
+
+            // std::cout << "is there enemy king on suqare : " << move::inverseBoardMap.at( square) << std::endl;
+            if ((board.getData()[square]->getName() == "King") && board.getData()[square]->getColor() == enemyColor){
+                return true;
+            }
+                // allCheckers.push_back(square);
     }
-    return allCheckers;
+    return false;
 }
 
-std::vector<int> piecesCanCheck(int position, int maxRange, const std::vector<std::string> &slidePieces, std::vector<int> toCheck, Board &board, const std::string& enemyColor){
-    std::vector<int> allCheckers;
+// std::vector<int> piecesCanCheck(int position, int maxRange, const std::vector<std::string> &slidePieces, std::vector<int> toCheck, Board &board, const std::string& enemyColor){
+//     std::vector<int> allCheckers;
 
-    for (auto& squareToCheck : toCheck)        
-        for (int n = 1 ; n <= maxRange ; n++){
-            bool isDiagonalDir = squareToCheck == 7 || squareToCheck == 9 || squareToCheck == -7 || squareToCheck == -9;
-            int square = position + squareToCheck * n;
+//     for (auto& squareToCheck : toCheck)
+//         for (int n = 1 ; n <= maxRange ; n++){
+//             bool isDiagonalDir = squareToCheck == 7 || squareToCheck == 9 || squareToCheck == -7 || squareToCheck == -9;
+//             int square = position + squareToCheck * n;
 
-            if ((square) < 0 || (square) > 63 || ((squareToCheck == -1 || squareToCheck == 1) && (position / 8 != square / 8)))
-                break;
-            // std::cout << "checking ----> "<< move::inverseBoardMap.at(square) << std::endl;
-            
-            if (board.getData()[square] == nullptr || ((board.getData()[square]->getName() == "King")))
-                continue;
-            // if ((board.getData()[position] != nullptr) && (board.getData()[position]->getName() == "King") && (board.getData()[square]->getName() == "King"))
-            //     break;
-            // if (board.getData()[position] != nullptr && board.getData()[position]->getColor() == enemyColor)
-            //     break;
-            if (board.getData()[square]->getColor() != enemyColor)
-                break;
-            if (board.getData()[square]->getName() == "Pawn" && (board.getData()[position] == nullptr || (board.getData()[square]->canCapture(board,square).size() == 0)))
-                break;
-            if (board.getData()[square]->getName() == "Knight" && knightMoveOverFlow(position , square))
-                break;
-            if (isDiagonalDir && (board.getData()[square]->getName() == "Pawn" || board.getData()[square]->getName() == "Bishop" || board.getData()[square]->getName() == "Queen" ) && diagonalMoveOverFlow(position , square))
-                break;
-            auto slidingPiecesIterator = std::ranges::find((slidePieces), board.getData()[square]->getRepresentation());
-            if (slidingPiecesIterator == slidePieces.end())
-                break;
+//             if ((square) < 0 || (square) > 63 || ((squareToCheck == -1 || squareToCheck == 1) && (position / 8 != square / 8)))
+//                 break;
+//             // std::cout << "checking ----> "<< move::inverseBoardMap.at(square) << std::endl;
+//             if (board.getData()[square] == nullptr || ((board.getData()[square]->getName() == "King")))
+//                 continue;
+//             // if ((board.getData()[position] != nullptr) && (board.getData()[position]->getName() == "King") && (board.getData()[square]->getName() == "King"))
+//             //     break;
+//             // if (board.getData()[position] != nullptr && board.getData()[position]->getColor() == enemyColor)
+//             //     break;
+//             if (board.getData()[square]->getColor() != enemyColor)
+//                 break;
+//             if (board.getData()[square]->getName() == "Pawn" && (board.getData()[position] == nullptr || (board.getData()[square]->canCapture(board,square).size() == 0)))
+//                 break;
+//             if (board.getData()[square]->getName() == "Knight" && knightMoveOverFlow(position , square))
+//                 break;
+//             if (isDiagonalDir && (board.getData()[square]->getName() == "Pawn" || board.getData()[square]->getName() == "Bishop" || board.getData()[square]->getName() == "Queen" ) && diagonalMoveOverFlow(position , square))
+//                 break;
+//             auto slidingPiecesIterator = std::ranges::find((slidePieces), board.getData()[square]->getRepresentation());
+//             if (slidingPiecesIterator == slidePieces.end())
+//                 break;
 
-            // if ()
-            // for (auto meow : squareIsCompromised("Black", whiteKingPosition))
-            // std::cout << "---->> "<< move::inverseBoardMap.at(square) << std::endl;
-            allCheckers.push_back(square);
-            break;
-        }
-    return allCheckers;
+//             // if ()
+//             // for (auto meow : squareIsCompromised("Black", whiteKingPosition))
+//             // std::cout << "---->> "<< move::inverseBoardMap.at(square) << std::endl;
+//             allCheckers.push_back(square);
+//             break;
+//         }
+//     return allCheckers;
+// }
+
+bool isEmptyZone(int from, int to, Board &board){
+    if (from == to)
+        std::runtime_error("1 square is not considered a zone.");
+
+    int step   = from < to ? +1 : -1;
+    for (int i = from + step; i != to; i += step){
+        APiece *piece = board.getPieceAt(i);
+        if (piece != nullptr)
+            return false;
+    }
+    return true;
+}
+
+// bool isCompromizedZone(int from, int to, Board &board, const std::string& enemy){
+//     if (from == to)
+//         std::runtime_error("1 square is not considered a zone.");
+
+//     int step   = from < to ? +1 : -1;
+//     for (int i = from + step; i != to; i += step){
+
+//         auto result = board.squareIsCompromised(enemy, i);
+//         if (result.size() > 0)
+//             return true;
+//     }
+
+//     return false;
+// }
+
+
+
+std::string enemyOf(const std::string &color){
+    return (color == "White" ? "Black" : "White");
 }

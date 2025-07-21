@@ -3,16 +3,30 @@
 #include <string>
 #include <vector>
 #include <ranges>
+#include "move.hpp"
 
-class APiece;
 class Board;
+class APiece;
 
-std::vector<std::string> split(std::string string, char delimiter);
-std::unique_ptr<APiece> pieceFactory(char character);
 std::string tolower(std::string string);
 bool knightMoveOverFlow(int position, int move);
 bool diagonalMoveOverFlow(int position, int move);
+std::unique_ptr<APiece> pieceFactory(char character);
+std::vector<std::string> split(std::string string, char delimiter);
 
 bool pawnCheck(const std::string &representation, Board &board);
+bool enemyKingNearby(Board &board, int positionOfmyKing, const std::string& enemyColor, std::vector<int> toCheck);
 std::vector<int> piecesCanCheck(int position, int maxRange, const std::vector<std::string> &slidePieces, std::vector<int> toCheck , Board &board,  const std::string& enemyColor);
-std::vector<int> enemyKingNearby(Board &board, int positionOfmyKing, const std::string& enemyColor, std::vector<int> toCheck);
+
+bool validSquare(int square);
+bool diagonalMove(int move);
+bool horizontalMove(int move);
+bool horizontalOverflow(int position, int square);
+
+bool isEmptyZone(int from, int to, Board &board);
+bool isCompromizedZone(int from, int to, Board &board, const std::string& enemy);
+std::string enemyOf(const std::string &color);
+
+bool squaresAreOnSameRow(int square1, int square2);
+
+bool promotionAssertions(Board &board, move move);
