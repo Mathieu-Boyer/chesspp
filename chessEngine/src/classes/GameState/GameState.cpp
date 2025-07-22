@@ -8,11 +8,19 @@ GameState::GameState(const std::string &fen) : raw(fen) , board(std::make_unique
 }
 
 GameState::GameState(const GameState &gameState) : board(gameState.getRefToBoard().clone()){
-    if (this != &gameState){
         this->colorToMove = gameState.colorToMove;
         this->data = gameState.data;
         this->raw = gameState.raw;
-    }
+
+        this->currentHalfMove =  gameState.currentHalfMove;
+        this->currentFullMove =  gameState.currentFullMove;
+
+        this->colorToMove =  gameState.colorToMove;
+        this->possibleEnPassantNow =  gameState.possibleEnPassantNow;
+        this->possibleEnPassantNextHalfMove =  gameState.possibleEnPassantNextHalfMove;
+        this->dissAllowedCastles =  gameState.dissAllowedCastles;
+        this->allowedCastles =  gameState.allowedCastles;
+
 }
 
 
@@ -27,8 +35,11 @@ void GameState::decode(){
         throw std::runtime_error("The provided color does not exist.");
 
     allowedCastles = data[2];
-    if (data[3] != "-")
-        possibleEnPassantNow =move::boardMap.at(data[3]);
+
+    if (data[3] != "-"){
+        // gameState.setPossibleEnPassantNow(0);
+        possibleEnPassantNow = move::boardMap.at(data[3]);
+    }
 
     currentHalfMove = std::stoi(data[4]);
     currentFullMove = std::stoi(data[5]);
@@ -135,6 +146,7 @@ std::vector<int> GameState::getPieceLegalMove(int position){
     for (auto &moveToTry : pseudoLegal){
         GameState gameStateCpy(*this);
         APiece *pieceOfCpyBoard = gameStateCpy.getRefToBoard().getPieceAt(position);
+
         std::string constructedRawMove = move::inverseBoardMap.at(position)+"-"+move::inverseBoardMap.at(moveToTry);
         if (pieceOfCpyBoard && pieceOfCpyBoard->getName() == "Pawn" && (pieceOfCpyBoard->isOnRow(1, moveToTry) || pieceOfCpyBoard->isOnRow(8, moveToTry))){
             constructedRawMove += "=";

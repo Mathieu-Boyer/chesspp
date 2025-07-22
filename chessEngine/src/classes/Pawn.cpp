@@ -27,11 +27,11 @@ std::vector<int> Pawn::getPseudoLegalMoves(GameState &gameState, int position){
             continue;
         
         if ((((this->getColor() == "Black" && !isOnRow(2, position)) || (this->getColor() == "White" && !isOnRow(7, position)))) && (std::abs(move) == 16)){
-            break;
+            continue;
         }
 
         if (pieceOnSquare != nullptr)
-            break;
+            continue;
 
         freeSquareMoves.push_back(square);
     }
@@ -63,7 +63,6 @@ bool Pawn::canAttackSquare(int from, int target, GameState& GameState) {
 
 
 void Pawn::specialEffects(move move, GameState &gameState){
-
     Board &board = gameState.getRefToBoard();
 
     if (abs(move.from - move.to) == 16){
@@ -76,7 +75,6 @@ void Pawn::specialEffects(move move, GameState &gameState){
                 gameState.setPossibleEnPassantNextHalfMove(this->getColor() == "White" ?  move.to + 8 : move.to - 8);
         }
     }
-
     // maybe move to special move later :
     if (move.to == gameState.getPossibleEnPassantNow()){
         this->getColor() == "White" ? board.clearPieceAt(move.to + 8) : board.clearPieceAt(move.to - 8);

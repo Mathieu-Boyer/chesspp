@@ -33,7 +33,7 @@ std::vector<int> APiece::canCapture(GameState &gameState, int position){
         if (square < 0 || square > 63)
             continue;
         if (this->_name == "Pawn" && (position + moveSet[0]) / 8 != square / 8)
-            break;
+            continue;
 
         APiece *pieceOnSquare = board.getPieceAt(square);
         if (pieceOnSquare != nullptr && pieceOnSquare->getColor() != _color && pieceOnSquare->getCapturable())
