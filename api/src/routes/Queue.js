@@ -21,6 +21,7 @@ const matchMaking = async ()=>{
             winnerId : null,
             fenList : Array("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"),
             moveList : [],
+            colorToPlay : "White"
         })
 
 

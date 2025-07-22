@@ -5,8 +5,6 @@
 #include <string>
 
 int main (int argc , char *argv[]){
-    std::cout << "[ Chess++ | engine ]" << std::endl;
-
     if (argc == 1){
         playInTerminal();
         return 0;

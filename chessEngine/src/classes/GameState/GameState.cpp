@@ -20,13 +20,13 @@ GameState::GameState(const GameState &gameState) : board(gameState.getRefToBoard
         this->possibleEnPassantNextHalfMove =  gameState.possibleEnPassantNextHalfMove;
         this->dissAllowedCastles =  gameState.dissAllowedCastles;
         this->allowedCastles =  gameState.allowedCastles;
-
 }
 
 
 void GameState::decode(){
     data = split(raw, ' ');
 
+    setPossibleEnPassantNextHalfMove(0);
     if (data[1] == "w")
         colorToMove = "White";
     else if (data[1] == "b")
@@ -37,7 +37,6 @@ void GameState::decode(){
     allowedCastles = data[2];
 
     if (data[3] != "-"){
-        // gameState.setPossibleEnPassantNow(0);
         possibleEnPassantNow = move::boardMap.at(data[3]);
     }
 
@@ -86,7 +85,7 @@ std::string GameState::encode() {
     if ( this->data[2].empty()){
         this->data[2] = "-";
     }
-    if (getPossibleEnPassantNextHalfMove())
+    if (getPossibleEnPassantNextHalfMove() )
         this->data[3] = move::inverseBoardMap.at(getPossibleEnPassantNextHalfMove());
     else
         this->data[3] = "-";

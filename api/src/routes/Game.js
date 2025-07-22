@@ -5,6 +5,8 @@ import { Op } from "sequelize";
 import { sendToUser } from "../utils/sockets.js";
 import { drawIsOffered, gameIsNotFinished, notDrawProposer, playerIsInTheGame } from "../utils/guards.js";
 
+import { execFile } from "child_process";
+import { loadGameById, loadGamePlayers } from "../middlewares/games.js";
 
 const {or} = Op;
 const router = Router();
@@ -79,9 +81,60 @@ router.get('/:id', authenticate, async (req, res)=>{
     return res.status(200).json({game : foundGame});
 })
 
-// router.post('/:id/move', (req, res)=>{
-//     // check non null body -> validate move in chess engine -> if move passes validation push the new fen -> update game status if match finished with last move
-// })
+router.put('/:id/move', authenticate, loadGameById, loadGamePlayers ,  async (req, res)=>{
+    const id = req.gameId;
+
+    if (!id)
+        return res.status(400).json({message : "A game id must be provided to use this endpoint."});
+    let body = req.body;
+
+    if (!body || !body.move)
+        return res.status(400).json({message : "You must provide a move."});
+
+    let foundGame = req.foundGame;
+
+    console.log(req.id, foundGame.whitePlayer.id, foundGame.colorToPlay);
+    if (((req.id == foundGame.whitePlayer.id) && foundGame.colorToPlay != "White") || ((req.id == foundGame.blackPlayer.id) && foundGame.colorToPlay != "Black"))
+        return res.status(400).json({message : "It's not your turn to play."});
+
+    execFile('../chessEngine/app', [body.move, foundGame.fenList[foundGame.fenList.length - 1]], async (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error: ${error.message}`);
+            return;
+        }
+        if (stderr) {
+            res.status(400).json({message : stderr});
+            return;
+        }
+
+        try {
+            let json = JSON.parse(stdout);
+            console.log(json);
+            // if game status is not 0 i'll have to trigger the end of the game and notify via socket
+            foundGame.fenList = [...foundGame.fenList, json.new_FEN.trim()];
+            foundGame.moveList = [...foundGame.moveList, json.applied_move];
+            foundGame.colorToPlay = (foundGame.colorToPlay == "White" ? "Black" : "White");
+    await foundGame.save();
+    await foundGame.reload({
+    include: [
+        { model: db.Users, as: 'whitePlayer' },
+        { model: db.Users, as: 'blackPlayer' },
+        { model: db.Users, as: 'winner' },
+        { model: db.Users, as: 'drawProposer' },
+    ]})
+
+    sendToUser(foundGame.blackPlayerId, "game:update", {game: foundGame})
+    sendToUser(foundGame.whitePlayerId, "game:update", {game: foundGame})
+    res.status(200).json({game : foundGame});
+
+        } catch (e) {
+            return res.status(400).json({message : e});
+        }
+    });
+
+
+
+})
 
 router.patch("/:id/resign", authenticate, async (req, res)=>{
     const id = req.params.id;

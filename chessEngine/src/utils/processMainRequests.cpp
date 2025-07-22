@@ -4,11 +4,11 @@
 #include <string>
 
 void playInTerminal(){
+
+    std::cout << "[ Chess++ | engine ]" << std::endl;
     std::string currentFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
     
-
-
     while (true){
         try {
             GameState gameState(currentFen);
@@ -17,7 +17,7 @@ void playInTerminal(){
             std::cout << currentFen << std::endl;
             if (status != gameStatus::ongoing){
 
-                return ;            
+                return ;
             }
 
             std::string rawMove;
@@ -38,7 +38,6 @@ void playInTerminal(){
     }
 }
 
-
 void applyMoveAndGenerateNewFen(const std::string &rawMove, const std::string &currentFen){
         try {
             GameState gameState(currentFen);
@@ -57,9 +56,11 @@ void applyMoveAndGenerateNewFen(const std::string &rawMove, const std::string &c
 
              
             status = gameState.checkGameStatus();
-            std::cout << "Game status : " << status << std::endl;
-            std::cout << "New FEN : " << newFen << std::endl;
-            std::cout << "Applied move : " << gameState.getMoveConstruction() << std::endl;
+
+            
+            std::cout << "{\n\"game_status\" : " << status << ",\n";
+            std::cout << "\"new_FEN\" : \"" << newFen << "\",\n";
+            std::cout << "\"applied_move\" : \"" << gameState.getMoveConstruction() << "\"\n}";
         }catch(const std::exception& e){
             std::cerr << e.what() << std::endl;
         }

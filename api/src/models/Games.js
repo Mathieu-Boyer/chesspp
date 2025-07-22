@@ -42,6 +42,10 @@ export default (sequelize, DataTypes)=>{
             type : DataTypes.JSON,
             allowNull : true,
         },
+        colorToPlay : {
+            type : DataTypes.STRING,
+            default : "White"
+        }
     })
     Games.prototype.toJSON = function (){
         const values = { ...this.get() };
