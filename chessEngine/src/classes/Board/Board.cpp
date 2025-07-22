@@ -70,12 +70,24 @@ void Board::applyMove(const move &move, GameState& gameState){
     APiece *currentPiece = board.getPieceAt(move.from);
     APiece *pieceOnTarget = board.getPieceAt(move.to);
 
-    if (pieceOnTarget)
+
+    if (currentPiece->getName() != "Pawn")
+        gameState.setMoveConstruction(currentPiece->getRepresentation());
+
+    gameState.setMoveConstruction(gameState.getMoveConstruction() + move::inverseBoardMap.at(move.from));
+    if (pieceOnTarget){
+        gameState.setMoveConstruction(gameState.getMoveConstruction() + "x");
         gameState.setCurrentHalfMove(0);
-    else
+    }
+    else{
+        gameState.setMoveConstruction(gameState.getMoveConstruction() + "-");
         gameState.setCurrentHalfMove(gameState.getCurrentHalfMove()+1);
-        
+    }
+
+    gameState.setMoveConstruction(gameState.getMoveConstruction() + move::inverseBoardMap.at(move.to));
+
     currentPiece->specialEffects(move, gameState);
+
     if (std::ranges::find(currentPiece->getSpecialMoveSet(), move.from - move.to) != currentPiece->getSpecialMoveSet().end())
         currentPiece->specialMove(move, gameState);
     else

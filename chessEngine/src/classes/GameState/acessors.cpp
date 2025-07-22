@@ -56,3 +56,11 @@ void GameState::setCurrentFullMove(int value){
 int GameState::getCurrentFullMove(){
     return currentFullMove;
 }
+
+void GameState::setMoveConstruction(std::string value){
+    moveConstruction = value;
+}
+
+std::string GameState::getMoveConstruction(){
+    return moveConstruction;
+}

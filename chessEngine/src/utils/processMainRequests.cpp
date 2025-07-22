@@ -6,6 +6,8 @@
 void playInTerminal(){
     std::string currentFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
+    
+
 
     while (true){
         try {
@@ -13,8 +15,10 @@ void playInTerminal(){
             gameState.printASCII();
             int status = gameState.checkGameStatus();
             std::cout << currentFen << std::endl;
-            if (status != gameStatus::ongoing)
-                return ;
+            if (status != gameStatus::ongoing){
+
+                return ;            
+            }
 
             std::string rawMove;
             std::cin >> rawMove;
@@ -47,10 +51,15 @@ void applyMoveAndGenerateNewFen(const std::string &rawMove, const std::string &c
 
             move moveToTry(rawMove);
             gameState.applyMove(moveToTry);
-            std::string newFen = gameState.encode();
 
+            std::string newFen = gameState.encode();
+            gameState.setColorToMove(enemyOf(gameState.getColorToMove()));
+
+             
+            status = gameState.checkGameStatus();
             std::cout << "Game status : " << status << std::endl;
             std::cout << "New FEN : " << newFen << std::endl;
+            std::cout << "Applied move : " << gameState.getMoveConstruction() << std::endl;
         }catch(const std::exception& e){
             std::cerr << e.what() << std::endl;
         }

@@ -168,6 +168,7 @@ void GameState::applyMove(const move &move){
 
     Board &board = getRefToBoard();
     APiece *piece = board.getPieceAt(move.from);
+
     if (piece == nullptr)
         throw std::runtime_error("The " + move::inverseBoardMap.at(move.from) + " 'From' square is empty");
 

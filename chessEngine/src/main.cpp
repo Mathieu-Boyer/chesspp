@@ -7,8 +7,10 @@
 int main (int argc , char *argv[]){
     std::cout << "[ Chess++ | engine ]" << std::endl;
 
-    if (argc == 1)
+    if (argc == 1){
         playInTerminal();
+        return 0;
+    }
     else if (argc != 3){
         std::cerr << "The call to Chess++ engine is not formated correctly, if you provide arguments please follow : ./chess++ [move] [current game's fen]\n";
         return 1;

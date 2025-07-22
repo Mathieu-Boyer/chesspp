@@ -35,6 +35,7 @@ private:
     int possibleEnPassantNextHalfMove;
     std::string dissAllowedCastles;
     std::string allowedCastles;
+    std::string moveConstruction;
 public:
     GameState() = delete;
     GameState(const std::string &fen);
@@ -87,4 +88,7 @@ public:
 
     int isDraw();
     int checkGameStatus();
+
+    void setMoveConstruction(std::string value);
+    std::string getMoveConstruction();
 };

@@ -85,6 +85,7 @@ void Pawn::specialEffects(move move, GameState &gameState){
     if (promotionAssertions(board, move)){
             auto promotedPiece = pieceFactory(move.promotion);
             board.setPieceAt(move.from, std::move(promotedPiece));
+            gameState.setMoveConstruction(gameState.getMoveConstruction() + "=" + move.promotion);
     }
     return;
 }

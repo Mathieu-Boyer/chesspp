@@ -2,11 +2,18 @@
 
 std::vector<int> GameState::kingIsInCheck(const std::string &color){
     Board &board = getRefToBoard();
-    if (color == "White")
-        return squareIsCompromised("Black", board.getWhiteKingPosition());
-    else
-        return squareIsCompromised("White", board.getBlackKingPosition());
 
+    std::vector<int> compromised;
+
+    if (color == "White")
+        compromised = squareIsCompromised("Black", board.getWhiteKingPosition());
+    else
+        compromised = squareIsCompromised("White", board.getBlackKingPosition());
+
+    if (compromised.size() > 0 && moveConstruction.back() != '+'){
+        moveConstruction +=  "+";
+    }
+    return compromised;
 }
 
 bool GameState::moreThan1PieceCanCheck(const std::string &color){
@@ -101,12 +108,18 @@ bool GameState::checkMateSituation(const std::string &color){
         return false;
     if (getPieceLegalMove(kingPosition).size() > 0)
         return false;
-    if (moreThan1PieceCanCheck(color))
+    if (moreThan1PieceCanCheck(color)){
+        moveConstruction.pop_back();
+        moveConstruction +=  "#";
         return true;
+    }
     if (checkIngPieceCanBeCaptured(enemy, kingCheckers[0]))
         return false;
     if (pieceCanInterpose(kingPosition, kingCheckers[0], board.getPieceAt(kingCheckers[0])->getName(), color))
         return false;
+
+    moveConstruction.pop_back();
+    moveConstruction +=  "#";
     return true;
 }
 
