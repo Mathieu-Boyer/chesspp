@@ -99,35 +99,48 @@ bool GameState::checkMateSituation(const std::string &color){
     std::vector<int> kingCheckers = kingIsInCheck(color);
     if (kingCheckers.size() == 0)
         return false;
-    std::cout << "euuhhh salut 0" << std::endl;
     if (getPieceLegalMove(kingPosition).size() > 0)
         return false;
-    std::cout << "euuhhh salut 1" << color << std::endl;
     if (moreThan1PieceCanCheck(color))
         return true;
-    std::cout << "euuhhh salut 2" << std::endl;
     if (checkIngPieceCanBeCaptured(enemy, kingCheckers[0]))
         return false;
-    std::cout << "euuhhh salut 3" << std::endl;
     if (pieceCanInterpose(kingPosition, kingCheckers[0], board.getPieceAt(kingCheckers[0])->getName(), color))
         return false;
-    std::cout << "euuhhh salut 4" << std::endl;
     return true;
 }
 
-bool GameState::staleMate(const std::string &color){
-    // std::cout << "brruuuuuh " << color << std::endl;
-    std::vector<int> kingCheckers = kingIsInCheck(color);
+int GameState::isDraw(){
+    if (currentHalfMove >= 50)
+        return gameStatus::halfMoveDraw;
+    if (staleMate())
+        return gameStatus::staleMate;
+    return gameStatus::ongoing;
+}
+
+bool GameState::staleMate(){
+    std::vector<int> kingCheckers = kingIsInCheck(colorToMove);
     Board &board = getRefToBoard();
     if (kingCheckers.size() > 0)
         return false;
     for (int i = 0; i < 64 ; i++){
         APiece *piece = board.getPieceAt(i);
-        if (piece == nullptr || piece->getColor() != color)
+        if (piece == nullptr || piece->getColor() != colorToMove)
             continue;
         if (getPieceLegalMove(i).size() > 0)
             return false;
     }
 
     return true;
+}
+
+
+int GameState::checkGameStatus(){
+    int status = isDraw();
+    // if (status != gameStatus::ongoing)
+    //     return status;
+    if (status == gameStatus::ongoing && checkMateSituation(this->colorToMove))
+        status = gameStatus::checkmate;
+    return status;
+
 }

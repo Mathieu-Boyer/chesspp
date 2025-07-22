@@ -30,7 +30,10 @@ bool isCompromizedZone(int from, int to, GameState& gameState, const std::string
 std::string enemyOf(const std::string &color);
 
 bool squaresAreOnSameRow(int square1, int square2);
-
 bool promotionAssertions(Board &board, move move);
-
 void removeCharFrom(char toRemove, std::string &string);
+
+void playInTerminal();
+void applyMoveAndGenerateNewFen(const std::string &rawMove, const std::string &currentFen);
+void fetchLegalMoves(const std::string &rawMove, const std::string &currentFen);
+void executeNeededFunctionalities(const std::string &rawMove, const std::string &currentFen);

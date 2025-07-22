@@ -68,16 +68,18 @@ void Board::applyMove(const move &move, GameState& gameState){
 
     Board &board = gameState.getRefToBoard();
     APiece *currentPiece = board.getPieceAt(move.from);
+    APiece *pieceOnTarget = board.getPieceAt(move.to);
 
     currentPiece->specialEffects(move, gameState);
-    if (std::ranges::find(currentPiece->getSpecialMoveSet(), move.from - move.to) != currentPiece->getSpecialMoveSet().end()){
+
+    if (pieceOnTarget)
+        gameState.setCurrentHalfMove(0);
+    else
+        gameState.setCurrentHalfMove(gameState.getCurrentHalfMove()+1);
+    if (std::ranges::find(currentPiece->getSpecialMoveSet(), move.from - move.to) != currentPiece->getSpecialMoveSet().end())
         currentPiece->specialMove(move, gameState);
-    }
-    else{
-        std::cout << move.to << " "<< move.from<< std::endl;
+    else
         data[move.to] = std::move(data[move.from]);
-        
-    }
 
 // currentPiece->describe();
     getPieceAt(move.to)->endOfTurnEffects(move, gameState);

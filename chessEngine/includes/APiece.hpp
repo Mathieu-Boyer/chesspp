@@ -33,7 +33,7 @@ class APiece
         virtual std::vector<int> getPseudoLegalMoves(GameState &gameState, int position) = 0;
         virtual bool canAttackSquare(int from, int target, GameState &GameState) = 0;
         virtual void specialEffects(move move, GameState &gameState);
-        virtual void startOfTurnEffects(GameState &GameState);
+        virtual void startOfTurnEffects(move move, GameState &GameState);
         virtual void endOfTurnEffects(move move, GameState &GameState);
         virtual void specialMove(move move, GameState &gameState);
 

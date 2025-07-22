@@ -25,8 +25,9 @@ std::vector<int> Knight::getPseudoLegalMoves(GameState &gameState, int position)
         if (pieceOnSquare != nullptr && (pieceOnSquare->getCapturable()) && (this->getColor() != pieceOnSquare->getColor()))
             freeSquareMoves.push_back(square);
 
+        
         if (pieceOnSquare != nullptr)
-            break;
+            continue;
 
         freeSquareMoves.push_back(square);
     }

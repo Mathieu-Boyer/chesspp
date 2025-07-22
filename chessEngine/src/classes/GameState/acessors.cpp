@@ -39,3 +39,20 @@ void GameState::setPossibleEnPassantNow(int value){
 std::string GameState::getColorToMove(){
     return colorToMove;
 }
+
+
+void GameState::setCurrentHalfMove(int value){
+    currentHalfMove = value;
+}
+
+int GameState::getCurrentHalfMove(){
+    return currentHalfMove;;
+}
+
+void GameState::setCurrentFullMove(int value){
+    currentFullMove = value;
+}
+
+int GameState::getCurrentFullMove(){
+    return currentFullMove;
+}

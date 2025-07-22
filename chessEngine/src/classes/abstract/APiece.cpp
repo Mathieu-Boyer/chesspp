@@ -49,7 +49,7 @@ void APiece::specialEffects(move , GameState &){
     return;
 }
 
-void APiece::startOfTurnEffects(GameState &){
+void APiece::startOfTurnEffects(move, GameState &){
     return;
 }
 

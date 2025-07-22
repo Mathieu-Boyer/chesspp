@@ -16,7 +16,6 @@ std::vector<int> Pawn::getPseudoLegalMoves(GameState &gameState, int position){
     freeSquareMoves.insert(freeSquareMoves.end(), foundCaptures.begin(), foundCaptures.end());
     
     for (auto& move : moveSet){
-        std::cout << move << std::endl;
         int square = (position + move);
 
         if (!validSquare(square))
@@ -90,6 +89,10 @@ void Pawn::specialEffects(move move, GameState &gameState){
             board.setPieceAt(move.from, std::move(promotedPiece));
     }
     return;
+}
+
+void Pawn::endOfTurnEffects(move, GameState &gameState){
+    gameState.setCurrentHalfMove(0);
 }
 
 std::unique_ptr<APiece> Pawn::clone(){

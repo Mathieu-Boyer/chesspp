@@ -14,6 +14,7 @@ public:
     std::vector<int> getPseudoLegalMoves(GameState &gameState, int position) override;
     bool canAttackSquare(int from, int target, GameState& gamestate) override;
     // void startOfTurnEffects(GameState &) override;
+    void endOfTurnEffects(move, GameState &gameState) override;
     void specialEffects(move move, GameState &gameState) override;
     ~Pawn() = default;
 };

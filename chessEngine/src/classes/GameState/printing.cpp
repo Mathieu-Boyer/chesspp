@@ -6,7 +6,7 @@ void GameState::printASCII(){
     for (auto &square : board.getData()){
 
         if ((counter == board.getWhiteKingPosition() || counter == board.getBlackKingPosition()) && (board.getPieceAt(counter)->getColor() == colorToMove)){
-            if (staleMate(colorToMove))
+            if (staleMate())
                 std::cout << PINK ;
             else if (checkMateSituation(colorToMove))
                 std::cout << RED;

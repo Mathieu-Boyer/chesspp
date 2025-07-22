@@ -8,6 +8,14 @@
 #include <memory>
 
 
+
+enum gameStatus{
+    ongoing,
+    checkmate,
+    staleMate,
+    halfMoveDraw
+};
+
 class GameState
 {
 private:
@@ -15,16 +23,18 @@ private:
     std::vector<std::string> data; // i use a vector instead of fixed sized array here because i'll add rules later so i might need to store more infos.
     // when i will be sure of all the infos i need i'll make it fixed size.
     std::unique_ptr<Board> board;
-    // std::string colorToMove;
+
     void decode();
     void applyMoveSimulation(const move& move);
-        // int whiteKingPosition;
-        // int blackKingPosition;
-        std::string colorToMove;
-        int possibleEnPassantNow;
-        int possibleEnPassantNextHalfMove;
-        std::string dissAllowedCastles;
-        std::string allowedCastles;
+
+    int currentHalfMove;
+    int currentFullMove;
+
+    std::string colorToMove;
+    int possibleEnPassantNow;
+    int possibleEnPassantNextHalfMove;
+    std::string dissAllowedCastles;
+    std::string allowedCastles;
 public:
     GameState() = delete;
     GameState(const std::string &fen);
@@ -43,7 +53,7 @@ public:
     bool moreThan1PieceCanCheck(const std::string &color);
     bool checkIngPieceCanBeCaptured(const std::string &color, int checkerPos);
     bool checkMateSituation(const std::string &color);
-    bool staleMate(const std::string &color);
+    bool staleMate();
 
     void printASCII();
     void printASCII(const std::vector<int> &moves);
@@ -69,5 +79,12 @@ public:
     int getPossibleEnPassantNow();
 
 
-    
+    void setCurrentHalfMove(int value);
+    int getCurrentHalfMove();
+
+    void setCurrentFullMove(int value);
+    int getCurrentFullMove();
+
+    int isDraw();
+    int checkGameStatus();
 };
