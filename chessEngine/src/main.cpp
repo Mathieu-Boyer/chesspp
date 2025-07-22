@@ -1,76 +1,18 @@
 #include <iostream>
-#include <cctype>
-#include "Rook.hpp"
-#include "APiece.hpp"
-#include "Knight.hpp"
-#include "King.hpp"
-#include "Queen.hpp"
-#include "Bishop.hpp"
-#include "Pawn.hpp"
+// #include <cctype>
+#include "GameState.hpp"
+#include "move.hpp"
+#include <string>
 
-void createPiecesFromString(std::string string, std::vector<std::unique_ptr<APiece>> &pieces){
-    for (auto &character : string){
+int main (int argc , char *argv[]){
+    std::cout << "[ Chess++ | engine ]" << std::endl;
 
-        switch (character)
-        {
-            case 'r':
-            case 'R':{
-                Rook rook(std::islower(character) ? "Black" : "White");
-                pieces.push_back(rook.clone());
-                break;
-            }
-            case 'n':
-            case 'N':{
-                Knight knight(std::islower(character) ? "Black" : "White");
-                pieces.push_back(knight.clone());
-                break;
-            }
-
-            case 'k':
-            case 'K':{
-                King king(std::islower(character) ? "Black" : "White");
-                pieces.push_back(king.clone());
-                break;
-            }
-
-            case 'q':
-            case 'Q':{
-                Queen queen(std::islower(character) ? "Black" : "White");
-                pieces.push_back(queen.clone());
-                break;
-            }
-
-            case 'b':
-            case 'B':{
-                Bishop bishop(std::islower(character) ? "Black" : "White");
-                pieces.push_back(bishop.clone());
-                break;
-            }
-
-            case 'p':
-            case 'P':{
-                Pawn pawn(std::islower(character) ? "Black" : "White");
-                pieces.push_back(pawn.clone());
-                break;
-            }
-        }
+    if (argc == 1)
+        playInTerminal();
+    else if (argc != 3){
+        std::cerr << "The call to Chess++ engine is not formated correctly, if you provide arguments please follow : ./chess++ [move] [current game's fen]\n";
+        return 1;
     }
-}
-
-int main (){
-
-    std::cout << "Yipeee" << std::endl;
-
-
-    std::vector<std::unique_ptr<APiece>> pieces;
-
-    createPiecesFromString("RrNnKkQqBbPp", pieces);
-
-     for (auto &piece : pieces){
-        piece->describe();
-        // piece->setColor("Black");
-        // piece->describe();
-    }
-
+    executeNeededFunctionalities(argv[1] , argv[2]);
     return 0;
 }

@@ -1,7 +1,7 @@
 # Compiler and flags
 CXX := g++
-CXXFLAGS := -Wall -Wextra -std=c++23 -Iincludes -MMD -MP
-
+CXXFLAGS :=  -std=c++23 -Iincludes -MMD -MP -Wall -Wextra -Werror
+# -Wall -Wextra -Werror
 SRC_DIR := src
 INC_DIR := includes
 BUILD_DIR := build

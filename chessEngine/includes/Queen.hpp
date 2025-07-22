@@ -10,7 +10,9 @@ private:
 public:
     Queen() = delete;
     Queen(const std::string &color);
-    std::unique_ptr<APiece> clone();
+    std::vector<int> getPseudoLegalMoves(GameState &gameState, int position) override;
+    bool canAttackSquare(int from, int target, GameState &gameState) override;
+    std::unique_ptr<APiece> clone() override;
     ~Queen() = default;
 };
 
