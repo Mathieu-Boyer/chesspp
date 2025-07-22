@@ -4,7 +4,7 @@
 #include <string>
 
 void playInTerminal(){
-    std::string currentFen = "1nbqkbnr/Pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    std::string currentFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
     while (true){
         try {
