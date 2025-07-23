@@ -1,6 +1,6 @@
 import axios from "axios";
 import router from "../../Router";
-import socket from "../socket.js";
+import socket, { loginSocket } from "../socket.js";
 
 
 export const login = async (email, password)=>{
@@ -13,9 +13,8 @@ export const login = async (email, password)=>{
         );
 
         localStorage.setItem("token" , response.data.token);
-
-        socket.auth = {token : `bearer ${response.data.token}`}
-        socket.connect();
+        loginSocket(response.data.token);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
 
         router.push('/');
     }catch(err){
