@@ -16,6 +16,7 @@ router.post("/register", async (req, res)=>{
 
     const { email, username, password } = req.body;
 
+
     const foundUser = await Users.findOne({
         where : {email: email}
     })
@@ -39,10 +40,16 @@ router.post("/register", async (req, res)=>{
 
 
 router.post("/login", async (req, res)=>{
+
+    
     if (!req.body)
         return res.status(400).json({message : "Body received was null, please enter valid input."})
+    console.log(req.body)
+
 
     const { email, password } = req.body;
+    if (!email || !password)
+        return res.status(400).json({message : "Body received was incomplete, please enter valid input."})
     const foundUser = await Users.findOne({
         where : {email: email}
     })

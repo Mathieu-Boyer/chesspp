@@ -10,6 +10,8 @@ import { checkRole } from './middlewares/roles.js';
 import { createServer } from "http"
 import { Server } from "socket.io"
 
+import cors from "cors"
+
 
 
 const app = express();
@@ -18,7 +20,7 @@ export const io = new Server(httpServer);
 export let userSockets = new Map()
 
 app.use(express.json())
-
+app.use(cors());
 io.use(authenticateSocket)
 
 io.on("connection", (socket)=>{
