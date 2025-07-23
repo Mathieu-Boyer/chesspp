@@ -1,5 +1,6 @@
 import axios from "axios";
 import router from "../../Router";
+import socket from "../socket.js";
 
 
 export const login = async (email, password)=>{
@@ -10,6 +11,11 @@ export const login = async (email, password)=>{
                 password : password,
             }
         );
+
+        localStorage.setItem("token" , response.data.token);
+
+        socket.auth = {token : `bearer ${response.data.token}`}
+        socket.connect();
 
         router.push('/');
     }catch(err){
@@ -28,6 +34,7 @@ export const register = async (email, username , password, passwordConfirmation)
                 password
             }
         );
+
 
         await login(email, password)
     }catch(err){

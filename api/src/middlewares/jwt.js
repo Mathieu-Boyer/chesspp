@@ -17,14 +17,14 @@ export const authenticate = (req, res, next)=>{
         next();
     }
     catch (err){
-
         console.log(err);
         return res.status(400).json("Token didn't pass verification", err);
     }
 }
 
 export const authenticateSocket = (socket, next)=>{
-    const authHeader = socket.handshake.headers.token;
+    const authHeader = socket.handshake.auth.token;
+
     if (!authHeader)
         next(new Error("A token must be provided"));
     const token = authHeader.split(" ")[1];
@@ -33,9 +33,7 @@ export const authenticateSocket = (socket, next)=>{
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         socket.userId = decoded.id;
-        // socket.email = decoded.email;
-        // socket.username = decoded.username;
-        // socket.role = decoded.role;
+
         next();
     }
     catch (err){
