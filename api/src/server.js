@@ -16,11 +16,18 @@ import cors from "cors"
 
 const app = express();
 const httpServer = createServer(app);
-export const io = new Server(httpServer);
-export let userSockets = new Map()
-
 app.use(express.json())
 app.use(cors());
+export const io = new Server(httpServer, {
+  cors: {
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST' , 'PUT', 'PATCH', 'DELETE'],
+    credentials: true
+  }
+});
+export let userSockets = new Map()
+
+
 io.use(authenticateSocket)
 
 io.on("connection", (socket)=>{

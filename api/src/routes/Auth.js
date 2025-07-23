@@ -2,7 +2,7 @@ import { Router } from "express";
 import bcrypt from "bcrypt"
 import db  from "../models/index.js";
 import { comparePasswords, validatePassword } from "../utils/validators.js";
-// import { where } from "sequelize";
+
 import jwt from "jsonwebtoken"
 
 const router = Router();
