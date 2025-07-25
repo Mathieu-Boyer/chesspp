@@ -13,6 +13,7 @@ export const login = async (email, password)=>{
         );
 
         localStorage.setItem("token" , response.data.token);
+        localStorage.setItem("id" , response.data.id);
         await loginSocket(response.data.token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
 

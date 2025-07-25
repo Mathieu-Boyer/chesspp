@@ -132,7 +132,10 @@ router.put('/:id/move', authenticate, loadGameById, loadGamePlayers ,  async (re
 
             if (json.game_status != 0){
                 foundGame.status = "finished";
-                foundGame.winnerId = req.id;
+                console.log(json.game_status)
+                if (json.game_status == 2)
+                    foundGame.winnerId = req.id;
+
             }
         console.log("huuuuuh1")
 

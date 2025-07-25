@@ -30,10 +30,12 @@ class Game {
 
     updateGameInfos(){
         this.gameInfos = JSON.parse(localStorage?.getItem("gameState"));
+        this.side = localStorage?.getItem("side");
     }
 
-    async init(canvas, errDiv, dock) {
+    async init(canvas, errDiv, dock, dialogData) {
 
+        this.dialogData = dialogData;
         this.dock = await dock;
         this.canvas = canvas;
         this.errDiv = errDiv;
@@ -270,8 +272,6 @@ class Game {
             })
 
             console.log(response)
-
- 
         }catch (err){
             console.log(err.response)
             if (err.response.data.message.trim() == "A pawn on the end of a board must provide the piece it wants to become.")
@@ -290,7 +290,7 @@ class Game {
 
             if (this.side == "White")
                 this.drawDot(move)
-            else 
+            else
                 this.drawDot(63 - move)
         })
     }

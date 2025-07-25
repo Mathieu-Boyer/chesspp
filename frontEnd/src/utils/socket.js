@@ -28,7 +28,11 @@ export const setupSocketListeners = async () => {
   socket.on('game:found', async (data) => {
     console.log(data)
     localStorage.setItem("gameState", JSON.stringify(data.game))
+
+    console.log("setting side to : ", data.color)
     localStorage.setItem("side", data.color)
+        Game.updateGameInfos();
+
     await router.push('/game').catch(err => {
   if (err.name !== 'NavigationDuplicated') {
     console.error(err, "meowmeowmeow");
@@ -45,8 +49,31 @@ export const setupSocketListeners = async () => {
     Game.drawLast();
     
 
+    console.log()
     if (data?.game?.status == "finished"){
-        router.push("/")
+        // router.push("/")
+        Game.dialogData.displayed = true;
+        const id = localStorage.getItem("id");
+
+        const winner = data.game.winner;
+        Game.dialogData.winnerName = winner?.username;
+
+        if (winner?.id == id)
+            Game.dialogData.color = "green";
+        else 
+            Game.dialogData.color = "red";
+
+        Game.dialogData.title = winner?.username + " won"; 
+
+        if (!winner){
+            Game.dialogData.color = "grey";
+            Game.dialogData.title = "Draw";
+        }
+        
+
+        localStorage.removeItem("gameState")
+        localStorage.removeItem("side")
+
     }
     if (data.allowed_moves){
         Game.drawDots(data.allowed_moves);

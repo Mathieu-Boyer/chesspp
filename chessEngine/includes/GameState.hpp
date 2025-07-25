@@ -11,6 +11,7 @@
 
 enum gameStatus{
     ongoing,
+    check,
     checkmate,
     staleMate,
     halfMoveDraw
