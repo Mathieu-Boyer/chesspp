@@ -97,34 +97,61 @@ router.put('/:id/move', authenticate, loadGameById, loadGamePlayers ,  async (re
     if (((req.id == foundGame.whitePlayer.id) && foundGame.colorToPlay != "White") || ((req.id == foundGame.blackPlayer.id) && foundGame.colorToPlay != "Black"))
         return res.status(400).json({message : "It's not your turn to play."});
 
+    console.log(foundGame.fenList[foundGame.fenList.length - 1])
     execFile('../chessEngine/app', [body.move, foundGame.fenList[foundGame.fenList.length - 1]], async (error, stdout, stderr) => {
         if (error) {
             console.error(`Error: ${error.message}`);
             return;
         }
         if (stderr) {
+            console.log("huuuuuh", stderr)
             res.status(400).json({message : stderr});
             return;
         }
 
         try {
+    console.log("huuuuuh0")
+            
             let json = JSON.parse(stdout);
-            console.log(json);
-            // if game status is not 0 i'll have to trigger the end of the game and notify via socket
-            foundGame.fenList = [...foundGame.fenList, json.new_FEN.trim()];
-            foundGame.moveList = [...foundGame.moveList, json.applied_move];
-            foundGame.colorToPlay = (foundGame.colorToPlay == "White" ? "Black" : "White");
-    await foundGame.save();
-    await foundGame.reload({
-    include: [
-        { model: db.Users, as: 'whitePlayer' },
-        { model: db.Users, as: 'blackPlayer' },
-        { model: db.Users, as: 'winner' },
-        { model: db.Users, as: 'drawProposer' },
-    ]})
+            console.log(json, body.move);
 
-    sendToUser(foundGame.blackPlayerId, "game:update", {game: foundGame})
-    sendToUser(foundGame.whitePlayerId, "game:update", {game: foundGame})
+
+
+            if (body.move.length > 2){
+                foundGame.fenList = [...foundGame.fenList, json.new_FEN.trim()];
+                foundGame.moveList = [...foundGame.moveList, json.applied_move];
+                foundGame.colorToPlay = (foundGame.colorToPlay == "White" ? "Black" : "White");
+            }
+            else if (body.move.length == 2){
+                console.log(json.allowed_move)
+                sendToUser(req.id, "game:update", {lastFen : foundGame.fenList[foundGame.fenList.length - 1], allowed_moves : json.allowed_move})
+                return res.status(200).json("sucess");
+            }
+
+
+
+            if (json.game_status != 0){
+                foundGame.status = "finished";
+                foundGame.winnerId = req.id;
+            }
+        console.log("huuuuuh1")
+
+            await foundGame.save();
+            await foundGame.reload({
+            include: [
+                { model: db.Users, as: 'whitePlayer' },
+                { model: db.Users, as: 'blackPlayer' },
+                { model: db.Users, as: 'winner' },
+                { model: db.Users, as: 'drawProposer' },
+            ]})
+
+    console.log("huuuuuh2")
+
+
+
+    sendToUser(foundGame.blackPlayerId, "game:update", {game: foundGame, status : json.game_status})
+    sendToUser(foundGame.whitePlayerId, "game:update", {game: foundGame, status : json.game_status})
+
     res.status(200).json({game : foundGame});
 
         } catch (e) {
