@@ -2,26 +2,26 @@
 
 import { nextTick, onMounted, ref } from 'vue';
 import Game from '../utils/board/game.js';
-import { Dock } from 'primevue';
+import { Button, Dialog, Dock, InputText, Tooltip } from 'primevue';
+import router from '../Router.js';
+import { joinQueue } from '../utils/queue.js';
 
 
+    const currentGame = localStorage.getItem("gameState");
 
-
-
-
-    function handlePromotion(e){
-        console.log(e.target)
-    }
-
+    if (!currentGame)
+        router.push('/')
     const dockRef = ref(null)
 
     let items = ref([]);
 
     const canvasRef = ref(null);
     const errDiv = ref(null);
+    const dialogData = ref({
+        displayed : false
+    })
     onMounted(async ()=>{
-        
-        
+
         items.value = [
             {
                 label: `${Game.side == "White" ? 'Q' : 'q'}`,
@@ -44,20 +44,29 @@ import { Dock } from 'primevue';
         await nextTick();
 
         Game.updateGameInfos();
-        await Game.init(canvasRef.value, errDiv.value, dockRef.value?.$el)
+        await Game.init(canvasRef.value, errDiv.value, dockRef.value?.$el, dialogData.value)
 
         Game.drawLast();
 
 
     })
 
+
+
 </script>
 
 <template>
     <div class="boardContainer">
+        <Dialog v-model:visible="dialogData.displayed" modal :header="dialogData.winnerName + ' ' + 'won'" :style="{ width: '25rem' }" :closable="false">
+                <div class="topColor" :class="dialogData.color"></div>
+                <div class="buttons">
+                    <Button type="button" label="Home" severity="secondary" @click="router.push('/')"></Button>
+                    <Button type="button" label="Go back to queue"  @click="joinQueue(), router.push('/queue')"></Button>
+                </div>
+        </Dialog>
             <Dock ref="dockRef" class="dock" :model="items" position="top">
                 <template #itemicon="{ item }">
-                    <img @click="Game.handleDockClick" v-tooltip.top="item.label" :alt="item.label" :src="item.icon" style="width: 100%" />
+                    <img @click="Game.handleDockClick" :alt="item.label" :src="item.icon" style="width: 100%" />
                 </template>
             </Dock>
         <canvas ref="canvasRef"></canvas>
@@ -90,5 +99,25 @@ import { Dock } from 'primevue';
     .dock img{
         cursor: pointer;
 
+    }
+
+    .buttons {
+        display: flex;
+        gap: 1rem;
+    }
+    .topColor {
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        height: 5px;
+        width: 100.5%;
+    }
+
+    .red{
+        background-color: rgb(183, 18, 18);
+    }
+
+    .green{
+        background-color: #739552;
     }
 </style>

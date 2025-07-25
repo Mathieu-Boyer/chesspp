@@ -45,8 +45,22 @@ export const setupSocketListeners = async () => {
     Game.drawLast();
     
 
+    console.log()
     if (data?.game?.status == "finished"){
-        router.push("/")
+        // router.push("/")
+        Game.dialogData.displayed = true;
+        const id = localStorage.getItem("id");
+
+        const winner = data.game.winner;
+        Game.dialogData.winnerName = winner.username;
+
+        if (winner.id == id)
+            Game.dialogData.color = "green";
+        else 
+            Game.dialogData.color = "red";
+
+        localStorage.removeItem("gameState")
+
     }
     if (data.allowed_moves){
         Game.drawDots(data.allowed_moves);

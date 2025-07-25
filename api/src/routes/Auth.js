@@ -69,7 +69,7 @@ router.post("/login", async (req, res)=>{
         {expiresIn: process.env.JWT_EXPIRES}
     );
 
-    res.status(200).json({message: "Login sucessful", token})
+    res.status(200).json({message: "Login sucessful", token, id : foundUser.id})
 })
 
 
