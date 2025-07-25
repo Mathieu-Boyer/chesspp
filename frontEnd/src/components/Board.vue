@@ -42,10 +42,8 @@ import { joinQueue } from '../utils/queue.js';
         ];
 
         await nextTick();
-
         Game.updateGameInfos();
         await Game.init(canvasRef.value, errDiv.value, dockRef.value?.$el, dialogData.value)
-
         Game.drawLast();
 
 
@@ -57,7 +55,7 @@ import { joinQueue } from '../utils/queue.js';
 
 <template>
     <div class="boardContainer">
-        <Dialog v-model:visible="dialogData.displayed" modal :header="dialogData.winnerName + ' ' + 'won'" :style="{ width: '25rem' }" :closable="false">
+        <Dialog v-model:visible="dialogData.displayed" modal :header="dialogData.title" :style="{ width: '25rem' }" :closable="false">
                 <div class="topColor" :class="dialogData.color"></div>
                 <div class="buttons">
                     <Button type="button" label="Home" severity="secondary" @click="router.push('/')"></Button>
@@ -79,7 +77,7 @@ import { joinQueue } from '../utils/queue.js';
 
     canvas {
         height: 50rem;
-        width: 50rem; 
+        width: 50rem;
     }
 
     .error {
@@ -119,5 +117,9 @@ import { joinQueue } from '../utils/queue.js';
 
     .green{
         background-color: #739552;
+    }
+
+    .grey{
+        background-color: #636363;
     }
 </style>

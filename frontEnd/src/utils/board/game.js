@@ -30,6 +30,7 @@ class Game {
 
     updateGameInfos(){
         this.gameInfos = JSON.parse(localStorage?.getItem("gameState"));
+        this.side = localStorage?.getItem("side");
     }
 
     async init(canvas, errDiv, dock, dialogData) {
@@ -289,7 +290,7 @@ class Game {
 
             if (this.side == "White")
                 this.drawDot(move)
-            else 
+            else
                 this.drawDot(63 - move)
         })
     }
