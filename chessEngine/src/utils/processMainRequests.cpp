@@ -7,6 +7,10 @@ void playInTerminal(){
 
     std::cout << "[ Chess++ | engine ]" << std::endl;
     std::string currentFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    // std::string currentFen = "rnk2Qnr/pppqp1pp/4B3/4P3/3p2b1/8/PPPP1PPP/RNB1K1NR b KQ - 0 7";
+
+
+    
 
     
     while (true){
@@ -80,10 +84,20 @@ void fetchLegalMoves(const std::string &rawMove, const std::string &currentFen){
             std::cerr << e.what() << std::endl;
             return;
         }
+
+        std::cout << "{\n\"allowed_move\" : " ;
         std::cout << "[ ";
-        for (auto &move : fetchedMove)
-                std::cout << move::inverseBoardMap.at(move) << " ";
-        std::cout << "]" << std::endl;
+
+        unsigned counter = 0;
+        for (auto &move : fetchedMove){
+            
+            std::cout << move;
+            if (counter != fetchedMove.size() - 1)
+                std::cout << ", ";
+
+            counter++;
+        }
+        std::cout << "]\n}";
 }
 
 void executeNeededFunctionalities(const std::string &rawMove, const std::string &currentFen){

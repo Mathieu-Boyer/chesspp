@@ -50,42 +50,81 @@ bool diagonalInterpositionCheck(GameState& gameState, int pieceA, int pieceB, co
     int orientation = (pieceDifference % 7 == 0) ? 7 : 9;
     int direction = (pieceA > pieceB ? -1 : 1);
     int step = orientation * direction;
+    
+    for (int i = pieceA + step; i != pieceB; i += step) {
+        std::vector<int> piecesCanInterpose = gameState.squareIsCompromised(interposeColor, i);
+        
+        for (int piecePos : piecesCanInterpose) {
+            GameState gameStateCpy(gameState);
+            APiece *pieceToMove = gameStateCpy.getRefToBoard().getPieceAt(piecePos);
+            
+            if (pieceToMove) {
+                std::string constructedRawMove = move::inverseBoardMap.at(piecePos) + "-" + move::inverseBoardMap.at(i);
 
-    for (int i = pieceA + step; i != pieceB; i += step)
-        if (gameState.squareIsCompromised(interposeColor, i).size() > 0)
-            return true;
+                if (pieceToMove->getName() == "Pawn" && (pieceToMove->isOnRow(1, i) || pieceToMove->isOnRow(8, i))) {
+                    constructedRawMove += "=";
+                    constructedRawMove += (gameStateCpy.getColorToMove() == "White") ? "Q" : "q";
+                }
+                
+                move moveToTest(constructedRawMove);
+                gameStateCpy.applyMoveSimulation(moveToTest);
+
+                if (gameStateCpy.kingIsInCheck(gameStateCpy.getColorToMove()).size() == 0) {
+                    return true;
+                }
+            }
+        }
+    }
     
     return false;
+
 }
 
-bool orthogonalInterpositionCheck(GameState& gameState, int pieceA, int pieceB, const std::string& interposeColor){
+bool orthogonalInterpositionCheck(GameState& gameState, int pieceA, int pieceB, const std::string& interposeColor) {
     int rankA = pieceA / 8;
     int rankB = pieceB / 8;
+    int fileA = pieceA % 8;
+    int fileB = pieceB % 8;
 
-    if (!(rankA == rankB))
+    if (!(rankA == rankB || fileA == fileB))
         return false;
 
-    int pieceDifference = std::abs(pieceA - pieceB);
+    int step;
+    if (rankA == rankB)
+        step = (pieceA > pieceB) ? -1 : 1;
+    else
+        step = (pieceA > pieceB) ? -8 : 8;
 
-    if (!(pieceDifference % 1 == 0 || pieceDifference % 8 == 0))
-        return false;
+    for (int i = pieceA + step; i != pieceB; i += step) {
+        std::vector<int> piecesCanInterpose = gameState.squareIsCompromised(interposeColor, i);
+        
+        for (int piecePos : piecesCanInterpose) {
+            GameState gameStateCpy(gameState);
+            APiece *pieceToMove = gameStateCpy.getRefToBoard().getPieceAt(piecePos);
+            
+            if (pieceToMove) {
+                std::string constructedRawMove = move::inverseBoardMap.at(piecePos) + "-" + move::inverseBoardMap.at(i);
+                if (pieceToMove->getName() == "Pawn" && (pieceToMove->isOnRow(1, i) || pieceToMove->isOnRow(8, i))) {
+                    constructedRawMove += "=";
+                    constructedRawMove += (gameStateCpy.getColorToMove() == "White") ? "Q" : "q";
+                }
+                
+                move moveToTest(constructedRawMove);
+                gameStateCpy.applyMoveSimulation(moveToTest);
 
-    int orientation = (pieceDifference % 1 == 0) ? 1 : 8;
-    int direction = (pieceA > pieceB ? -1 : 1);
-    int step = orientation * direction;
-
-    for (int i = pieceA + step; i != pieceB; i += step){
-        if (gameState.squareIsCompromised(interposeColor, i).size() > 0)
-            return true;
+                if (gameStateCpy.kingIsInCheck(gameStateCpy.getColorToMove()).size() == 0) {
+                    return true;
+                }
+            }
+        }
     }
-
+    
     return false;
 }
 
 bool GameState::pieceCanInterpose(int pieceA, int pieceB, const std::string &pieceName, const std::string& interposeColor){
     if (pieceName != "Queen" && pieceName != "Rook" && pieceName != "Bishop")
         return false;
-    
     if (pieceName == "Bishop")
         return diagonalInterpositionCheck(*this, pieceA, pieceB, interposeColor);
     else if (pieceName == "Rook")

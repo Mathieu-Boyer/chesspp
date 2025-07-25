@@ -4,6 +4,7 @@ import Login from './pages/login.vue'
 import Register from './pages/register.vue'
 import Index from './pages/index.vue'
 import queue from './pages/queue.vue'
+import Game from './pages/game.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,11 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: Register ,
+    },
+    {
+      path: '/game',
+      name: 'game',
+      component: Game ,
     }
   ],
 })

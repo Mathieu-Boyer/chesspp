@@ -26,10 +26,12 @@ const matchMaking = async ()=>{
 
 
         sendToUser(whitePlayer, "game:found", {
+            color : "White",
             game,
             message : "Your game was found."
         });
         sendToUser(blackPlayer, "game:found", {
+            color : "Black",
             game,
             message : "Your game was found."
         });

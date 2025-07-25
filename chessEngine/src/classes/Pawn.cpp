@@ -31,7 +31,7 @@ std::vector<int> Pawn::getPseudoLegalMoves(GameState &gameState, int position){
         }
 
         if (pieceOnSquare != nullptr)
-            continue;
+            break;
 
         freeSquareMoves.push_back(square);
     }
