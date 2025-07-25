@@ -22,7 +22,7 @@ app.mount('#app');
 const token = localStorage.getItem("token");
 
 if (token){
-    loginSocket(token)
+    await loginSocket(token)
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
 }

@@ -25,7 +25,6 @@ private:
     std::unique_ptr<Board> board;
 
     void decode();
-    void applyMoveSimulation(const move& move);
 
     int currentHalfMove;
     int currentFullMove;
@@ -37,6 +36,8 @@ private:
     std::string allowedCastles;
     std::string moveConstruction;
 public:
+    void applyMoveSimulation(const move& move);
+
     GameState() = delete;
     GameState(const std::string &fen);
     GameState(const GameState& gameState);

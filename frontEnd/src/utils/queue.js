@@ -4,8 +4,8 @@ import router from "../Router"
 export const joinQueue = async ()=>{
 
     try{
-        await axios.post("http://localhost:8000/api/v1/queue/join");
         router.push("/queue");
+        await axios.post("http://localhost:8000/api/v1/queue/join");
     }catch (e){
         console.log(e)
     }
