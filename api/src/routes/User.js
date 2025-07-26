@@ -19,7 +19,6 @@ router.get("/", authenticate, async (req, res)=>{
 
 
 router.get("/:id", authenticate, async (req, res)=>{
-
     const id = req.params.id;
     if (!id)
         return res.status(400).json({message : "You must provide an id to use this route."})
