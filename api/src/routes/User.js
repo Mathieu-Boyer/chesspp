@@ -8,7 +8,7 @@ const like = Op.like;
 
 const router = Router();
 
-router.get("/", async (req, res)=>{
+router.get("/", authenticate, async (req, res)=>{
     let foundUsers;
     if (req.query && req.query.search)
         foundUsers = await db.Users.findAll({ where: { username : { [like] : `%${req.query.search}%` }}})
@@ -18,7 +18,7 @@ router.get("/", async (req, res)=>{
 })
 
 
-router.get("/:id", async (req, res)=>{
+router.get("/:id", authenticate, async (req, res)=>{
 
     const id = req.params.id;
     if (!id)
