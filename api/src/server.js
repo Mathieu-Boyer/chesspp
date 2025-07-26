@@ -11,6 +11,7 @@ import { createServer } from "http"
 import { Server } from "socket.io"
 
 import cors from "cors"
+import { Op } from 'sequelize';
 
 
 
@@ -65,6 +66,18 @@ try {
     // await db.Games.drop();
 
     // await db.sequelize.sync({ alter: true })
+
+//     await db.Users.update(
+//   { avatar: 'default.png' },
+//   {
+//     where: {
+//       [Op.or]: [
+//         { avatar: null },
+//         { avatar: '' }
+//       ]
+//     }
+//   }
+// );
     await db.sequelize.authenticate()
 
     console.log("Connected to DB.")
