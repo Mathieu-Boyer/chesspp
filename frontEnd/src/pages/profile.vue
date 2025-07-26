@@ -2,16 +2,26 @@
 import axios from 'axios';
 import { Avatar, Column, DataTable, Knob, Tag } from 'primevue';
 import { ref } from 'vue';
+import { useRoute } from 'vue-router'
+import router from '../Router';
+
+const route = useRoute()
+const userId = ref(route.params.id)
 
 
+    console.log(userId)
     let user = ref(null)
     let games = ref(null)
 
     try {
 
-        const id = localStorage.getItem("id")
-        const userData = await axios.get(`http://localhost:8000/api/v1/users/self`);
-        const gamesData = await axios.get(`http://localhost:8000/api/v1/games/`);
+        let id ;
+        if (userId.value)
+            id = userId.value
+        else
+            id = localStorage.getItem("id")
+        const userData = await axios.get(`http://localhost:8000/api/v1/users/${id}`);
+        const gamesData = await axios.get(`http://localhost:8000/api/v1/games/of/${id}`);
         user = ref(userData.data.user);
                 const modifiedGames = 
             gamesData.data.games.map(game => {
@@ -39,6 +49,7 @@ import { ref } from 'vue';
         console.log(user.value, games.value)
     }catch(e){
         console.log(e)
+        router.push('/')
     }
 
 
