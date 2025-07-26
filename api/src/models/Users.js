@@ -5,6 +5,11 @@ export default (sequelize, DataTypes)=>{
             allowNull: false,
             unique: true,
         },
+        avatar: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            default: "default.png"
+        },
         role: {
             type: DataTypes.STRING,
             allowNull: false,
