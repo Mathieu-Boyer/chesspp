@@ -6,6 +6,7 @@
 #include "Queen.hpp"
 #include "Bishop.hpp"
 #include "Pawn.hpp"
+#include "Prince.hpp"
 
 std::unique_ptr<APiece> pieceFactory(char character){
     switch (character)
@@ -45,6 +46,11 @@ std::unique_ptr<APiece> pieceFactory(char character){
             return pawn.clone();
         }
 
+        case 's':
+        case 'S':{
+            Prince prince(std::islower(character) ? "Black" : "White");
+            return prince.clone();
+        }
         default :
             return nullptr;
     }

@@ -6,8 +6,11 @@
 void playInTerminal(){
 
     std::cout << "[ Chess++ | engine ]" << std::endl;
-    std::string currentFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    // std::string currentFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     // std::string currentFen = "rnk2Qnr/pppqp1pp/4B3/4P3/3p2b1/8/PPPP1PPP/RNB1K1NR b KQ - 0 7";
+
+    std::string currentFen = "rnbqkbnr/pppppppp/s7/Q7/5Q2/14Q2/QPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
 
 
     
@@ -16,9 +19,11 @@ void playInTerminal(){
     while (true){
         try {
             GameState gameState(currentFen);
-            gameState.printASCII();
             int status = gameState.checkGameStatus();
+            gameState.printASCII();
             std::cout << currentFen << std::endl;
+            std::cout << status << std::endl;
+
             if (status != gameStatus::ongoing){
 
                 return ;
@@ -55,11 +60,11 @@ void applyMoveAndGenerateNewFen(const std::string &rawMove, const std::string &c
             move moveToTry(rawMove);
             gameState.applyMove(moveToTry);
 
-            std::string newFen = gameState.encode();
             gameState.setColorToMove(enemyOf(gameState.getColorToMove()));
+            status = gameState.checkGameStatus();
+            std::string newFen = gameState.encode();
 
              
-            status = gameState.checkGameStatus();
 
             
             std::cout << "{\n\"game_status\" : " << status << ",\n";

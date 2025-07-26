@@ -28,6 +28,12 @@ class Board
         Board(const Board&);
         Board(Board&&)  = default;
 
+        /// custom add
+
+        int princePosition(const std::string &colorToMove);
+        bool tryMovingKingToPrince(GameState &GameState);
+
+        //////////////////////////////////////////////////////////////
         // Board()  = default;
         ~Board() = default;
         void placePieces(const std::string &fenBoard);

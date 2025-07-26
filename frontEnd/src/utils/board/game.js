@@ -60,7 +60,7 @@ class Game {
     }
 
     async loadAllPiecesImages() {
-        const allPieces = ["rook", "knight", "bishop", "queen", "king", "pawn"];
+        const allPieces = ["rook", "knight", "bishop", "queen", "king", "pawn", "prince"];
         const colors = ["White", "Black"];
         const promises = [];
         
@@ -156,7 +156,7 @@ class Game {
     }
 
     drawMyPieces() {
-        let pieceOrder = ["rook", "knight", "bishop", "queen", "king", "bishop", "knight", "rook"];
+        let pieceOrder = ["rook", "knight", "bishop", "prince", "king", "bishop", "knight", "rook"];
         let color = "White";
         let backRow = 7;
         let pawnRow = 6;
@@ -190,7 +190,7 @@ class Game {
     }
 
     drawEnemyPieces() {
-        let pieceOrder = ["rook", "knight", "bishop", "queen", "king", "bishop", "knight", "rook"];
+        let pieceOrder = ["rook", "knight", "bishop", "prince", "king", "bishop", "knight", "rook"];
         let color = "Black";
         let backRow = 0;
         let pawnRow = 1;
