@@ -13,7 +13,9 @@ bool horizontalOverflow(int position, int square){
 }
 
 bool diagonalMove(int move){
-    return (move != -1 && move != 1 && move != -8 && move != 8);
+
+    return (move % 9 == 0 || move % 7 == 0);
+    // return (move != -1 && move != 1 && move != -8 && move != 8);
 }
 
 bool promotionAssertions(Board &board, move move){

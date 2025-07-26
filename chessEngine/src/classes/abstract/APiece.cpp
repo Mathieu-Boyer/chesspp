@@ -62,7 +62,11 @@ void APiece::specialMove(move , GameState &){
     return;
 }
 
-void APiece::onCaptureEffects(move, GameState &){
+void APiece::onCaptureEffects(move, GameState &, APiece *){
+    return;
+}
+
+void APiece::onCapturedEffects(move, GameState &){
     return ;
 }
 
