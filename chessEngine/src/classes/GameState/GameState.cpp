@@ -118,7 +118,6 @@ std::vector<int> GameState::squareIsCompromised(const std::string &enemy, int ta
             continue;
         if (currentPiece->canAttackSquare(i, target, *this)){
             positionsOfAllCheckers.push_back(i);
-            // std::cout << move::inverseBoardMap.at(i) << std::endl;
         }
 
     }

@@ -5,6 +5,7 @@ export const pieceTranslator = {
     "b" : "bishop",
     "q" : "queen",
     "r" : "rook",
+    "s" : "prince",
 };
 
 

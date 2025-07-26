@@ -62,6 +62,10 @@ void APiece::specialMove(move , GameState &){
     return;
 }
 
+void APiece::onCaptureEffects(move, GameState &){
+    return ;
+}
+
 const std::vector<int> &APiece::getSpecialMoveSet(){
     return specialMoveSet;
 }

@@ -148,6 +148,10 @@ bool GameState::checkMateSituation(const std::string &color){
     if (getPieceLegalMove(kingPosition).size() > 0)
         return false;
     if (moreThan1PieceCanCheck(color)){
+
+        if (board.tryMovingKingToPrince(*this))
+            return false;
+
         moveConstruction.pop_back();
         moveConstruction +=  "#";
         return true;
@@ -157,6 +161,8 @@ bool GameState::checkMateSituation(const std::string &color){
     if (pieceCanInterpose(kingPosition, kingCheckers[0], board.getPieceAt(kingCheckers[0])->getName(), color))
         return false;
 
+    if (board.tryMovingKingToPrince(*this))
+        return false;
     moveConstruction.pop_back();
     moveConstruction +=  "#";
     return true;

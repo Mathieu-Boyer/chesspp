@@ -36,6 +36,7 @@ class APiece
         virtual void startOfTurnEffects(move move, GameState &GameState);
         virtual void endOfTurnEffects(move move, GameState &GameState);
         virtual void specialMove(move move, GameState &gameState);
+        virtual void onCaptureEffects(move move, GameState &gameState);
 
 
         void describe();

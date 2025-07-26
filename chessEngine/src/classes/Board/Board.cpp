@@ -24,6 +24,31 @@ const std::array<std::unique_ptr<APiece>, 64> &Board::getData(){
     return data;
 }
 
+int Board::princePosition(const std::string &colorToMove){
+    for (unsigned i = 0; i < data.size(); i++){
+        APiece *piece = getPieceAt(i);
+        if (!piece || piece->getColor() != colorToMove)
+            continue;
+        if (piece->getName() == "Prince")
+            return i;
+    }
+    return -1;
+}
+
+bool Board::tryMovingKingToPrince(GameState &gameState){
+    int princePosition = this->princePosition(gameState.getColorToMove());
+    int kingPosition = gameState.getColorToMove() == "White" ? getWhiteKingPosition() : getBlackKingPosition() ;
+    if (princePosition == -1 || !(gameState.squareIsCompromised(enemyOf(gameState.getColorToMove()), princePosition).empty()))
+        return false;
+    else {
+        data[princePosition] = std::move(data[kingPosition]);
+        gameState.getColorToMove() == "White" ? setWhiteKingPosition(princePosition) : setBlackKingPosition(princePosition) ;
+        gameState.setdissAllowedCastles(gameState.getColorToMove() == "White" ? "KQ" : "kq");
+        gameState.setMoveConstruction(gameState.getMoveConstruction() + "->" + move::inverseBoardMap.at(princePosition));
+        return true;
+    }
+}
+
 void Board::placePieces(const std::string &fen) {
 
     unsigned counter = 0;
@@ -76,6 +101,7 @@ void Board::applyMove(const move &move, GameState& gameState){
 
     gameState.setMoveConstruction(gameState.getMoveConstruction() + move::inverseBoardMap.at(move.from));
     if (pieceOnTarget){
+        pieceOnTarget->onCaptureEffects(move, gameState);
         gameState.setMoveConstruction(gameState.getMoveConstruction() + "x");
         gameState.setCurrentHalfMove(0);
     }
