@@ -19,7 +19,7 @@ const matchMaking = async ()=>{
             blackPlayerId : blackPlayer,
             status : "active",
             winnerId : null,
-            fenList : Array("rnbskbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBSKBNR w KQkq - 0 1"),
+            fenList : Array("rnbckbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBCKBNR w KQkq - 0 1 - C=;c="),
             // fenList : Array("7k/5K2/611/6Q1/8/8/s7/8 w - - 0 1"),
             moveList : [],
             colorToPlay : "White"

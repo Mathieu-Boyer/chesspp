@@ -57,6 +57,31 @@ int GameState::getCurrentFullMove(){
     return currentFullMove;
 }
 
+void GameState::setWhiteQueenInfo(std::string value){
+    whiteQueenInfos = value;
+}
+
+std::string GameState::getWhiteQueenInfo(){
+    return whiteQueenInfos;
+}
+
+void GameState::setBlackQueenInfo(std::string value){
+    blackQueenInfos = value;
+}
+
+std::string GameState::getBlackQueenInfo(){
+    return blackQueenInfos;
+}
+
+
+    void GameState::setLastMovedPiece(std::string value){
+        lastMovedPiece = value;
+    }
+    std::string GameState::getLastMovedPiece(){
+        return lastMovedPiece;
+    }
+
+
 void GameState::setMoveConstruction(std::string value){
     moveConstruction = value;
 }

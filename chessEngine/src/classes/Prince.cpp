@@ -61,7 +61,7 @@ bool Prince::canAttackSquare(int from, int target, GameState &gameState){
     return false;
 }
 
-void Prince::onCaptureEffects(move, GameState &gameState){
+void Prince::onCapturedEffects(move, GameState &gameState){
     gameState.setdissAllowedCastles(this->getColor() == "White" ? "KQ" : "kq");
     return ;
 }

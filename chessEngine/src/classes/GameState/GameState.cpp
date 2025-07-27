@@ -20,6 +20,8 @@ GameState::GameState(const GameState &gameState) : board(gameState.getRefToBoard
         this->possibleEnPassantNextHalfMove =  gameState.possibleEnPassantNextHalfMove;
         this->dissAllowedCastles =  gameState.dissAllowedCastles;
         this->allowedCastles =  gameState.allowedCastles;
+        this->blackQueenInfos = gameState.blackQueenInfos;
+        this->whiteQueenInfos = gameState.whiteQueenInfos;
 }
 
 
@@ -42,6 +44,13 @@ void GameState::decode(){
 
     currentHalfMove = std::stoi(data[4]);
     currentFullMove = std::stoi(data[5]);
+
+
+    lastMovedPiece = data[6];
+    std::vector<std::string> queensInfos = split(data[7], ';');
+
+    whiteQueenInfos = queensInfos[0] ;
+    blackQueenInfos = queensInfos[1] ;
     board->placePieces(data[0]);
     setColorToMove(colorToMove);
 }
@@ -96,6 +105,17 @@ std::string GameState::encode() {
     }
 
     data[4] = std::to_string(currentHalfMove);
+
+
+
+
+
+    data[6] = lastMovedPiece;
+    data[7] = whiteQueenInfos + ";" + blackQueenInfos;
+
+
+
+
     for (auto&fenElement : data)
         fenString += fenElement + " ";
 
@@ -119,7 +139,6 @@ std::vector<int> GameState::squareIsCompromised(const std::string &enemy, int ta
         if (currentPiece->canAttackSquare(i, target, *this)){
             positionsOfAllCheckers.push_back(i);
         }
-
     }
 
     return positionsOfAllCheckers;

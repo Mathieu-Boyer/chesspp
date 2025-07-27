@@ -6,10 +6,13 @@
 void playInTerminal(){
 
     std::cout << "[ Chess++ | engine ]" << std::endl;
-    // std::string currentFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    std::string currentFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 - C=;c=";
     // std::string currentFen = "rnk2Qnr/pppqp1pp/4B3/4P3/3p2b1/8/PPPP1PPP/RNB1K1NR b KQ - 0 7";
 
-    std::string currentFen = "rnbqkbnr/pppppppp/s7/Q7/5Q2/14Q2/QPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    // std::string currentFen = "rnbqkbnr/pppppppp/s7/Q7/5Q2/14Q2/QPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
+    // std::string currentFen = "rnbqkbnr/pppppppp/7Q/3C4/8/5c2/PPPPPPPP/RNBQKBNR w KQkq - 0 1 - C=;c=";
+
 
 
 

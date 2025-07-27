@@ -36,6 +36,10 @@ private:
     std::string dissAllowedCastles;
     std::string allowedCastles;
     std::string moveConstruction;
+    std::string whiteQueenInfos;
+    std::string blackQueenInfos;
+    std::string lastMovedPiece;
+
 public:
     void applyMoveSimulation(const move& move);
 
@@ -91,6 +95,17 @@ public:
     int isDraw();
     int checkGameStatus();
 
+
+
+    void setLastMovedPiece(std::string value);
+    std::string getLastMovedPiece();
+
     void setMoveConstruction(std::string value);
     std::string getMoveConstruction();
+
+    void setWhiteQueenInfo(std::string value);
+    std::string getWhiteQueenInfo();
+
+    void setBlackQueenInfo(std::string value);
+    std::string getBlackQueenInfo();
 };
