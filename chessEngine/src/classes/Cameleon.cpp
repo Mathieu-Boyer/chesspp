@@ -36,40 +36,6 @@ std::vector<int> Cameleon::getPseudoLegalMoves(GameState &gameState, int positio
 }
 
 bool Cameleon::canAttackSquare(int from, int target, GameState &gameState){
-    // Board &board = gameState.getRefToBoard();
-
-    // for (auto& move : captureMoveSet){
-    //     if (move != 0){
-    //         for(int n = 1; n <= this->getRange() ; ++n){
-    //             int square = (from + (n * move));
-    //             APiece *pieceOnSquare = board.getPieceAt(square);
-    //             if (!validSquare(square))
-    //                 break;
-    //             if (horizontalMove(move) && horizontalOverflow(from, square))
-    //                 break;
-    //             if (diagonalMove(move) && diagonalMoveOverFlow(from , square))
-    //                 break;
-    //             if (square == target)
-    //                 return true;
-    //             if (pieceOnSquare != nullptr)
-    //                 break;
-    //         }
-    //     }
-    // }
-    // this->getPseudoLegalMoves(gameState, from);
-
-    // std::cout << RED << move::inverseBoardMap.at(from) << RESET_COLOR;
-    // std::cout << "target : "<< target << std::endl;
-
-    // for (auto &minimove : captureMoveSet)
-    //     std::cout << "allowed move : "<< minimove << std::endl;
-
-
-    // if (std::ranges::find(captureMoveSet, target) == captureMoveSet.end())
-    //     return false;
-    // else
-    //     return true;
-
     const std::string lastMovedPiece = gameState.getLastMovedPiece();
     if (lastMovedPiece != "-" && (lastMovedPiece != "c" && lastMovedPiece != "C") &&  (lastMovedPiece != "k" && lastMovedPiece != "K"))
         if(copyCanAttackSquare(lastMovedPiece.front(), from,  gameState, target)) return true;

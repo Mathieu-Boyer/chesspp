@@ -9,7 +9,7 @@ import { useRoute } from 'vue-router';
 const route = useRoute()
 
 
-const navBans = ['/login', '/register', '/queue', '/game'];
+const navBans = ['/login', '/register', '/queue', '/game', '/game/selection'];
 const navIsDisplayed = ref(true);
 watch(()=>route.fullPath, async (newVal, oldVal) => {
     if (navBans.includes(newVal))
