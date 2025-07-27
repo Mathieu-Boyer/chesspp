@@ -1,5 +1,6 @@
 #include "Cameleon.hpp"
 #include "APiece.hpp"
+#include "colors.hpp"
 
 Cameleon::Cameleon(const std::string &color) : APiece("Cameleon", "C", color, 10 , 1, false , true){
     this->moveSet        = {};
@@ -14,10 +15,16 @@ void Cameleon::copyMovesFromPiece(char pieceChar , GameState &gameState, int pos
     this->moveSet.insert(moveSet.end(), movesToCpy.begin(), movesToCpy.end());
 }
 
+bool Cameleon::copyCanAttackSquare(char pieceChar ,int from, GameState &gameState, int position){
+    const std::string &color = this->getColor();
+    std::unique_ptr<APiece> toCpy = pieceFactory(color == "White" ? toupper(pieceChar) : tolower(pieceChar) );
+    return toCpy->canAttackSquare(from , position , gameState);
+}
+
 
 std::vector<int> Cameleon::getPseudoLegalMoves(GameState &gameState, int position){
     const std::string lastMovedPiece = gameState.getLastMovedPiece();
-    if (lastMovedPiece != "-" && (lastMovedPiece != "c" && lastMovedPiece != "C") )
+    if (lastMovedPiece != "-" && (lastMovedPiece != "c" && lastMovedPiece != "C") &&  (lastMovedPiece != "k" && lastMovedPiece != "K"))
         copyMovesFromPiece(lastMovedPiece.front(), gameState, position);
     const std::string queenInfo = this->getColor() == "White" ? gameState.getWhiteQueenInfo() : gameState.getBlackQueenInfo();
     const std::string capturedPieces = (split(queenInfo, '='))[1];
@@ -29,35 +36,62 @@ std::vector<int> Cameleon::getPseudoLegalMoves(GameState &gameState, int positio
 }
 
 bool Cameleon::canAttackSquare(int from, int target, GameState &gameState){
-    Board &board = gameState.getRefToBoard();
+    // Board &board = gameState.getRefToBoard();
 
-    for (auto& move : captureMoveSet){
-        if (move != 0){
-            for(int n = 1; n <= this->getRange() ; ++n){
-                int square = (from + (n * move));
-                APiece *pieceOnSquare = board.getPieceAt(square);
-                if (!validSquare(square))
-                    break;
-                if (horizontalMove(move) && horizontalOverflow(from, square))
-                    break;
-                if (diagonalMove(move) && diagonalMoveOverFlow(from , square))
-                    break;
-                if (square == target)
-                    return true;
-                if (pieceOnSquare != nullptr)
-                    break;
-            }
-        }
-    }
+    // for (auto& move : captureMoveSet){
+    //     if (move != 0){
+    //         for(int n = 1; n <= this->getRange() ; ++n){
+    //             int square = (from + (n * move));
+    //             APiece *pieceOnSquare = board.getPieceAt(square);
+    //             if (!validSquare(square))
+    //                 break;
+    //             if (horizontalMove(move) && horizontalOverflow(from, square))
+    //                 break;
+    //             if (diagonalMove(move) && diagonalMoveOverFlow(from , square))
+    //                 break;
+    //             if (square == target)
+    //                 return true;
+    //             if (pieceOnSquare != nullptr)
+    //                 break;
+    //         }
+    //     }
+    // }
+    // this->getPseudoLegalMoves(gameState, from);
+
+    // std::cout << RED << move::inverseBoardMap.at(from) << RESET_COLOR;
+    // std::cout << "target : "<< target << std::endl;
+
+    // for (auto &minimove : captureMoveSet)
+    //     std::cout << "allowed move : "<< minimove << std::endl;
+
+
+    // if (std::ranges::find(captureMoveSet, target) == captureMoveSet.end())
+    //     return false;
+    // else
+    //     return true;
+
+    const std::string lastMovedPiece = gameState.getLastMovedPiece();
+    if (lastMovedPiece != "-" && (lastMovedPiece != "c" && lastMovedPiece != "C") &&  (lastMovedPiece != "k" && lastMovedPiece != "K"))
+        if(copyCanAttackSquare(lastMovedPiece.front(), from,  gameState, target)) return true;
+
+    const std::string queenInfo = this->getColor() == "White" ? gameState.getWhiteQueenInfo() : gameState.getBlackQueenInfo();
+    const std::string capturedPieces = (split(queenInfo, '='))[1];
+
+    for (auto &capturedPiece : capturedPieces)
+        if (copyCanAttackSquare(capturedPiece, from,  gameState, target)) return true;
+
+
     return false;
 }
 
 void Cameleon::onCaptureEffects(move, GameState &gameState, APiece *capturedPiece){
 
-    if(this->getColor() == "White")
-        gameState.setWhiteQueenInfo(gameState.getWhiteQueenInfo() + capturedPiece->getRepresentation());
-    else
-        gameState.setBlackQueenInfo(gameState.getBlackQueenInfo() + capturedPiece->getRepresentation());
+    if (capturedPiece->getName() != "Cameleon"){    
+        if(this->getColor() == "White")
+            gameState.setWhiteQueenInfo(gameState.getWhiteQueenInfo() + capturedPiece->getRepresentation());
+        else
+            gameState.setBlackQueenInfo(gameState.getBlackQueenInfo() + capturedPiece->getRepresentation());
+    }
     return;
 }
 

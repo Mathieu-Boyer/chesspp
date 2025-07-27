@@ -49,9 +49,6 @@ void GameState::decode(){
     lastMovedPiece = data[6];
     std::vector<std::string> queensInfos = split(data[7], ';');
 
-    std::cout << queensInfos[0] << " " << queensInfos[1] << std::endl;;
-
-
     whiteQueenInfos = queensInfos[0] ;
     blackQueenInfos = queensInfos[1] ;
     board->placePieces(data[0]);
@@ -142,7 +139,6 @@ std::vector<int> GameState::squareIsCompromised(const std::string &enemy, int ta
         if (currentPiece->canAttackSquare(i, target, *this)){
             positionsOfAllCheckers.push_back(i);
         }
-
     }
 
     return positionsOfAllCheckers;

@@ -11,7 +11,7 @@ public:
     Cameleon() = delete;
     Cameleon(const std::string &color);
 
-
+    bool copyCanAttackSquare(char pieceChar ,int from, GameState &gameState, int position);
     void onCaptureEffects(move, GameState &, APiece *capturedPiece) override;
     void copyMovesFromPiece(char pieceChar , GameState &gameState, int position);
     std::vector<int> getPseudoLegalMoves(GameState &gameState, int position) override;
