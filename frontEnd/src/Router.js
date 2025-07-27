@@ -6,6 +6,7 @@ import Index from './pages/index.vue'
 import queue from './pages/queue.vue'
 import Game from './pages/game.vue'
 import Profile from './pages/profile.vue'
+import PieceSelection from './pages/pieceSelection.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,6 +35,11 @@ const router = createRouter({
       path: '/game',
       name: 'game',
       component: Game ,
+    },
+    {
+      path: '/game/selection',
+      name: 'gameSelection',
+      component: PieceSelection ,
     },
     {
       path: '/profile',
