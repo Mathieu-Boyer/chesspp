@@ -60,7 +60,7 @@ class Game {
     }
 
     async loadAllPiecesImages() {
-        const allPieces = ["rook", "knight", "bishop", "queen", "king", "pawn", "prince"];
+        const allPieces = ["rook", "knight", "bishop", "queen", "king", "pawn", "prince", "cameleon"];
         const colors = ["White", "Black"];
         const promises = [];
         

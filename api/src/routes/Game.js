@@ -158,6 +158,7 @@ router.put('/:id/move', authenticate, loadGameById, loadGamePlayers ,  async (re
     res.status(200).json({game : foundGame});
 
         } catch (e) {
+            console.log(e);
             return res.status(400).json({message : e});
         }
     });

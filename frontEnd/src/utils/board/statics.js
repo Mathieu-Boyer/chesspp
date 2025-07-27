@@ -6,6 +6,7 @@ export const pieceTranslator = {
     "q" : "queen",
     "r" : "rook",
     "s" : "prince",
+    "c" : "cameleon",
 };
 
 
