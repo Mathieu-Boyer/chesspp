@@ -9,9 +9,10 @@ import { authenticate, authenticateSocket } from './middlewares/jwt.js';
 import { checkRole } from './middlewares/roles.js';
 import { createServer } from "http"
 import { Server } from "socket.io"
-
+import path from 'path';
 import cors from "cors"
 import { Op } from 'sequelize';
+import { fileURLToPath } from 'url';
 
 
 
@@ -61,6 +62,20 @@ app.post("/testing_role_protection", authenticate , checkRole("admin"), (req, re
     res.json("role validated !!");
 });
 
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve the Vue dist folder
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+// Fallback for client-side routing (Vue Router in history mode)
+app.get('/:route', (req, res) => {
+
+console.log(__dirname, '../frontEnd/dist/index.html')
+  res.sendFile(path.join(__dirname, '../frontEnd/dist/index.html'));
+});
 try {
     // await db.Users.drop();
     // await db.Games.drop();
