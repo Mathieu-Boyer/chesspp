@@ -41,7 +41,7 @@ io.on("connection", (socket)=>{
     })
 })
 
-httpServer.listen(8000, ()=>{
+httpServer.listen(8000, '0.0.0.0' , ()=>{
     console.log("listening on port 8000");
 })
 
