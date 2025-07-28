@@ -4,6 +4,7 @@
 #include <vector>
 #include <ranges>
 #include <memory>
+#include <algorithm>
 #include "move.hpp"
 // #include "GameState.hpp"
 
