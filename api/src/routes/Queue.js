@@ -17,14 +17,15 @@ const matchMaking = async ()=>{
         const game =  await db.Games.create({
             whitePlayerId : whitePlayer,
             blackPlayerId : blackPlayer,
-            status : "active",
+            // status : "active",
+            status : "selection",
             winnerId : null,
-            fenList : Array("rnbckbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBCKBNR w KQkq - 0 1 - C=;c="),
+            fenList : Array("rnb1kbnr/pppppppp/8/8/8/8/PPPPPPPP/RNB1KBNR w KQkq - 0 1 - Q=;q="),
+            // fenList: [],
             // fenList : Array("7k/5K2/611/6Q1/8/8/s7/8 w - - 0 1"),
             moveList : [],
             colorToPlay : "White"
         })
-
 
         sendToUser(whitePlayer, "game:found", {
             color : "White",
@@ -39,7 +40,8 @@ const matchMaking = async ()=>{
         // sendToUser(blackPlayer);
         return game;
     } catch (error) {
-        res.status(201).json({message: "Your game was found.", game})
+        console.log(error)
+        // res.status(201).json({message: "Your game was found.", game})
     }
 
 }

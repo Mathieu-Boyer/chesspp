@@ -25,6 +25,7 @@ export const loginSocket = async (token)=>{
 
 export const setupSocketListeners = async () => {
 
+
   socket.on('game:found', async (data) => {
     console.log(data)
     localStorage.setItem("gameState", JSON.stringify(data.game))
@@ -33,11 +34,25 @@ export const setupSocketListeners = async () => {
     localStorage.setItem("side", data.color)
         Game.updateGameInfos();
 
-    await router.push('/game').catch(err => {
+    await router.push('/game/selection').catch(err => {
   if (err.name !== 'NavigationDuplicated') {
-    console.error(err, "meowmeowmeow");
+    console.error(err, "<--");
   }
-});
+  });
+  })
+
+  socket.on('game:join', async (data) => {
+    console.log("joinnnnnnedddd")
+    localStorage.setItem("gameState", JSON.stringify(data.game))
+
+    Game.updateGameInfos();
+    await router.push('/game').catch(err => {
+        if (err.name !== 'NavigationDuplicated') {
+          console.error(err, "<--");
+        }
+    });
+
+    Game.drawLast();
   })
   socket.on('game:update', (data) => {
     console.log(data)
