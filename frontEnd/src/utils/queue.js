@@ -5,7 +5,7 @@ export const joinQueue = async ()=>{
 
     try{
         router.push("/queue");
-        await axios.post("http://localhost:8000/api/v1/queue/join");
+        await axios.post("/api/v1/queue/join");
     }catch (e){
         console.log(e)
     }

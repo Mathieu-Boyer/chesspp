@@ -6,7 +6,7 @@ import socket, { loginSocket } from "../socket.js";
 export const login = async (email, password)=>{
     try {
 
-        let response = await axios.post("http://localhost:8000/api/v1/auth/login", {
+        let response = await axios.post("/api/v1/auth/login", {
                 email : email,
                 password : password,
             }
@@ -28,7 +28,7 @@ export const register = async (email, username , password, passwordConfirmation)
     try {
         if (password != passwordConfirmation)
             throw ("password confirmation must be the same as password")
-        let test = await axios.post("http://localhost:8000/api/v1/auth/register", {
+        let test = await axios.post("/api/v1/auth/register", {
                 email,
                 username,
                 password

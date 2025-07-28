@@ -20,8 +20,8 @@ const userId = ref(route.params.id)
             id = userId.value
         else
             id = localStorage.getItem("id")
-        const userData = await axios.get(`http://localhost:8000/api/v1/users/${id}`);
-        const gamesData = await axios.get(`http://localhost:8000/api/v1/games/of/${id}`);
+        const userData = await axios.get(`/api/v1/users/${id}`);
+        const gamesData = await axios.get(`/api/v1/games/of/${id}`);
         user = ref(userData.data.user);
                 const modifiedGames = 
             gamesData.data.games.map(game => {

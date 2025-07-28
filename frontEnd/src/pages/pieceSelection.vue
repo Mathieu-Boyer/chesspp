@@ -34,7 +34,7 @@ const handleSelection = async (e)=>{
     const elWithId = clickedElem.id ? clickedElem : clickedElem.closest('[id]');
     console.log(elWithId.id);
 
-    const response = await axios.patch(`http://localhost:8000/api/v1/games/${game.gameInfos.id}/select`, {
+    const response = await axios.patch(`/api/v1/games/${game.gameInfos.id}/select`, {
         piece : elWithId.id
     })
     

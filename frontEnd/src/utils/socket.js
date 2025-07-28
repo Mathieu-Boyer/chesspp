@@ -4,7 +4,7 @@ import { io } from "socket.io-client";
 import Game from "../utils/board/game.js";
 import router from "../Router.js";
 
-const socket = io("http://localhost:8000", {
+const socket = io("", {
     autoConnect : false,
     withCredentials: false,
 });

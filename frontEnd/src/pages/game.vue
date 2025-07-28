@@ -6,7 +6,7 @@ import game from '../utils/board/game';
 
 
 async function handleResign  (e){
-   const response =  await axios.patch(`http://localhost:8000/api/v1/games/${game.gameInfos.id}/resign`)
+   const response =  await axios.patch(`/api/v1/games/${game.gameInfos.id}/resign`)
 }
 
 </script>
