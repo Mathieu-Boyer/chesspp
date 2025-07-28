@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <ranges>
+#include <memory>
 #include "move.hpp"
 // #include "GameState.hpp"
 
