@@ -7,8 +7,17 @@ import { joinQueue } from '../utils/queue';
 </script>
 
 <template>
-    <Button @click="joinQueue" label="Join queue"></Button>
+    <div class="indexPage">
+        <Button @click="joinQueue" label="Join queue"></Button>
+    </div>
 </template>
 
 <style scoped>
+
+    .indexPage {
+        display: flex;
+        justify-content: center ;
+        align-items: center ;
+        height: 100vh;
+    }
 </style>
