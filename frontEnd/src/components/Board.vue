@@ -50,7 +50,7 @@ import { joinQueue } from '../utils/queue.js';
     })
 
 
-
+    const displayErrDivForDebug = false;
 </script>
 
 <template>
@@ -69,7 +69,7 @@ import { joinQueue } from '../utils/queue.js';
             </Dock>
         <canvas ref="canvasRef"></canvas>
     </div>
-    <div class="error" ref="errDiv"></div>
+    <div v-if="displayErrDivForDebug" class="error" ref="errDiv"></div>
 </template>
 
 <style scoped>

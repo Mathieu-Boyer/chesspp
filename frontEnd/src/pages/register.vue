@@ -29,7 +29,10 @@ import RegisterForm from '../components/registerForm.vue';
         margin-top: 1.5rem;
         text-decoration: underline;
         cursor: pointer;
+        color: white;
+
     }
+
     .link:visited{
         color: white;
     }
