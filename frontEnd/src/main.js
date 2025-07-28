@@ -7,6 +7,7 @@ import router from './Router'
 import socket, { loginSocket } from './utils/socket'
 import Button from "primevue/button"
 import axios from 'axios'
+import game from './utils/board/game'
 
 const app = createApp(App)
 
@@ -26,4 +27,13 @@ if (token){
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 }else{
     router.push("/login")
+}
+
+
+if (game.gameInfos){
+    console.log(game.gameInfos)
+    if (game.gameInfos.status == "active")
+        router.push("/game")
+    if (game.gameInfos.status == "selection")
+        router.push("/game/selection")
 }

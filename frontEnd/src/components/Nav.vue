@@ -27,17 +27,21 @@ const foundUsers = ref([]);
 async function handleSearch(){
   console.log(searchbarContent.value)
   console.log(`http://localhost:8000/api/v1/users/?search=${searchbarContent.value}`)
- let response = await axios.get(`http://localhost:8000/api/v1/users/?search=${searchbarContent.value}`);
+  let response = await axios.get(`http://localhost:8000/api/v1/users/?search=${searchbarContent.value}`);
+  console.log(response.data)
+  foundUsers.value = response.data.users.slice(0,5)
+}
 
- console.log(response.data)
 
- foundUsers.value = response.data.users.slice(0,5)
-} 
+function handleLogout(){
+  localStorage.removeItem('token')
+  hover.value = true
+  router.push('/login')
+}
 
 </script>
 <template>
 <div v-if="navIsDisplayed" @mouseenter="hover = true" @mouseleave="hover = false"  :class="hover ? 'opened' : 'closed'" class="navBar">
-
     <div class="searchSection">
         <div class="searchUsers">
             <div v-if="hover" class="searchBarContainer">
@@ -56,7 +60,7 @@ async function handleSearch(){
         </div>
     </div>
 
-  <nav>
+  <nav :style="{padding : hover ? '0 2rem' : '0'}">
         <span @click="router.push('/')" class="navElem">
             <span  class="pi pi-crown"></span>
             <h4 :class="hover ? 'visible' : 'hidden'">Gamemodes</h4>
@@ -67,7 +71,11 @@ async function handleSearch(){
         </span>
   </nav>
 
-  <div></div>
+  <div @click="handleLogout" class="disconnectContainer">
+    <span  class="pi pi-sign-out"></span>
+    <h6 :class="hover ? 'visible' : 'hidden'">sign-out</h6>
+
+  </div>
 </div>
 </template>
 
@@ -79,9 +87,8 @@ async function handleSearch(){
   justify-content: space-between;
   align-items: center;
   height: 100vh;
-  width: 100%;
 
-  padding: 2rem;
+  padding: 1rem;
   background-color: #161616;
   border-right: 1px solid #2b2b2b;
   position: fixed;
@@ -93,6 +100,7 @@ async function handleSearch(){
     display: flex;
     flex-direction: column;
     width: 100%;
+    min-height: 5rem;
 }
 
 .opened{
@@ -100,7 +108,7 @@ async function handleSearch(){
 }
 
 .closed{
-  width: 2rem;
+  width: 4rem;
 }
 
 
@@ -176,18 +184,52 @@ input {
 
 
 .hidden{
-    display: none;
+    /* display: none; */
+    opacity: 0;
     transition: all .2s;
 }
 
 .visible{
-    visibility: block;
+    /* visibility: block; */
+    opacity: 1;
     transition: all 1s;
 }
 
+.navElem h4{
+  position: absolute;
+  left: 6rem;
 
+}
 
 .navElem .pi {
     font-size: 1.5rem;
 }
+
+
+nav {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+}
+
+.iconTranslation{
+}
+
+
+.disconnectContainer{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  width: 100%;
+}
+
+.disconnectContainer h6{
+  position: absolute;
+  left: 3rem;
+}
+
+
+
 </style>
