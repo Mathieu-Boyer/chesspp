@@ -1,5 +1,5 @@
 <script setup>
-import Chesspp from '../components/Chesspp.Vue';
+import Chesspp from '../components/Chesspp.vue';
 import LoginForm from '../components/LoginForm.vue';
 
 </script>
