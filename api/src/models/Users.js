@@ -8,7 +8,7 @@ export default (sequelize, DataTypes)=>{
         avatar: {
             type: DataTypes.STRING,
             allowNull: false,
-            default: "default.png"
+            defaultValue: "default.png"
         },
         role: {
             type: DataTypes.STRING,

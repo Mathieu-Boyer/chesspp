@@ -33,6 +33,68 @@ router.get('/', authenticate, async (req, res)=>{
     return res.status(200).json({games : foundGames});
 })
 
+
+router.patch("/:id/select", authenticate, async (req, res)=>{
+    const id = req.params.id;
+
+    if (!id)
+        return res.status(400).json({message : "A game id must be provided to use this endpoint."});
+
+    let foundGame = await db.Games.findOne(
+        {
+            where: {id},
+            include: [
+                { model: db.Users, as: 'whitePlayer' },
+                { model: db.Users, as: 'blackPlayer' },
+                { model: db.Users, as: 'winner' },
+                { model: db.Users, as: 'drawProposer' },
+            ]
+        });
+
+    if (!foundGame)
+        return res.status(404).json({message : "No game with this ID was found."});
+
+    try {
+        gameIsNotFinished(foundGame);
+        playerIsInTheGame(req.id, foundGame)
+    } catch (error) {
+        console.log(error, "aaaah okay")
+        return res.status(401).json(error);
+    }
+
+    if (req.id == foundGame.blackPlayerId)
+        foundGame.blackSelectedPiece = req.body.piece; // add verification later of if piece is valid and if piece was provided.
+    else
+        foundGame.whiteSelectedPiece = req.body.piece;
+
+    if (foundGame.blackSelectedPiece != "-" && foundGame.whiteSelectedPiece != "-")
+        foundGame.status = "active";
+
+    console.log(foundGame.blackSelectedPiece, foundGame.whiteSelectedPiece );
+    foundGame.fenList = [`rnb${foundGame.blackSelectedPiece != "-" ? foundGame.blackSelectedPiece : '1'}kbnr/pppppppp/8/8/8/8/PPPPPPPP/RNB${foundGame.whiteSelectedPiece != "-" ? foundGame.whiteSelectedPiece : '1'}KBNR w KQkq - 0 1 - ${foundGame.blackSelectedPiece != "-" ? foundGame.blackSelectedPiece : 'Q'}=;${foundGame.whiteSelectedPiece != "-" ? foundGame.whiteSelectedPiece : '1'}=`];
+
+    await foundGame.save();
+    await foundGame.reload({
+        include: [
+            { model: db.Users, as: 'whitePlayer' },
+            { model: db.Users, as: 'blackPlayer' },
+            { model: db.Users, as: 'winner' },
+            { model: db.Users, as: 'drawProposer' },
+        ]
+    });
+    
+
+    sendToUser(req.id, "game:selected", {})
+
+    if (foundGame.blackSelectedPiece != "-" && foundGame.whiteSelectedPiece != "-"){
+        sendToUser(foundGame.whitePlayerId, "game:join", {game: foundGame})
+        sendToUser(foundGame.blackPlayerId, "game:join", {game: foundGame})
+
+    }
+
+    return res.status(200).json({game : foundGame});
+})
+
 router.get('/of/:id', authenticate, async (req, res)=>{
     const id = req.params.id;
     if (!id)
@@ -212,8 +274,8 @@ router.patch("/:id/resign", authenticate, async (req, res)=>{
         ]
     });
 
-    sendToUser(foundGame.blackPlayerId, "game:finished", {game: foundGame})
-    sendToUser(foundGame.whitePlayerId, "game:finished", {game: foundGame})
+    sendToUser(foundGame.blackPlayerId, "game:update", {game: foundGame})
+    sendToUser(foundGame.whitePlayerId, "game:update", {game: foundGame})
 
     return res.status(200).json({game : foundGame});
 })

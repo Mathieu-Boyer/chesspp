@@ -65,7 +65,9 @@ try {
     // await db.Users.drop();
     // await db.Games.drop();
 
-    // await db.sequelize.sync({ alter: true })
+    // await db.sequelize.sync({ force: true })
+
+// await sequelize.sync({ force: false });
 
 //     await db.Users.update(
 //   { avatar: 'default.png' },
@@ -78,6 +80,8 @@ try {
 //     }
 //   }
 // );
+
+    // await db.sequelize.sync()
     await db.sequelize.authenticate()
 
     console.log("Connected to DB.")

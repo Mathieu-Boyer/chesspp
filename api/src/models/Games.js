@@ -45,6 +45,46 @@ export default (sequelize, DataTypes)=>{
         colorToPlay : {
             type : DataTypes.STRING,
             default : "White"
+        },
+        blackSelectedPiece : {
+            type: DataTypes.STRING,
+            defaultValue : "-"
+        },
+        whiteSelectedPiece : {
+            type : DataTypes.STRING,
+            defaultValue : "-"
+        },
+        whitePlayerId : {
+            type: DataTypes.INTEGER,
+            references : {
+                model : "Users",
+                key: "id",
+            },
+            allowNull : false,
+        },
+        blackPlayerId : {
+            type: DataTypes.INTEGER,
+            references : {
+                model : "Users",
+                key: "id",
+            },
+            allowNull : false,
+        },
+        winnerId : {
+            type: DataTypes.INTEGER,
+            references : {
+                model : "Users",
+                key: "id",
+            },
+            allowNull : true,
+        },
+        drawProposerId : {
+            type: DataTypes.INTEGER,
+            references : {
+                model : "Users",
+                key: "id",
+            },
+            allowNull : true,
         }
     })
     Games.prototype.toJSON = function (){
