@@ -71,9 +71,7 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, '../../frontEnd/dist')));
 
 // Fallback for client-side routing (Vue Router in history mode)
-app.get('/:route', (req, res) => {
-
-console.log(__dirname, '../frontEnd/dist/index.html')
+app.get(/\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, '../../frontEnd/dist/index.html'));
 });
 try {
