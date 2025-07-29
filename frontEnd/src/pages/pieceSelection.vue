@@ -4,6 +4,7 @@ import { Card } from 'primevue';
 import { ref } from 'vue';
 import router from '../Router';
 import game from '../utils/board/game';
+import { v1 } from '../utils/api';
 
 
 
@@ -34,7 +35,7 @@ const handleSelection = async (e)=>{
     const elWithId = clickedElem.id ? clickedElem : clickedElem.closest('[id]');
     console.log(elWithId.id);
 
-    const response = await axios.patch(`/api/v1/games/${game.gameInfos.id}/select`, {
+    const response = await axios.patch(`${v1}games/${game.gameInfos.id}/select`, {
         piece : elWithId.id
     })
     
@@ -79,6 +80,7 @@ const handleSelection = async (e)=>{
     flex-direction: column;
     width: 20rem;
     background-color: #1e1e1e;
+    color: white;
     font-weight:bolder;
 
     cursor: pointer;
