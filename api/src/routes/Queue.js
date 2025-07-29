@@ -58,4 +58,10 @@ router.post("/join", authenticate, async (req, res)=>{
     res.status(201).json({message: "Your game was found.", game})
 })
 
+
+router.post("/quit", authenticate, async (req, res)=>{
+    queue.delete(req.id);
+    res.status(200).json({message: "Queue quited successfuly."})
+})
+
 export default router;

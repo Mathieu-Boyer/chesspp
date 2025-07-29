@@ -12,6 +12,12 @@ export const joinQueue = async ()=>{
     }
 }
 
-export const quitQueue = ()=>{
-    router.push("/");
+export const quitQueue = async ()=>{
+
+    try{
+        await axios.post(`${v1}queue/quit`);
+        router.push("/");
+    }catch (e){
+        console.log(e)
+    }
 }
