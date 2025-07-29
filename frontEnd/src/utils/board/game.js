@@ -4,7 +4,11 @@ import { v1 } from "../api";
 
 
 function isLowerCase(char) {
-    return char === char.toLowerCase() && char !== char.toUpperCase();
+    return char === char.toLowerCase();
+}
+
+function isUpperCase(char) {
+    return char === char.toUpperCase();
 }
 
 
@@ -252,6 +256,37 @@ class Game {
         this.ctx.closePath();
     }
 
+    getFullBoardRepresentation(fenRepresentation) {
+        let boardRepresentation = "";
+        for (let char of fenRepresentation){
+            if (char == '/')
+                continue
+            if (!isNaN(char)){
+                let counter = 0;
+                while (counter < parseInt(char)){
+                    boardRepresentation += "1";
+                    counter++;
+                }
+                continue;
+            }
+
+            boardRepresentation += char;
+        }
+
+        return boardRepresentation;
+    }
+
+
+
+    isSameColoredPiece(pieceA, pieceB){
+
+
+
+        console.log(pieceA, pieceB, isLowerCase(pieceA) && isLowerCase(pieceB), (isUpperCase(pieceA) && isUpperCase(pieceB)))
+
+        return ((isLowerCase(pieceA) && isLowerCase(pieceB)) || (isUpperCase(pieceA) && isUpperCase(pieceB)) )
+    }
+
     async getPressedSquare(e){
         console.log(this.canvas)
         const rect = this.canvas.getBoundingClientRect();
@@ -262,10 +297,25 @@ class Game {
         const xSquare = Math.floor(((x / this.squareSize) % 8));
         const ySquare =  Math.floor(((y / this.squareSize) % 8));
 
-        if (!this.currentSelectedSquare)
-            this.currentSelectedSquare = this.side == "White" ? chessBoard[xSquare + (8 * ySquare)] :  chessBoard[(7 - xSquare + (8 * (7- ySquare)))];
-        else
-            this.currentSelectedSquare += "-" + (this.side == "White" ? chessBoard[xSquare + (8 * ySquare)] : chessBoard[(7 - xSquare + (8 * (7- ySquare)))]);
+        const currentBoard = this.getFullBoardRepresentation(this.gameInfos.fenList[this.gameInfos.fenList.length - 1]);
+
+        console.log(currentBoard, 'lalalalalalalalalalalalalala')
+
+        const pressedSquare = this.side == "White" ? xSquare + (8 * ySquare) :  (7 - xSquare + (8 * (7- ySquare)));
+        const pressedSquareToString = chessBoard[pressedSquare]
+        if (!this.currentSelectedSquare){
+            // console.log(currentBoard[pressedSquare]);
+            this.currentSelectedSquare = pressedSquareToString;
+        }
+        else{
+            console.log("huuuuuuuuuuuuuuuh", currentBoard[pressedSquare], !this.isSameColoredPiece(this.currentSelectedSquare, currentBoard[pressedSquare]),currentBoard[pressedSquare] == "1" || !this.isSameColoredPiece(this.currentSelectedSquare, currentBoard[pressedSquare]) )
+            // console.log(currentBoard[pressedSquare]);
+            if(currentBoard[pressedSquare] == "1" || !this.isSameColoredPiece(currentBoard[chessBoardReverse[this.currentSelectedSquare]], currentBoard[pressedSquare]))
+                this.currentSelectedSquare += "-" + pressedSquareToString;
+            else
+                this.currentSelectedSquare = pressedSquareToString;
+                
+        }
         try{
             console.log(this.currentSelectedSquare)
             let response = await axios.put(`${v1}games/${this.gameInfos.id}/move`, {
@@ -280,7 +330,7 @@ class Game {
             console.log(err.response.data.message)
             this.currentSelectedSquare = undefined;
 
-            this.errDiv.innerText = err.response.data.message;
+            // this.errDiv.innerText = err.response.data.message;
             this.drawLast();
         }
     }

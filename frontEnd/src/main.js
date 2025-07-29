@@ -21,6 +21,7 @@ app.use(PrimeVue, {
 app.use(router);
 app.mount('#app');
 
+
 const token = localStorage.getItem("token");
 
 if (token){
