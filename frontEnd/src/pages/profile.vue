@@ -4,6 +4,7 @@ import { Avatar, Column, DataTable, Knob, Tag } from 'primevue';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router'
 import router from '../Router';
+import { v1 } from '../utils/api';
 
 const route = useRoute()
 const userId = ref(route.params.id)
@@ -20,8 +21,8 @@ const userId = ref(route.params.id)
             id = userId.value
         else
             id = localStorage.getItem("id")
-        const userData = await axios.get(`/api/v1/users/${id}`);
-        const gamesData = await axios.get(`/api/v1/games/of/${id}`);
+        const userData = await axios.get(`${v1}users/${id}`);
+        const gamesData = await axios.get(`${v1}games/of/${id}`);
         user = ref(userData.data.user);
                 const modifiedGames = 
             gamesData.data.games.map(game => {

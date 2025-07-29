@@ -1,5 +1,6 @@
 import axios from "axios";
 import { pieceTranslator, chessBoard, chessBoardReverse } from "./statics";
+import { v1 } from "../api";
 
 
 function isLowerCase(char) {
@@ -267,7 +268,7 @@ class Game {
             this.currentSelectedSquare += "-" + (this.side == "White" ? chessBoard[xSquare + (8 * ySquare)] : chessBoard[(7 - xSquare + (8 * (7- ySquare)))]);
         try{
             console.log(this.currentSelectedSquare)
-            let response = await axios.put(`/api/v1/games/${this.gameInfos.id}/move`, {
+            let response = await axios.put(`${v1}games/${this.gameInfos.id}/move`, {
                 move : this.currentSelectedSquare
             })
 
@@ -305,7 +306,7 @@ class Game {
         console.log(e.target.alt)
         this.currentSelectedSquare += "=" + e.target.alt;
         try{
-            let response = await axios.put(`/api/v1/games/${this.gameInfos.id}/move`, {
+            let response = await axios.put(`${v1}games/${this.gameInfos.id}/move`, {
                 move : this.currentSelectedSquare
             })
             console.log(response)

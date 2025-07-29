@@ -6,6 +6,7 @@ import 'primeicons/primeicons.css'
 import axios from 'axios';
 import router from '../Router';
 import { useRoute } from 'vue-router';
+import { v1 } from '../utils/api';
 const route = useRoute()
 
 
@@ -26,8 +27,8 @@ const searchbarContent = ref('');
 const foundUsers = ref([]);
 async function handleSearch(){
   console.log(searchbarContent.value)
-  console.log(`/api/v1/users/?search=${searchbarContent.value}`)
-  let response = await axios.get(`/api/v1/users/?search=${searchbarContent.value}`);
+  console.log(`${v1}users/?search=${searchbarContent.value}`)
+  let response = await axios.get(`/users/?search=${searchbarContent.value}`);
   console.log(response.data)
   foundUsers.value = response.data.users.slice(0,5)
 }

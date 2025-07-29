@@ -3,8 +3,9 @@ import { io } from "socket.io-client";
 // import router from "../Router";
 import Game from "../utils/board/game.js";
 import router from "../Router.js";
+import { base, protocol } from "./api.js";
 
-const socket = io("", {
+const socket = io(protocol + base, {
     autoConnect : false,
     withCredentials: false,
 });
@@ -27,7 +28,7 @@ export const setupSocketListeners = async () => {
 
 
   socket.on('game:found', async (data) => {
-    console.log(data)
+    console.log(data, "<-------")
     localStorage.setItem("gameState", JSON.stringify(data.game))
 
     console.log("setting side to : ", data.color)

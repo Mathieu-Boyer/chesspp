@@ -3,10 +3,11 @@ import { Button } from 'primevue';
 import Board from '../components/Board.vue';
 import axios from 'axios';
 import game from '../utils/board/game';
+import { v1 } from '../utils/api';
 
 
 async function handleResign  (e){
-   const response =  await axios.patch(`/api/v1/games/${game.gameInfos.id}/resign`)
+   const response =  await axios.patch(`${v1}games/${game.gameInfos.id}/resign`)
 }
 
 </script>
