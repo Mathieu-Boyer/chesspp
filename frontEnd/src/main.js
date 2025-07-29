@@ -8,6 +8,7 @@ import socket, { loginSocket } from './utils/socket'
 import Button from "primevue/button"
 import axios from 'axios'
 import game from './utils/board/game'
+import { quitQueue } from './utils/queue'
 
 const app = createApp(App)
 
@@ -23,8 +24,9 @@ app.mount('#app');
 const token = localStorage.getItem("token");
 
 if (token){
-    await loginSocket(token)
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    await quitQueue();
+    await loginSocket(token)
 }else{
     router.push("/login")
 }
