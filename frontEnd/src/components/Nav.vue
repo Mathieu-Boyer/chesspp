@@ -28,7 +28,7 @@ const foundUsers = ref([]);
 async function handleSearch(){
   console.log(searchbarContent.value)
   console.log(`${v1}users/?search=${searchbarContent.value}`)
-  let response = await axios.get(`/users/?search=${searchbarContent.value}`);
+  let response = await axios.get(`${v1}users/?search=${searchbarContent.value}`);
   console.log(response.data)
   foundUsers.value = response.data.users.slice(0,5)
 }
