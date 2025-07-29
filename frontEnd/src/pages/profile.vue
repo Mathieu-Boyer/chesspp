@@ -21,8 +21,8 @@ const userId = ref(route.params.id)
             id = userId.value
         else
             id = localStorage.getItem("id")
-        const userData = await axios.get(`${v1}users/${id}`);
-        const gamesData = await axios.get(`${v1}games/of/${id}`);
+        const userData = await axios.get(`${v1}users/${id}`, {timeout : 1200});
+        const gamesData = await axios.get(`${v1}games/of/${id}`,  {timeout : 1200});
         user = ref(userData.data.user);
                 const modifiedGames = 
             gamesData.data.games.map(game => {
@@ -57,7 +57,7 @@ const userId = ref(route.params.id)
     user.value.avatar = "default.png"
     const winAmmount = games.value.filter(element => element.endGameType === "win").length;
 
-    const winrate = ref(Math.floor((winAmmount/games.value.length) * 100));
+    const winrate = ref(Math.floor((winAmmount/games.value.length) * 100) || 0);
 
     const getSeverity = (status) => {
     return status === 'win'
@@ -89,12 +89,12 @@ const userId = ref(route.params.id)
 
     <div class="stats">
 
-    <div class="knob">
-        <Knob v-model="winrate" :size="200" readonly valueTemplate="{value}%"/>
-        <h3>Win rate</h3>
-    </div>
+        <div class="knob">
+            <Knob v-model="winrate" :size="300" readonly valueTemplate="{value}%"/>
+            <h3>Win rate</h3>
+        </div>
 
-    <div class="tableContainer">
+    <!-- <div class="tableContainer">
             <h3>Games history</h3>
             <DataTable  class="table" :value="games" size="large">
                 <Column field="status" header="Status"></Column>
@@ -105,7 +105,7 @@ const userId = ref(route.params.id)
                     </template>
                 </Column>
             </DataTable>
-            </div>
+    </div> -->
     </div>
     </div>
 
@@ -116,10 +116,12 @@ const userId = ref(route.params.id)
     .profilePage{
         display: flex;
         align-items: center;
-        align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         padding: 5rem;
         flex-direction: column;
+        height: 100vh;
+
+        gap: 10rem;
     }
 
     .profileHeader{
@@ -149,6 +151,7 @@ const userId = ref(route.params.id)
         display: flex;
         width: 100%;
         align-items: center;
+        justify-content: center;
     }
     .table{
         width: 100%;

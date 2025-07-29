@@ -2,6 +2,8 @@ import axios from "axios";
 import router from "../Router"
 import { v1 } from "./api";
 
+
+
 export const joinQueue = async ()=>{
 
     try{
@@ -16,7 +18,8 @@ export const quitQueue = async ()=>{
 
     try{
         await axios.post(`${v1}queue/quit`);
-        router.push("/");
+        if (window.location.pathname == "/queue")
+            router.push("/");
     }catch (e){
         console.log(e)
     }
