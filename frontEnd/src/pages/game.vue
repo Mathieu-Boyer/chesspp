@@ -67,6 +67,9 @@ console.log(game.gameInfos.colorToPlay , side)
     position: relative;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
     gap: 1rem;
 }
 
@@ -80,7 +83,6 @@ console.log(game.gameInfos.colorToPlay , side)
     position: relative;
 }
 .underline h3::after{
-    /* border: blue 2px solid; */
     content: "";
     position: absolute;
     bottom: 0;
