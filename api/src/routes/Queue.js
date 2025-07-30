@@ -8,7 +8,7 @@ import axios from "axios"
 import { autoSelectQueen } from "../utils/queue.js";
 const router = Router();
 
-const SELECTION_TIME_MS = 20000;
+const SELECTION_TIME_MS = 1000000;
 
 
 

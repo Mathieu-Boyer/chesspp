@@ -71,30 +71,26 @@ setInterval(()=>{
 </template>
 
 <style scoped>
-.selectionPage{
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items:center ;
-    gap: 5rem;
-}
 .cardContainer {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 2rem;
+    padding: 0 1rem;
+    max-width: 100%;
 }
+
 .card {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
     flex-direction: column;
-    width: 20rem;
+    align-items: center;
+    width: 100%;
+    max-width: 300px;
     background-color: #1e1e1e;
     color: white;
-    font-weight:bolder;
-
+    font-weight: bolder;
     cursor: pointer;
-    transition: all .5s;
+    transition: all 0.5s;
 }
 
 .card:hover {
@@ -103,17 +99,54 @@ setInterval(()=>{
     box-shadow: 2px 2px 20px #4f4f4f;
 }
 
-.card:active{
-    transition: all .2s;
-
+.card:active {
+    transition: all 0.2s;
     transform: translateY(0);
     box-shadow: none;
 }
 
-
-
-img{
-    height: 100%;
+img {
     width: 100%;
+    object-fit: contain;
+}
+
+@media (min-width: 951px) {
+    .selectionPage{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 2rem;
+        width: 100%;
+        min-height: 100vh;
+    }
+
+    img {
+        height: 15rem;
+    }
+
+}
+@media (max-width: 950px) {
+    .cardContainer {
+        margin-top: 2rem;
+    }
+
+    .selectionPage {
+        gap: 3rem;
+        padding: 1rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+        text-align: center;
+    }
+
+    .card {
+        max-width: 90vw;
+    }
+
+    img {
+        height: 10rem;
+    }
 }
 </style>
