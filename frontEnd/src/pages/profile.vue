@@ -93,7 +93,6 @@ const userId = ref(route.params.id)
             <Knob v-model="winrate" :size="300" readonly valueTemplate="{value}%"/>
             <h3>Win rate</h3>
         </div>
-
     <!-- <div class="tableContainer">
             <h3>Games history</h3>
             <DataTable  class="table" :value="games" size="large">
@@ -134,6 +133,7 @@ const userId = ref(route.params.id)
         background-color: #1b1b1b;
     }
 
+
     .profile{
         display: flex;
         align-items: center;
@@ -158,5 +158,17 @@ const userId = ref(route.params.id)
         margin-top: 1rem;
         overflow-y: scroll;
         height: 35rem;
+    }
+
+
+    @media (max-width: 768px) {
+        .profilePage {
+            padding: .5rem;
+            gap: 5rem;
+        }
+        .profileHeader{
+            margin-top: 4rem;
+            padding: .1rem;
+        }
     }
 </style>
