@@ -27,8 +27,9 @@ export const io = new Server(httpServer, {
     credentials: true
   }
 });
-export let userSockets = new Map()
 
+export let userSockets = new Map()
+export let userSelectionTimeout = new Map()
 
 io.use(authenticateSocket)
 
