@@ -76,7 +76,7 @@ import { joinQueue } from '../utils/queue.js';
     canvas {
         width: 100%;
         max-width: 40rem; 
-        aspect-ratio: 1 / 1; /* Keeps it square */
+        aspect-ratio: 1 / 1;
         display: block;
     }
 
@@ -93,10 +93,10 @@ import { joinQueue } from '../utils/queue.js';
     .p-dock {
         border-radius: 15px;
         width: fit-content;
-        background-color: #1e1e1e !important; /* replace with your preferred color */
-        backdrop-filter: none !important;     /* disable blur effect if present */
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* optional: shadow for elevation */
-        border-top: 1px solid #444;           /* optional: border style */
+        background-color: #1e1e1e !important;
+        backdrop-filter: none !important;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-top: 1px solid #444;
     }
 
     .dock img{
