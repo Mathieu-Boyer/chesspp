@@ -38,16 +38,26 @@ const handleSelection = async (e)=>{
     const response = await axios.patch(`${v1}games/${game.gameInfos.id}/select`, {
         piece : elWithId.id
     })
-    
     // router.push('/game')
     pieces.value = pieces.value.filter((card)=>card.representation == elWithId.id);
 }
+
+
+const handleDeadlineTimer = ref(game.pieceSelectDeadline);
+
+setInterval(()=>{
+    if (!handleDeadlineTimer.value)
+        return
+    handleDeadlineTimer.value -= 1;
+}, 1000)
+
 </script>
 
 <template>
     <div class="selectionPage">
 
         <h2>Select your piece for this game</h2>
+        <h2>{{ handleDeadlineTimer }}</h2>
 
         <div class="cardContainer">
             <Card @click="handleSelection" class="card" v-for="piece in pieces" :key="piece.title" :id="piece.representation">

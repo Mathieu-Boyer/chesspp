@@ -224,6 +224,7 @@ nav {
   justify-content: flex-start;
   gap: 1rem;
   width: 100%;
+  cursor: pointer;
 }
 
 .disconnectContainer h6{

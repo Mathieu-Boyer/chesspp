@@ -29,7 +29,7 @@ class Game {
         this.width = 0;
         this.height = 0;
         this.currentSelectedSquare;
-         
+        this.pieceSelectDeadline = null;
 
     }
 

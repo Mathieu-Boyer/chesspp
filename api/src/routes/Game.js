@@ -7,6 +7,7 @@ import { drawIsOffered, gameIsNotFinished, notDrawProposer, playerIsInTheGame } 
 
 import { execFile } from "child_process";
 import { loadGameById, loadGamePlayers } from "../middlewares/games.js";
+import { userSelectionTimeout } from "../server.js";
 
 const {or} = Op;
 const router = Router();
@@ -40,8 +41,7 @@ router.patch("/:id/select", authenticate, async (req, res)=>{
     if (!id)
         return res.status(400).json({message : "A game id must be provided to use this endpoint."});
 
-    let foundGame = await db.Games.findOne(
-        {
+    let foundGame = await db.Games.findOne({
             where: {id},
             include: [
                 { model: db.Users, as: 'whitePlayer' },
@@ -49,7 +49,7 @@ router.patch("/:id/select", authenticate, async (req, res)=>{
                 { model: db.Users, as: 'winner' },
                 { model: db.Users, as: 'drawProposer' },
             ]
-        });
+    });
 
     if (!foundGame)
         return res.status(404).json({message : "No game with this ID was found."});
@@ -63,14 +63,13 @@ router.patch("/:id/select", authenticate, async (req, res)=>{
     }
 
     if (req.id == foundGame.blackPlayerId)
-        foundGame.blackSelectedPiece = req.body.piece; // add verification later of if piece is valid and if piece was provided.
+        foundGame.blackSelectedPiece = req.body.piece; // i should add verification later of if piece is valid and if piece was provided.
     else
         foundGame.whiteSelectedPiece = req.body.piece;
 
     if (foundGame.blackSelectedPiece != "-" && foundGame.whiteSelectedPiece != "-")
         foundGame.status = "active";
 
-    console.log(foundGame.blackSelectedPiece, foundGame.whiteSelectedPiece );
     foundGame.fenList = [`rnb${foundGame.blackSelectedPiece != "-" ? foundGame.blackSelectedPiece : '1'}kbnr/pppppppp/8/8/8/8/PPPPPPPP/RNB${foundGame.whiteSelectedPiece != "-" ? foundGame.whiteSelectedPiece : '1'}KBNR w KQkq - 0 1 - ${foundGame.blackSelectedPiece != "-" ? foundGame.blackSelectedPiece : 'Q'}=;${foundGame.whiteSelectedPiece != "-" ? foundGame.whiteSelectedPiece : '1'}=`];
 
     await foundGame.save();
@@ -82,16 +81,14 @@ router.patch("/:id/select", authenticate, async (req, res)=>{
             { model: db.Users, as: 'drawProposer' },
         ]
     });
-    
 
     sendToUser(req.id, "game:selected", {})
+    userSelectionTimeout.delete(req.id);
 
     if (foundGame.blackSelectedPiece != "-" && foundGame.whiteSelectedPiece != "-"){
         sendToUser(foundGame.whitePlayerId, "game:join", {game: foundGame})
         sendToUser(foundGame.blackPlayerId, "game:join", {game: foundGame})
-
     }
-
     return res.status(200).json({game : foundGame});
 })
 
@@ -155,29 +152,21 @@ router.put('/:id/move', authenticate, loadGameById, loadGamePlayers ,  async (re
 
     let foundGame = req.foundGame;
 
-    console.log(req.id, foundGame.whitePlayer.id, foundGame.colorToPlay);
     if (((req.id == foundGame.whitePlayer.id) && foundGame.colorToPlay != "White") || ((req.id == foundGame.blackPlayer.id) && foundGame.colorToPlay != "Black"))
         return res.status(400).json({message : "It's not your turn to play."});
 
-    console.log(foundGame.fenList[foundGame.fenList.length - 1])
     execFile('../chessEngine/app', [body.move, foundGame.fenList[foundGame.fenList.length - 1]], async (error, stdout, stderr) => {
         if (error) {
             console.error(`Error: ${error.message}`);
             return;
         }
         if (stderr) {
-            console.log("huuuuuh", stderr)
             res.status(400).json({message : stderr});
             return;
         }
 
         try {
-    console.log("huuuuuh0")
-            
             let json = JSON.parse(stdout);
-            console.log(json, body.move);
-
-
 
             if (body.move.length > 2){
                 foundGame.fenList = [...foundGame.fenList, json.new_FEN.trim()];
@@ -190,17 +179,12 @@ router.put('/:id/move', authenticate, loadGameById, loadGamePlayers ,  async (re
                 return res.status(200).json("sucess");
             }
 
-
-
             if (json.game_status != 0){
                 foundGame.status = "finished";
                 console.log(json.game_status)
                 if (json.game_status == 2)
                     foundGame.winnerId = req.id;
-
             }
-        console.log("huuuuuh1")
-
             await foundGame.save();
             await foundGame.reload({
             include: [
@@ -210,20 +194,14 @@ router.put('/:id/move', authenticate, loadGameById, loadGamePlayers ,  async (re
                 { model: db.Users, as: 'drawProposer' },
             ]})
 
-    console.log("huuuuuh2")
+            sendToUser(foundGame.blackPlayerId, "game:update", {game: foundGame, status : json.game_status})
+            sendToUser(foundGame.whitePlayerId, "game:update", {game: foundGame, status : json.game_status})
+            res.status(200).json({game : foundGame});
 
-
-
-    sendToUser(foundGame.blackPlayerId, "game:update", {game: foundGame, status : json.game_status})
-    sendToUser(foundGame.whitePlayerId, "game:update", {game: foundGame, status : json.game_status})
-
-    res.status(200).json({game : foundGame});
-
-        } catch (e) {
-            console.log(e);
-            return res.status(400).json({message : e});
-        }
-    });
+    } catch (e) {
+        console.log(e);
+        return res.status(400).json({message : e});
+    }});
 
 
 

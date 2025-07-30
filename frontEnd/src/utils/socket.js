@@ -5,12 +5,10 @@ import Game from "../utils/board/game.js";
 import router from "../Router.js";
 import { base, protocol } from "./api.js";
 
-const socket = io("", {
+const socket = io(protocol + base, {
     autoConnect : false,
     withCredentials: false,
 });
-
-
 
 // const state = reactive({
 //   gameFound: null,
@@ -33,7 +31,8 @@ export const setupSocketListeners = async () => {
 
     console.log("setting side to : ", data.color)
     localStorage.setItem("side", data.color)
-        Game.updateGameInfos();
+    Game.updateGameInfos();
+    Game.pieceSelectDeadline = Math.floor(((data.deadline - Date.now()) / 1000));
 
     await router.push('/game/selection').catch(err => {
   if (err.name !== 'NavigationDuplicated') {
