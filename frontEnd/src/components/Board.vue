@@ -54,7 +54,6 @@ import { joinQueue } from '../utils/queue.js';
 </script>
 
 <template>
-    <div class="boardContainer">
         <Dialog v-model:visible="dialogData.displayed" modal :header="dialogData.title" :style="{ width: '25rem' }" :closable="false">
                 <div class="topColor" :class="dialogData.color"></div>
                 <div class="buttons">
@@ -68,7 +67,6 @@ import { joinQueue } from '../utils/queue.js';
                 </template>
             </Dock>
         <canvas ref="canvasRef"></canvas>
-    </div>
     <div v-if="displayErrDivForDebug" class="error" ref="errDiv"></div>
 </template>
 
@@ -82,11 +80,6 @@ import { joinQueue } from '../utils/queue.js';
 
     .error {
         color: red;
-    }
-    .boardContainer{
-        height: fit-content;
-        position: relative;
-        width: fit-content;
     }
     .dock{
         transform: translateY(-100%);
