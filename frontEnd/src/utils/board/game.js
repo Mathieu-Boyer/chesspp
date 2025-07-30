@@ -1,6 +1,7 @@
 import axios from "axios";
 import { pieceTranslator, chessBoard, chessBoardReverse } from "./statics";
 import { v1 } from "../api";
+import { reactive } from "vue";
 
 
 function isLowerCase(char) {
@@ -383,4 +384,4 @@ class Game {
 }
 
 
-export default new Game
+export default reactive(new Game)

@@ -100,6 +100,7 @@ export const setupSocketListeners = async () => {
 export const removeSocketListeners = () =>{
   socket.off('game:found')
   socket.off('game:update')
+  socket.off('game:join')
 }
 
 export default socket;
