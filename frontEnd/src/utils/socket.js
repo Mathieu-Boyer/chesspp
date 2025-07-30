@@ -5,7 +5,7 @@ import Game from "../utils/board/game.js";
 import router from "../Router.js";
 import { base, protocol } from "./api.js";
 
-const socket = io(protocol + base, {
+const socket = io("", {
     autoConnect : false,
     withCredentials: false,
 });

@@ -74,18 +74,30 @@ import { joinQueue } from '../utils/queue.js';
 
 
     canvas {
-        height: 50rem;
-        width: 50rem;
+        width: 100%;
+        max-width: 40rem; 
+        aspect-ratio: 1 / 1; /* Keeps it square */
+        display: block;
     }
 
     .error {
         color: red;
     }
-    .dock{
-        transform: translateY(-100%);
+    .dock {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
         visibility: hidden;
     }
 
+    .p-dock {
+        border-radius: 15px;
+        width: fit-content;
+        background-color: #1e1e1e !important; /* replace with your preferred color */
+        backdrop-filter: none !important;     /* disable blur effect if present */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* optional: shadow for elevation */
+        border-top: 1px solid #444;           /* optional: border style */
+    }
 
     .dock img{
         cursor: pointer;
