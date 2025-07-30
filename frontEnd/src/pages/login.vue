@@ -9,9 +9,7 @@ import LoginForm from '../components/LoginForm.vue';
 <div class="formPage">
     <Chesspp />
     <LoginForm></LoginForm>
-    <router-link to="/register" class="link">
-    i don't have an account yet
-    </router-link>
+    <router-link to="/register" class="link">i don't have an account yet</router-link>
 </div>
 </template>
 
