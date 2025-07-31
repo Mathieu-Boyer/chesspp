@@ -11,18 +11,18 @@ Create an account and jump into a match online.
 
 ### Core Gameplay
 - **Full rule support**, All standard chess rules are implemented: castling, en passant, pawn promotion, and more.  
-- **Custom piece variants** – At the start of each game, you're given the option to replace your queen with a custom piece — or stick with the classic.
+- **Custom piece variants**, At the start of each game, you're given the option to replace your queen with a custom piece or stick with the classic.
 - **Real-time multiplayer**, Face off against players around the globe with smooth, live gameplay.  
 - **Move validation**, A strong rules engine ensures illegal moves are caught before they happen.  
 
 ### Under the Hood
-- **Custom-built engine in C++** – No frameworks or shortcuts. The entire chess logic runs on a hand-crafted C++ engine.  
-- **Clean OOP architecture** – Polymorphic, designed with flexibility and maintainability in mind.  
-- **Event-driven mechanics** – Piece behavior can be extended through an internal event system.  
-- **Extended FEN support** – Game states are serialized using a custom FEN-based format.  
-- **Full-stack integration** – C++ powers the core, with a Node.js backend and Vue3 frontend for real-time multiplayer.  
-- **Cloud deployment** – Running on Google Cloud.
-
+- **Custom-built engine in C++**, No frameworks or shortcuts. The entire chess logic runs on a hand-crafted C++ engine.  
+- **Clean OOP architecture**, Polymorphic, designed with flexibility and maintainability in mind.  
+- **Event-driven mechanics**, Piece behavior can be extended through an internal event system.  
+- **Extended FEN support**, Game states are serialized using a custom FEN-based format.  
+- **Full-stack integration**, C++ powers the core, with a Node.js backend and Vue3 frontend for real-time multiplayer.  
+- **Cloud deployment**, Running on Google Cloud.
+  
 ---
 
 ## Custom Pieces (2 for now)
