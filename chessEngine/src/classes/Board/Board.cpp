@@ -1,9 +1,4 @@
 #include "Board.hpp"
-#include "King.hpp"
-#include "colors.hpp"
-#include "utils.hpp"
-#include "GameState.hpp"
-#include <memory>
 
 Board::Board(const Board& board){
 

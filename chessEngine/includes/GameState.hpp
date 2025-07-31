@@ -8,8 +8,6 @@
 #include <memory>
 #include <algorithm>
 
-
-
 enum gameStatus{
     ongoing,
     check,
@@ -22,8 +20,7 @@ class GameState
 {
 private:
     std::string raw;
-    std::vector<std::string> data; // i use a vector instead of fixed sized array here because i'll add rules later so i might need to store more infos.
-    // when i will be sure of all the infos i need i'll make it fixed size.
+    std::vector<std::string> data;
     std::unique_ptr<Board> board;
 
     void decode();
@@ -41,8 +38,12 @@ private:
     std::string blackQueenInfos;
     std::string lastMovedPiece;
 
+    bool moreThan1PieceCanCheck(const std::string &color);
+    bool checkIngPieceCanBeCaptured(const std::string &color, int checkerPos);
+    bool pieceCanInterpose(int pieceA, int pieceB, const std::string &pieceName, const std::string& interposeColor);
+
 public:
-    void applyMoveSimulation(const move& move);
+
 
     GameState() = delete;
     GameState(const std::string &fen);
@@ -51,62 +52,44 @@ public:
 
     void applyMove(const move &move);
 
+    void applyMoveSimulation(const move& move);
 
-    std::vector<int> squareIsCompromised(const std::string &enemy, int target);
-    std::vector<int> getPieceLegalMove(int position);
     std::string getColorToMove();
+    std::vector<int> getPieceLegalMove(int position);
+    std::vector<int> squareIsCompromised(const std::string &enemy, int target);
 
-    bool pieceCanInterpose(int pieceA, int pieceB, const std::string &pieceName, const std::string& interposeColor);
-    std::vector<int> kingIsInCheck(const std::string &color);
-    bool moreThan1PieceCanCheck(const std::string &color);
-    bool checkIngPieceCanBeCaptured(const std::string &color, int checkerPos);
-    bool checkMateSituation(const std::string &color);
+    int isDraw();
     bool staleMate();
+    int checkGameStatus();
+    bool checkMateSituation(const std::string &color);
+    std::vector<int> kingIsInCheck(const std::string &color);
 
     void printASCII();
     void printASCII(const std::vector<int> &moves);
-
     std::string encode();
+    
     Board& getRefToBoard() const;
-
-
-    void setColorToMove(const std::string &color);
-
-    void setdissAllowedCastles(const std::string &dissAllowedCastles);
-    std::string getdissAllowedCastles();
-
-    void setAllowedCastles(const std::string &allowedCastles);
-
+    
+    int getCurrentHalfMove();
+    int getCurrentFullMove();
+    int getPossibleEnPassantNow();
+    std::string getWhiteQueenInfo();
+    std::string getLastMovedPiece();
+    std::string getBlackQueenInfo();
     std::string getAllowedCastles();
-
+    std::string getMoveConstruction();
+    std::string getdissAllowedCastles();
     int getPossibleEnPassantNextHalfMove();
 
-    void setPossibleEnPassantNextHalfMove(int value);
-    void setPossibleEnPassantNow(int value);
-
-    int getPossibleEnPassantNow();
-
-
-    void setCurrentHalfMove(int value);
-    int getCurrentHalfMove();
-
     void setCurrentFullMove(int value);
-    int getCurrentFullMove();
-
-    int isDraw();
-    int checkGameStatus();
-
-
-
-    void setLastMovedPiece(std::string value);
-    std::string getLastMovedPiece();
-
-    void setMoveConstruction(std::string value);
-    std::string getMoveConstruction();
-
+    void setCurrentHalfMove(int value);
+    void setPossibleEnPassantNow(int value);
     void setWhiteQueenInfo(std::string value);
-    std::string getWhiteQueenInfo();
-
+    void setLastMovedPiece(std::string value);
     void setBlackQueenInfo(std::string value);
-    std::string getBlackQueenInfo();
+    void setMoveConstruction(std::string value);
+    void setColorToMove(const std::string &color);
+    void setPossibleEnPassantNextHalfMove(int value);
+    void setAllowedCastles(const std::string &allowedCastles);
+    void setdissAllowedCastles(const std::string &dissAllowedCastles);
 };

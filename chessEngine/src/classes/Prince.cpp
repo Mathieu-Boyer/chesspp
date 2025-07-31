@@ -1,12 +1,10 @@
 #include "Prince.hpp"
-#include "APiece.hpp"
 
 Prince::Prince(const std::string &color) : APiece("Prince", "S", color, 10 , 2, false , true){
     this->moveSet        = { -9, -8, -7, 1, 7, 8 , 9 , -1 };
     this->captureMoveSet = moveSet;
     this->specialMoveSet = {};
 }
-
 
 std::vector<int> Prince::getPseudoLegalMoves(GameState &gameState, int position){
     std::vector<int> freeSquareMoves;

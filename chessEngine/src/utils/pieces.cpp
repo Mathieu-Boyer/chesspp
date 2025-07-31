@@ -1,5 +1,4 @@
 #include "utils.hpp"
-#include <memory>
 #include "Rook.hpp"
 #include "Knight.hpp"
 #include "King.hpp"
@@ -7,7 +6,7 @@
 #include "Bishop.hpp"
 #include "Pawn.hpp"
 #include "Prince.hpp"
-#include "Cameleon.hpp"
+#include "Chameleon.hpp"
 
 std::unique_ptr<APiece> pieceFactory(char character){
     switch (character)
@@ -55,8 +54,8 @@ std::unique_ptr<APiece> pieceFactory(char character){
 
         case 'c':
         case 'C':{
-            Cameleon cameleon(std::islower(character) ? "Black" : "White");
-            return cameleon.clone();
+            Chameleon Chameleon(std::islower(character) ? "Black" : "White");
+            return Chameleon.clone();
         }
         default :
             throw std::runtime_error("The provided piece does not exist in this current version.");

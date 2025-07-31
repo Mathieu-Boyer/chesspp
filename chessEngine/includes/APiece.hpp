@@ -9,7 +9,6 @@
 #include "utils.hpp"
 #include "GameState.hpp"
 
-
 class Board;
 class GameState;;
 class APiece
@@ -29,29 +28,30 @@ class APiece
         std::string _representation;
     public:
 
-        std::vector<int> canCapture(GameState &gameState, int position);
-        virtual std::vector<int> getPseudoLegalMoves(GameState &gameState, int position) = 0;
-        virtual bool canAttackSquare(int from, int target, GameState &GameState) = 0;
-        virtual void specialEffects(move move, GameState &gameState);
-        virtual void startOfTurnEffects(move move, GameState &GameState);
-        virtual void endOfTurnEffects(move move, GameState &GameState);
-        virtual void specialMove(move move, GameState &gameState);
-        virtual void onCaptureEffects(move move, GameState &gameState, APiece *capturedPiece);
-
-        virtual void onCapturedEffects(move move, GameState &gameState);
-
-
-        void describe();
-        const std::string getRepresentation();
-        virtual std::unique_ptr<APiece> clone() = 0 ;
-        const std::string getName();
-        bool getCanJump();
-        const std::string getColor();
-        bool getCapturable();
         APiece()           = delete;
         APiece(const std::string &name, const std::string &representation, const std::string &color, int value, int range, bool canJump, bool capturable);
-        bool isOnRow(int row, int position);
         virtual ~APiece()  = default;
-        const std::vector<int> &getSpecialMoveSet();
+
+        virtual std::unique_ptr<APiece> clone() = 0 ;
+        virtual void specialMove(move move, GameState &gameState);
+        virtual void specialEffects(move move, GameState &gameState);
+        virtual void endOfTurnEffects(move move, GameState &GameState);
+        virtual void onCapturedEffects(move move, GameState &gameState);
+        virtual void startOfTurnEffects(move move, GameState &GameState);
+        virtual bool canAttackSquare(int from, int target, GameState &GameState) = 0;
+        virtual std::vector<int> getPseudoLegalMoves(GameState &gameState, int position) = 0;
+        virtual void onCaptureEffects(move move, GameState &gameState, APiece *capturedPiece);
+
+        std::vector<int> canCapture(GameState &gameState, int position); // is only used for pawns this will be removed because it is an artifact of the old program's architecture.
+
+        void describe();
+        bool isOnRow(int row, int position);
+
         int getRange();
+        bool getCanJump();
+        bool getCapturable();
+        const std::string getName();
+        const std::string getColor();
+        const std::string getRepresentation();
+        const std::vector<int> &getSpecialMoveSet();
 };

@@ -19,23 +19,17 @@ void GameState::printASCII(){
         }else{
             std::cout << " " << square->getRepresentation() << " " << RESET_COLOR;
         }
-
-
-
         counter++;
         if (counter % 8 == 0)
             std::cout << std::endl;
     }
-
     std::cout << std::endl;
 }
 
 
 void GameState::printASCII(const std::vector<int> &moves){
 {
-
         unsigned counter = 0;
-
         Board &board = getRefToBoard();
 
         for (auto &square : board.getData()){
@@ -52,8 +46,6 @@ void GameState::printASCII(const std::vector<int> &moves){
             if (counter % 8 == 0)
                 std::cout << std::endl;
         }
-
         std::cout << std::endl;
-
     }
 }
