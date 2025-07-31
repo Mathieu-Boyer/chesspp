@@ -54,12 +54,17 @@ router.patch("/:id/select", authenticate, async (req, res)=>{
     if (!foundGame)
         return res.status(404).json({message : "No game with this ID was found."});
 
+    if (foundGame.status == "active"){
+        sendToUser(req.id, "game:join", {game: foundGame});
+        return res.status(200).json({message : "You already chose a piece for this game."});
+    }
+
+        
     try {
         gameIsNotFinished(foundGame);
         playerIsInTheGame(req.id, foundGame)
     } catch (error) {
-        console.log(error, "aaaah okay")
-        return res.status(401).json(error);
+        return res.status(403).json(error);
     }
 
     if (req.id == foundGame.blackPlayerId)
@@ -164,7 +169,6 @@ router.put('/:id/move', authenticate, loadGameById, loadGamePlayers ,  async (re
             res.status(400).json({message : stderr});
             return;
         }
-
         try {
             let json = JSON.parse(stdout);
 
@@ -202,9 +206,6 @@ router.put('/:id/move', authenticate, loadGameById, loadGamePlayers ,  async (re
         console.log(e);
         return res.status(400).json({message : e});
     }});
-
-
-
 })
 
 router.patch("/:id/resign", authenticate, async (req, res)=>{
@@ -212,7 +213,6 @@ router.patch("/:id/resign", authenticate, async (req, res)=>{
 
     if (!id)
         return res.status(400).json({message : "A game id must be provided to use this endpoint."});
-
 
     let foundGame = await db.Games.findOne(
         {
@@ -233,7 +233,7 @@ router.patch("/:id/resign", authenticate, async (req, res)=>{
         playerIsInTheGame(req.id, foundGame)
     } catch (error) {
         console.log(error, "aaaah okay")
-        return res.status(401).json(error);
+        return res.status(403).json(error);
     }
 
     foundGame.status = "finished";
@@ -282,7 +282,7 @@ router.patch("/:id/draw/offer", authenticate , async (req, res)=>{
         gameIsNotFinished(foundGame);
         playerIsInTheGame(req.id, foundGame);
     } catch (error) {
-        return res.status(401).json(error);
+        return res.status(403).json(error);
     }
 
     foundGame.drawProposerId = req.id;
@@ -329,7 +329,7 @@ router.patch("/:id/draw/accept", authenticate , async (req, res)=>{
         drawIsOffered(foundGame);
     } catch (error) {
         console.log(error)
-        return res.status(401).json(error);
+        return res.status(403).json(error);
     }
 
     foundGame.status = "finished"
@@ -376,7 +376,7 @@ router.patch("/:id/draw/decline", authenticate , async (req, res)=>{
         notDrawProposer(req.id, foundGame);
         drawIsOffered(foundGame);
     } catch (error) {
-        return res.status(401).json(error);
+        return res.status(403).json(error);
     }
 
 

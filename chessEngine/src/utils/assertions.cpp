@@ -13,9 +13,11 @@ bool horizontalOverflow(int position, int square){
 }
 
 bool diagonalMove(int move){
-
     return (move % 9 == 0 || move % 7 == 0);
-    // return (move != -1 && move != 1 && move != -8 && move != 8);
+}
+bool validPromotionChar(char promotion){
+    return ((promotion == 'Q' || promotion == 'R' || promotion == 'B' || promotion == 'N')
+        || (promotion == 'q' || promotion == 'r' || promotion == 'b' || promotion == 'n'));
 }
 
 bool promotionAssertions(Board &board, move move){
@@ -26,6 +28,7 @@ bool promotionAssertions(Board &board, move move){
     if (!onFirstOrLastRank){
         return false;
     }
+
     if (piece->getColor() == "White"){
         if (move.promotion == '-')
             throw std::runtime_error("A pawn on the end of a board must provide the piece it wants to become.");
@@ -38,5 +41,8 @@ bool promotionAssertions(Board &board, move move){
         if (move.promotion == std::toupper(move.promotion))
             throw std::runtime_error("You are trying to become a black piece for a white pawn promotion.");
     }
+
+    if (!validPromotionChar(move.promotion))
+        throw std::runtime_error("Pawn can't be promoted .");
     return true;
 }

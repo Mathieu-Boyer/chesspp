@@ -3,10 +3,10 @@ import jwt from "jsonwebtoken"
 export const authenticate = (req, res, next)=>{
     const authHeader = req.headers.authorization;
     if (!authHeader)
-        return res.status(400).json("A token must be provided.");
+        return res.status(401).json("A token must be provided.");
     const token = authHeader.split(" ")[1];
     if (!token)
-        return res.status(400).json("Token format is not respected");
+        return res.status(401).json("Token format is not respected");
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -17,8 +17,7 @@ export const authenticate = (req, res, next)=>{
         next();
     }
     catch (err){
-        console.log(err);
-        return res.status(400).json("Token didn't pass verification", err);
+        return res.status(401).json("Token didn't pass verification", err);
     }
 }
 

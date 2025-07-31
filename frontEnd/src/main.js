@@ -24,6 +24,23 @@ app.mount('#app');
 
 const token = localStorage.getItem("token");
 
+axios.interceptors.response.use(
+  response => response,
+  error => {
+    const status = error.response?.status;
+    const errorMessage = error.response?.data?.error || '';
+
+    if (status === 401) {
+        if (errorMessage === 'TokenExpiredError') {
+            console.warn('Token has expired');
+        }
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+    }
+        return Promise.reject(error);
+    }
+);
+
 if (token){
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     await quitQueue();
@@ -33,10 +50,20 @@ if (token){
 }
 
 
-if (game.gameInfos){
+
+
+router.beforeEach((to, from, next) => {
+  if (game.gameInfos) {
     console.log(game.gameInfos)
-    if (game.gameInfos.status == "active")
-        router.push("/game")
-    if (game.gameInfos.status == "selection")
-        router.push("/game/selection")
-}
+    
+    if (game.gameInfos.status === "active" && to.path !== "/game") {
+      return next("/game")
+    }
+
+    if (game.gameInfos.status === "selection" && to.path !== "/game/selection") {
+      return next("/game/selection")
+    }
+  }
+
+  next()
+})
