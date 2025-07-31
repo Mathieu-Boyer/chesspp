@@ -59,7 +59,7 @@ std::unique_ptr<APiece> pieceFactory(char character){
             return cameleon.clone();
         }
         default :
-            return nullptr;
+            throw std::runtime_error("The provided piece does not exist in this current version.");
     }
 }
 
