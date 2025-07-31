@@ -52,7 +52,7 @@ bool Cameleon::canAttackSquare(int from, int target, GameState &gameState){
 
 void Cameleon::onCaptureEffects(move, GameState &gameState, APiece *capturedPiece){
 
-    if (capturedPiece->getName() != "Cameleon"){    
+    if (capturedPiece->getName() != "Cameleon"){
         if(this->getColor() == "White")
             gameState.setWhiteQueenInfo(gameState.getWhiteQueenInfo() + capturedPiece->getRepresentation());
         else

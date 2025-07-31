@@ -28,6 +28,11 @@ GameState::GameState(const GameState &gameState) : board(gameState.getRefToBoard
 void GameState::decode(){
     data = split(raw, ' ');
 
+    if (data.size() != 8)
+        throw std::runtime_error("Malformed FEN code. Please use the following format : [Board Representation] [color to move] [allowed castles] [half moves counter] [full moves counter] [last played piece] [queens informations].");
+    for (auto& d : data)
+        if (d.empty()) throw std::runtime_error("You provided an empty Fen element.");
+    
     setPossibleEnPassantNextHalfMove(0);
     if (data[1] == "w")
         colorToMove = "White";
@@ -49,6 +54,9 @@ void GameState::decode(){
     lastMovedPiece = data[6];
     std::vector<std::string> queensInfos = split(data[7], ';');
 
+    if (queensInfos.empty()) throw std::runtime_error("Queen infos can't be empty.");
+    for (auto& info : queensInfos) 
+        if (info.empty()) throw std::runtime_error("You provided an empty queen info element.");
     whiteQueenInfos = queensInfos[0] ;
     blackQueenInfos = queensInfos[1] ;
     board->placePieces(data[0]);
@@ -116,8 +124,13 @@ std::string GameState::encode() {
 
 
 
-    for (auto&fenElement : data)
-        fenString += fenElement + " ";
+    unsigned counter = 0;
+    for (auto&fenElement : data){
+        fenString += fenElement;
+        if (counter != data.size() - 1)
+            fenString += " ";
+        counter++;
+    }
 
     return fenString;
 }
@@ -193,7 +206,7 @@ void GameState::applyMove(const move &move){
 
     auto legalMoves = getPieceLegalMove(move.from);
     if (std::ranges::find(legalMoves, move.to) == legalMoves.end()){
-        throw std::runtime_error("The move : " + move::inverseBoardMap.at(move.to) + " illegal ! you are going to jail.");
+        throw std::runtime_error("The move : " + move::inverseBoardMap.at(move.to) + " illegal !");
     }
     this->board->applyMove(move, *this);
 }
