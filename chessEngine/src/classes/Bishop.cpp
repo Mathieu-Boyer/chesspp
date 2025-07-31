@@ -1,5 +1,4 @@
 #include "Bishop.hpp"
-#include "APiece.hpp"
 
 Bishop::Bishop(const std::string &color) : APiece("Bishop","B", color, 3 , 8, false , true){
     this->moveSet        = { -9, -7, 7, 9};

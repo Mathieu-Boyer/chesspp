@@ -1,5 +1,4 @@
 #include "Knight.hpp"
-#include "APiece.hpp"
 
 Knight::Knight(const std::string &color) :  APiece("Knight", "N", color, 3 , 1, true , true){
     this->moveSet        = { -17, -15, -6, 10, 17, 15, 6, -10 };

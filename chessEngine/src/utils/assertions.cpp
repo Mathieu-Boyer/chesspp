@@ -1,5 +1,5 @@
 #include "Board.hpp"
-#include "move.hpp"
+
 bool validSquare(int square){
     return (square >= 0 && square < 64);
 }

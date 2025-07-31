@@ -1,5 +1,4 @@
 #include "Pawn.hpp"
-#include "APiece.hpp"
 
 Pawn::Pawn(const std::string &color) : APiece("Pawn", "P", color, 1 , 1, false , true){
     

@@ -6,12 +6,13 @@
 class Bishop : public APiece
 {
 private:
-    /* data */
+
 public:
     Bishop() = delete;
+    virtual ~Bishop() = default;
     Bishop(const std::string &color);
-    bool canAttackSquare(int from, int target, GameState &gameState) override;
+
     std::unique_ptr<APiece> clone() override;
+    bool canAttackSquare(int from, int target, GameState &gameState) override;
     std::vector<int> getPseudoLegalMoves(GameState &gameState, int position) override;
-    ~Bishop() = default;
 };

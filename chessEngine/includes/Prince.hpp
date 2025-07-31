@@ -9,11 +9,12 @@ private:
     /* data */
 public:
     Prince() = delete;
+    virtual ~Prince() = default;
     Prince(const std::string &color);
-    std::vector<int> getPseudoLegalMoves(GameState &gameState, int position) override;
-    bool canAttackSquare(int from, int target, GameState &gameState) override;
+   
     std::unique_ptr<APiece> clone() override;
     void onCapturedEffects(move, GameState &gameState) override;
-    ~Prince() = default;
+    bool canAttackSquare(int from, int target, GameState &gameState) override;
+    std::vector<int> getPseudoLegalMoves(GameState &gameState, int position) override;
 };
 

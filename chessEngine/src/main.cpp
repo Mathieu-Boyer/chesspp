@@ -1,8 +1,5 @@
 #include <iostream>
-// #include <cctype>
-#include "GameState.hpp"
-#include "move.hpp"
-#include <string>
+#include "utils.hpp"
 
 int main (int argc , char *argv[]){
     if (argc == 1){
