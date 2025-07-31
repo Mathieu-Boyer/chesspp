@@ -33,10 +33,18 @@ if (token){
 }
 
 
-if (game.gameInfos){
+router.beforeEach((to, from, next) => {
+  if (game.gameInfos) {
     console.log(game.gameInfos)
-    if (game.gameInfos.status == "active")
-        router.push("/game")
-    if (game.gameInfos.status == "selection")
-        router.push("/game/selection")
-}
+    
+    if (game.gameInfos.status === "active" && to.path !== "/game") {
+      return next("/game")
+    }
+
+    if (game.gameInfos.status === "selection" && to.path !== "/game/selection") {
+      return next("/game/selection")
+    }
+  }
+
+  next()
+})

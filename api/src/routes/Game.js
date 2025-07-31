@@ -54,6 +54,12 @@ router.patch("/:id/select", authenticate, async (req, res)=>{
     if (!foundGame)
         return res.status(404).json({message : "No game with this ID was found."});
 
+    if (foundGame.status == "active"){
+        sendToUser(req.id, "game:join", {game: foundGame});
+        return res.status(200).json({message : "You already chose a piece for this game."});
+    }
+
+        
     try {
         gameIsNotFinished(foundGame);
         playerIsInTheGame(req.id, foundGame)
