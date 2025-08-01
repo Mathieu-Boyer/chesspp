@@ -17,8 +17,6 @@ const currentSelf = ref(side == "White" ? game.gameInfos.whitePlayer : game.game
 
 
 const colorToPlay = computed(()=>game.gameInfos.colorToPlay)
-console.log(currentEnemy.value, "lalalalalalalalala")
-console.log(game.gameInfos.colorToPlay , side)
 
 
 </script>

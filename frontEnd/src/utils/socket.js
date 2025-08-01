@@ -10,11 +10,6 @@ const socket = io("", {
     withCredentials: false,
 });
 
-// const state = reactive({
-//   gameFound: null,
-//   gameUpdate: null,
-// })
-
 export const loginSocket = async (token)=>{
 
     socket.auth = {token : `bearer ${token}`}
@@ -26,23 +21,21 @@ export const setupSocketListeners = async () => {
 
 
   socket.on('game:found', async (data) => {
-    console.log(data, "<-------")
     localStorage.setItem("gameState", JSON.stringify(data.game))
 
-    console.log("setting side to : ", data.color)
     localStorage.setItem("side", data.color)
     Game.updateGameInfos();
     Game.pieceSelectDeadline = Math.floor(((data.deadline - Date.now()) / 1000));
 
     await router.push('/game/selection').catch(err => {
   if (err.name !== 'NavigationDuplicated') {
-    console.error(err, "<--");
+    console.error(err)
   }
   });
   })
 
   socket.on('game:join', async (data) => {
-    console.log("joinnnnnnedddd")
+
     localStorage.setItem("gameState", JSON.stringify(data.game))
 
     Game.updateGameInfos();
@@ -55,7 +48,6 @@ export const setupSocketListeners = async () => {
     Game.drawLast();
   })
   socket.on('game:update', (data) => {
-    console.log(data)
     if (data.game){
         localStorage.setItem("gameState", JSON.stringify(data.game))
         Game.updateGameInfos();
@@ -64,7 +56,6 @@ export const setupSocketListeners = async () => {
     Game.drawLast();
     
 
-    console.log()
     if (data?.game?.status == "finished"){
         // router.push("/")
         Game.dialogData.displayed = true;

@@ -9,8 +9,6 @@ import { v1 } from '../utils/api';
 const route = useRoute()
 const userId = ref(route.params.id)
 
-
-    console.log(userId)
     let user = ref(null)
     let games = ref(null)
 
@@ -47,9 +45,7 @@ const userId = ref(route.params.id)
 
 
         
-        console.log(user.value, games.value)
     }catch(e){
-        console.log(e)
         router.push('/')
     }
 
