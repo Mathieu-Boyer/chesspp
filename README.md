@@ -2,7 +2,7 @@
 # Chess++  
 **A modern twist on classic chess, real-time, multiplayer, and built from scratch in C++.**
 
-## Try it Live  
+## Try it Live  [Here](http://104.154.228.42:8000/)
 Create an account and jump into a match online.
 
 ---
