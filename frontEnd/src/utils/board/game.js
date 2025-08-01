@@ -50,17 +50,19 @@ class Game {
         this.clientHeight = canvas.clientHeight;
         this.size = Math.min(this.clientWidth, this.clientHeight);
         this.squareSize = this.size / 8;
-        
+
         this.width = this.size * this.scale;
         this.height = this.size * this.scale;
-        
+
         canvas.width = this.width;
         canvas.height = this.height;
         canvas.style.width = this.size + 'px';
         canvas.style.height = this.size + 'px';
-        
+
         this.ctx.scale(this.scale, this.scale);
 
+        this.ctx.imageSmoothingEnabled = true;
+        this.ctx.imageSmoothingQuality = 'high';
         canvas.addEventListener('click', (e)=>this.getPressedSquare(e))
         await this.loadAllPiecesImages()
     }
@@ -96,10 +98,10 @@ class Game {
         const piece = this.piecesImages.get(pieceColor + pieceName);
         if (piece) {
             this.ctx.drawImage(
-                piece, 
-                col * this.squareSize, 
-                row * this.squareSize, 
-                this.squareSize, 
+                piece,
+                col * this.squareSize,
+                row * this.squareSize,
+                this.squareSize,
                 this.squareSize
             );
         } else {
@@ -133,12 +135,8 @@ class Game {
     drawChessBoardUsingFen(fenGameState) {
         this.clearBoard();
         this.drawChessSquares();
-
-        console.log(fenGameState)
-        
         const mySide = this.getMySide();
 
-        console.log(mySide)
         const informations = fenGameState.split(" ");
         const rows = informations[0].split("/");
 
@@ -225,7 +223,6 @@ class Game {
     }
 
     clearBoard() {
-        console.log(this.size, this.size)
         this.ctx.clearRect(0, 0, this.size, this.size);
     }
 
@@ -239,7 +236,7 @@ class Game {
         this.canvas.height = this.height;
         this.canvas.style.width = newSize + 'px';
         this.canvas.style.height = newSize + 'px';
-        
+        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
         this.ctx.scale(this.scale, this.scale);
     }
 
@@ -281,36 +278,25 @@ class Game {
 
     isSameColoredPiece(pieceA, pieceB){
 
-
-
-        console.log(pieceA, pieceB, isLowerCase(pieceA) && isLowerCase(pieceB), (isUpperCase(pieceA) && isUpperCase(pieceB)))
-
         return ((isLowerCase(pieceA) && isLowerCase(pieceB)) || (isUpperCase(pieceA) && isUpperCase(pieceB)) )
     }
 
     async getPressedSquare(e){
-        console.log(this.canvas)
         const rect = this.canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        console.log(x, y);
         const xSquare = Math.floor(((x / this.squareSize) % 8));
         const ySquare =  Math.floor(((y / this.squareSize) % 8));
 
         const currentBoard = this.getFullBoardRepresentation(this.gameInfos.fenList[this.gameInfos.fenList.length - 1]);
 
-        console.log(currentBoard, 'lalalalalalalalalalalalalala')
-
         const pressedSquare = this.side == "White" ? xSquare + (8 * ySquare) :  (7 - xSquare + (8 * (7- ySquare)));
         const pressedSquareToString = chessBoard[pressedSquare]
         if (!this.currentSelectedSquare){
-            // console.log(currentBoard[pressedSquare]);
             this.currentSelectedSquare = pressedSquareToString;
         }
         else{
-            console.log("huuuuuuuuuuuuuuuh", currentBoard[pressedSquare], !this.isSameColoredPiece(this.currentSelectedSquare, currentBoard[pressedSquare]),currentBoard[pressedSquare] == "1" || !this.isSameColoredPiece(this.currentSelectedSquare, currentBoard[pressedSquare]) )
-            // console.log(currentBoard[pressedSquare]);
             if(currentBoard[pressedSquare] == "1" || !this.isSameColoredPiece(currentBoard[chessBoardReverse[this.currentSelectedSquare]], currentBoard[pressedSquare]))
                 this.currentSelectedSquare += "-" + pressedSquareToString;
             else
@@ -318,20 +304,13 @@ class Game {
                 
         }
         try{
-            console.log(this.currentSelectedSquare)
             let response = await axios.put(`${v1}games/${this.gameInfos.id}/move`, {
                 move : this.currentSelectedSquare
             })
-
-            console.log(response)
         }catch (err){
-            console.log(err.response)
             if (err.response.data.message.trim() == "A pawn on the end of a board must provide the piece it wants to become.")
                 return this.dockAppear()
-            console.log(err.response.data.message)
             this.currentSelectedSquare = undefined;
-
-            // this.errDiv.innerText = err.response.data.message;
             this.drawLast();
         }
     }
@@ -349,20 +328,16 @@ class Game {
 
 
     drawLast(){
-        console.log("drawing .. : ", this.gameInfos.fenList[this.gameInfos.fenList.length - 1])
         this.drawChessBoardUsingFen(this.gameInfos.fenList[this.gameInfos.fenList.length - 1])
     }
 
     async handleDockClick(e){
-        console.log(e.target.alt)
         this.currentSelectedSquare += "=" + e.target.alt;
         try{
             let response = await axios.put(`${v1}games/${this.gameInfos.id}/move`, {
                 move : this.currentSelectedSquare
             })
-            console.log(response)
         }catch (err){
-            console.log(err.response.data.message)
             this.currentSelectedSquare = undefined;
             this.errDiv.innerText = err.response.data.message;
             this.drawLast();

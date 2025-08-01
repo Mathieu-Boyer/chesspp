@@ -9,8 +9,6 @@ import { v1 } from '../utils/api';
 
 
 const side = localStorage.getItem("side")
-
-console.log(game.gameInfos)
 const pieces = ref([
     {
         title : "The Queen",
@@ -33,7 +31,6 @@ const handleSelection = async (e)=>{
 
     const clickedElem = e.target;
     const elWithId = clickedElem.id ? clickedElem : clickedElem.closest('[id]');
-    console.log(elWithId.id);
 
     const response = await axios.patch(`${v1}games/${game.gameInfos.id}/select`, {
         piece : elWithId.id

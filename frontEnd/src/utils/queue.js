@@ -9,7 +9,6 @@ export const joinQueue = async ()=>{
     try{
         router.push("/queue");
         await axios.post(`${v1}queue/join`);
-        console.log("queue joined")
     }catch (e){
         console.log(e)
     }
