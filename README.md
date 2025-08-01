@@ -3,7 +3,7 @@
 **A modern twist on classic chess, real-time, multiplayer, and built from scratch in C++.**
 
 ## Try it Live  [Here](http://104.154.228.42:8000/)
-Create an account and jump into a match online.
+Create an account and jump into a match online. (make sure to read the rules below to understand the new pieces)
 
 ---
 
