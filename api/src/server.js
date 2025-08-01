@@ -68,34 +68,13 @@ app.post("/testing_role_protection", authenticate , checkRole("admin"), (req, re
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Serve the Vue dist folder
+
 app.use(express.static(path.join(__dirname, '../../frontEnd/dist')));
 
-// Fallback for client-side routing (Vue Router in history mode)
 app.get(/\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, '../../frontEnd/dist/index.html'));
 });
 try {
-    // await db.Users.drop();
-    // await db.Games.drop();
-
-    // await db.sequelize.sync({ force: true })
-
-// await sequelize.sync({ force: false });
-
-//     await db.Users.update(
-//   { avatar: 'default.png' },
-//   {
-//     where: {
-//       [Op.or]: [
-//         { avatar: null },
-//         { avatar: '' }
-//       ]
-//     }
-//   }
-// );
-
-    // await db.sequelize.sync()
     await db.sequelize.authenticate()
 
     console.log("Connected to DB.")
