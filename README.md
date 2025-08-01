@@ -28,14 +28,14 @@ Create an account and jump into a match online.
 ## Custom Pieces (2 for now)
 
 ### The Chameleon 
-- **Doesn’t move on its own** — It copies.  
-- **Mimics your opponent** — It can move like the last piece your opponent played (except the king).  
+- **Doesn’t move on its own**, It copies.  
+- **Mimics your opponent**, It can move like the last piece your opponent played (except the king).  
 - **Evolves with each capture** — Every time it captures, it gains that piece’s movement abilities permanently.  
 - **Tactical depth** — Starts off weak, but with smart play, it becomes a real threat over time.
 
 ### The Prince
-- **Limited royalty** — Moves like a queen, but only up to 2 squares in any direction.  
-- **Backup monarch** — If your king is checkmated and the prince is not under attack, the prince is crowned as the new king and the game continues.  
-- **One-time replacement** — When the prince becomes king, the original king is removed from the board.  
-- **Strategic consequence** — If the prince is captured, your king permanently loses the right to castle.
+- **Limited royalty**, Moves like a queen, but only up to 2 squares in any direction.  
+- **Backup monarch**, If your king is checkmated and the prince is not under attack, the prince is crowned as the new king and the game continues.  
+- **One-time replacement**, When the prince becomes king, the original king is removed from the board.  
+- **Strategic consequence**, If the prince is captured, your king permanently loses the right to castle.
 
