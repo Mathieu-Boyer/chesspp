@@ -18,7 +18,6 @@
 - **Event-driven mechanics**, Piece behavior can be extended through an internal event system.  
 - **Extended FEN support**, Game states are serialized using a custom FEN-based format.  
 - **Full-stack integration**, C++ powers the core, with a Node.js backend and Vue3 frontend for real-time multiplayer.  
-- **Cloud deployment**, Running on Google Cloud.
   
 ---
 
