@@ -1,5 +1,5 @@
 
-# Chess++  
+# Chess++  (still being worked on, not production ready)
 **A modern twist on classic chess, real-time, multiplayer, and built from scratch in C++.**
 
 ---
